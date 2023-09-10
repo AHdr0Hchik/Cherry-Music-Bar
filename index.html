@@ -13,12 +13,15 @@
     <script>
         $(window).scroll(function(){
             const $el = $('.upMenu');
+            const $el2 = $('.menu');
             let isPositionFixed = ($el.css('position') == 'fixed');
             if ($(this).scrollTop() > 100 && !isPositionFixed){
                 $el.css({'position': 'fixed', 'top': '0px'});
+                $el2.css({'margin-top':'55px'});
             }
             if ($(this).scrollTop() < 100 && isPositionFixed){
                 $el.css({'position': 'static', 'top': '0px'});
+                $el2.css({'margin-top':'0'});
             }
         });
     </script>
@@ -30,20 +33,23 @@
     <nav class="upMenu">
         <div class="grid">
             <ul class="navList">
-                <li class="navPoint">Пицца</li>
-                <li class="navPoint">Роллы</li>
-                <li class="navPoint">Салаты</li>
-                <li class="navPoint">Десерты</li>
-                <li class="navPoint">Мясное</li>
-                <li class="navPoint">Гарнир</li>
-                <li class="navPoint">Акции</li>
+                <li class="navPoint"><a href="">Главная</a></li>
+                <li class="navPoint"><a href="">Новости</a></li>
+                <li class="navPoint"><a href="">Пицца</a></li>
+                <li class="navPoint"><a href="">Роллы</a></li>
+                <li class="navPoint"><a href="">Салаты</a></li>
+                <li class="navPoint"><a href="">Десерты</a></li>
+                <li class="navPoint"><a href="">Мясное</a></li>
+                <li class="navPoint"><a href="">Гарнир</a></li>
+                <li class="navPoint"><a href="">Бургеры</a></li>
+                <li class="navPoint"><a href="">Акции</a></li>
             </ul>
         </div>
     </nav>
     <article>
         <div class="menu">
             <div class="lot">
-                <img src="/jpgs/dishes/dish.jpg" alt="Картинка блюда">
+            <img src="/jpgs/dishes/dish.jpg" alt="Картинка блюда">
                 <div class="dishDescription">
                     <div class="lotText">
                         <h1>Свинина по-министерски</h1>
@@ -51,8 +57,8 @@
 
                     </div>
                     <div class="lotButtons">
-                        <div class="lotButton">
-                            <button type="submit">Подробнее</button>
+                        <div class="price">
+                            <span>1000 ₽</span>
                         </div>
                         <div class="lotButton">
                             <button type="submit">Добавить в корзину</button>
@@ -60,42 +66,7 @@
                     </div>
                 </div>
             </div>
-            <div class="lot">
-                <img src="/jpgs/dishes/dish.jpg" alt="Картинка блюда">
-                <div class="dishDescription">
-                    <div class="lotText">
-                        <h1>Свинина по-министерски</h1>
-                            <h2>Блюдо состоит из картошки, свинины, грибов, помидоров и сыра</h2>
 
-                    </div>
-                    <div class="lotButtons">
-                        <div class="lotButton">
-                            <button type="submit">Подробнее</button>
-                        </div>
-                        <div class="lotButton">
-                            <button type="submit">Добавить в корзину</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="lot">
-                <img src="/jpgs/dishes/dish.jpg" alt="Картинка блюда">
-                <div class="dishDescription">
-                    <div class="lotText">
-                        <h1>Свинина по-министерски</h1>
-                            <h2>Блюдо состоит из картошки, свинины, грибов, помидоров и сыра</h2>
-
-                    </div>
-                    <div class="lotButtons">
-                        <div class="lotButton">
-                            <button type="submit">Подробнее</button>
-                        </div>
-                        <div class="lotButton">
-                            <button type="submit">Добавить в корзину</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="lot">
                 <img src="/jpgs/dishes/dish.jpg" alt="Картинка блюда">
                 <div class="dishDescription">
@@ -105,8 +76,8 @@
 
                     </div>
                     <div class="lotButtons">
-                        <div class="lotButton">
-                            <button type="submit">Подробнее</button>
+                        <div class="price">
+                            <span>1000 ₽</span>
                         </div>
                         <div class="lotButton">
                             <button type="submit">Добавить в корзину</button>
@@ -114,6 +85,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="lot">
                 <img src="/jpgs/dishes/dish.jpg" alt="Картинка блюда">
                 <div class="dishDescription">
@@ -123,8 +95,8 @@
 
                     </div>
                     <div class="lotButtons">
-                        <div class="lotButton">
-                            <button type="submit">Подробнее</button>
+                        <div class="price">
+                            <span>1000 ₽</span>
                         </div>
                         <div class="lotButton">
                             <button type="submit">Добавить в корзину</button>
@@ -132,6 +104,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="lot">
                 <img src="/jpgs/dishes/dish.jpg" alt="Картинка блюда">
                 <div class="dishDescription">
@@ -141,8 +114,8 @@
 
                     </div>
                     <div class="lotButtons">
-                        <div class="lotButton">
-                            <button type="submit">Подробнее</button>
+                        <div class="price">
+                            <span>1000 ₽</span>
                         </div>
                         <div class="lotButton">
                             <button type="submit">Добавить в корзину</button>
@@ -150,6 +123,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="lot">
                 <img src="/jpgs/dishes/dish.jpg" alt="Картинка блюда">
                 <div class="dishDescription">
@@ -159,8 +133,8 @@
 
                     </div>
                     <div class="lotButtons">
-                        <div class="lotButton">
-                            <button type="submit">Подробнее</button>
+                        <div class="price">
+                            <span>1000 ₽</span>
                         </div>
                         <div class="lotButton">
                             <button type="submit">Добавить в корзину</button>
@@ -169,8 +143,103 @@
                 </div>
             </div>
 
+            <div class="lot">
+                <img src="/jpgs/dishes/dish.jpg" alt="Картинка блюда">
+                <div class="dishDescription">
+                    <div class="lotText">
+                        <h1>Свинина по-министерски</h1>
+                        <h2>Блюдо состоит из картошки, свинины, грибов, помидоров и сыра</h2>
 
+                    </div>
+                    <div class="lotButtons">
+                        <div class="price">
+                            <span>1000 ₽</span>
+                        </div>
+                        <div class="lotButton">
+                            <button type="submit">Добавить в корзину</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lot">
+                <img src="/jpgs/dishes/dish.jpg" alt="Картинка блюда">
+                <div class="dishDescription">
+                    <div class="lotText">
+                        <h1>Свинина по-министерски</h1>
+                        <h2>Блюдо состоит из картошки, свинины, грибов, помидоров и сыра</h2>
+
+                    </div>
+                    <div class="lotButtons">
+                        <div class="price">
+                            <span>1000 ₽</span>
+                        </div>
+                        <div class="lotButton">
+                            <button type="submit">Добавить в корзину</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lot">
+                <img src="/jpgs/dishes/dish.jpg" alt="Картинка блюда">
+                <div class="dishDescription">
+                    <div class="lotText">
+                        <h1>Свинина по-министерски</h1>
+                        <h2>Блюдо состоит из картошки, свинины, грибов, помидоров и сыра</h2>
+
+                    </div>
+                    <div class="lotButtons">
+                        <div class="price">
+                            <span>1000 ₽</span>
+                        </div>
+                        <div class="lotButton">
+                            <button type="submit">Добавить в корзину</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lot">
+                <img src="/jpgs/dishes/dish.jpg" alt="Картинка блюда">
+                <div class="dishDescription">
+                    <div class="lotText">
+                        <h1>Свинина по-министерски</h1>
+                        <h2>Блюдо состоит из картошки, свинины, грибов, помидоров и сыра</h2>
+
+                    </div>
+                    <div class="lotButtons">
+                        <div class="price">
+                            <span>1000 ₽</span>
+                        </div>
+                        <div class="lotButton">
+                            <button type="submit">Добавить в корзину</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lot">
+                <img src="/jpgs/dishes/dish.jpg" alt="Картинка блюда">
+                <div class="dishDescription">
+                    <div class="lotText">
+                        <h1>Свинина по-министерски</h1>
+                        <h2>Блюдо состоит из картошки, свинины, грибов, помидоров и сыра</h2>
+
+                    </div>
+                    <div class="lotButtons">
+                        <div class="price">
+                            <span>1000 ₽</span>
+                        </div>
+                        <div class="lotButton">
+                            <button type="submit">Добавить в корзину</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
     </article>
 
     <footer>
