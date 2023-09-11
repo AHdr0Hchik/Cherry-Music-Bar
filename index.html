@@ -14,7 +14,7 @@
         $(window).scroll(function(){
             const $el = $('.upMenu');
             const $el2 = $('.menu');
-            let isPositionFixed = ($el.css('position') == 'static');
+            let isPositionFixed = ($el.css('position') == 'fixed');
             if ($(this).scrollTop() > 931 && !isPositionFixed){
                 $el.css({'position': 'fixed', 'top': '0px'});
                 $el2.css({'margin-top':'55px'});
@@ -36,14 +36,9 @@
                 <ul class="navList">
                     <li class="navPoint"><a href="">Главная</a></li>
                     <li class="navPoint"><a href="">Новости</a></li>
-                    <li class="navPoint"><a href="">Пицца</a></li>
-                    <li class="navPoint"><a href="">Роллы</a></li>
-                    <li class="navPoint"><a href="">Салаты</a></li>
-                    <li class="navPoint"><a href="">Десерты</a></li>
-                    <li class="navPoint"><a href="">Мясное</a></li>
-                    <li class="navPoint"><a href="">Гарнир</a></li>
-                    <li class="navPoint"><a href="">Бургеры</a></li>
-                    <li class="navPoint"><a href="">Акции</a></li>
+                    <li class="navPoint"><a href="">Забронировать</a></li>
+                    <li class="navPoint"><a href="">Доставка</a></li>
+                    <li class="navPoint"><a href="">Войти</a></li>
                 </ul>
             </div>
         </nav>
