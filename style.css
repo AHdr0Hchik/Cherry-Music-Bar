@@ -39,25 +39,26 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
 
 /*---------*/
 
-body{
-    background-image: url('/jpgs/dishes/article-back.jpg');
-    background-repeat-x: no-repeat;
-    background-size: cover;
-}
+
 
 header{
     background-color: aqua;
     height: 100vh;
 }
 
-
+article{
+    background-image: url('/jpgs/dishes/article-back.jpg');
+    background-repeat-x: no-repeat;
+    background-size: cover;
+}
 
 
 .logo {
-    width: 150px;
+    width: 50vw;
+    height: 50vh;
+    margin: auto auto;
     border: 1px solid black;
-    position: absolute;
-    margin: 20px;
+    position: relative;
 }
 footer{
     height: 150px;
@@ -129,6 +130,14 @@ footer{
     max-width: 100%;
     height: auto;
     display: block;
+}
+.descCategory{
+    width: 100%;
+    background-color: white;
+    height: 100px;
+    text-align: center;
+    font-size: 28px;
+    line-height: 100px;
 }
 
 
