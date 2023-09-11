@@ -14,12 +14,13 @@
         $(window).scroll(function(){
             const $el = $('.upMenu');
             const $el2 = $('.menu');
+            const $el3 = $('header');
             let isPositionFixed = ($el.css('position') == 'fixed');
-            if ($(this).scrollTop() > 100 && !isPositionFixed){
+            if ($(this).scrollTop() > 931 && !isPositionFixed){
                 $el.css({'position': 'fixed', 'top': '0px'});
                 $el2.css({'margin-top':'55px'});
             }
-            if ($(this).scrollTop() < 100 && isPositionFixed){
+            if ($(this).scrollTop() < 931 && isPositionFixed){
                 $el.css({'position': 'static', 'top': '0px'});
                 $el2.css({'margin-top':'0'});
             }
@@ -48,25 +49,28 @@
     </nav>
     <article>
         <div class="menu">
-            <div class="lot">
-                <div class="lotImg">
-                    <img src="/jpgs/dishes/dish.jpg" alt="Картинка блюда">
+            <div class="category">
+                <img src="/jpgs/dishes/dish.jpg" alt="123">
+                <div class="descCategory">
+
                 </div>
+            </div>
+            <div class="category">
+                <img src="/jpgs/dishes/dish.jpg" alt="123">
+                <div class="descCategory">
 
-                <div class="dishDescription">
-                    <div class="lotText">
-                        <h1>Свинина по-министерски</h1>
-                        <h2>Блюдо состоит из картошки, свинины, грибов, помидоров и сыра</h2>
+                </div>
+            </div>
+            <div class="category">
+                <img src="/jpgs/dishes/dish.jpg" alt="123">
+                <div class="descCategory">
 
-                    </div>
-                    <div class="lotButtons">
-                        <div class="price">
-                            <span>1000 ₽</span>
-                        </div>
-                        <div class="lotButton">
-                            <button type="submit">Добавить в корзину</button>
-                        </div>
-                    </div>
+                </div>
+            </div>
+            <div class="category">
+                <img src="/jpgs/dishes/dish.jpg" alt="123">
+                <div class="descCategory">
+
                 </div>
             </div>
         </div>
