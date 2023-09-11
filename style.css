@@ -78,7 +78,7 @@ footer{
 .upMenu {
     position:static;
     top:0;
-    width:100vw;
+    width:100%;
     border: 1px solid black;
     z-index:1000;
     background: linear-gradient(rgba(0, 0, 0, 0.75) 20%, transparent);
