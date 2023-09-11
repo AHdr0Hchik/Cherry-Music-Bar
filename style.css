@@ -115,6 +115,7 @@ footer{
 .navPoint>a:hover{
     color: #bef574;
     transition-duration: .5s;
+    font-size: 36px;
 }
 
 
@@ -155,7 +156,7 @@ footer{
 }
 .descCategory:hover {
     background-color: rgba(255,255,255, 0.5);
-    font-size: 250%;
+    font-size: 225%;
     color: #bef574;
     transition-duration: .3s;
 
