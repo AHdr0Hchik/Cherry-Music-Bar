@@ -13,17 +13,21 @@
     <script>
         $(window).scroll(function(){
             const $el = $('.upMenu');
-            const $el2 = $('.menu');
             const $el3 = $('#header');
-            let height = parseInt($el3.css( "height" ));
+            const $el4 = $('#article');
+            let heightHeader = parseInt($el3.css( "height" ));
+            let heightMenu = $el.css( "height" );
+
             let isPositionFixed = ($el.css('position') == 'fixed');
-            if ($(this).scrollTop() > height+50 && !isPositionFixed){
+            if ($(this).scrollTop() > heightHeader && !isPositionFixed){
+                console.log(heightMenu);
                 $el.css({'position': 'fixed', 'top': '0px'});
-                $el2.css({'margin-top':'55px'});
+                $el4.css({'margin-top': heightMenu});
+                console.log($el4.css('margin-top'));
             }
-            if ($(this).scrollTop() < height+50 && isPositionFixed){
-                $el.css({'position': 'static', 'top': '0px'});
-                $el2.css({'margin-top':'0'});
+            if ($(this).scrollTop() < heightHeader+50 && isPositionFixed){
+                $el.css({'position': 'absolute', 'top': '0px'});
+                $el4.css({'margin-top':'0'});
             }
         });
     </script>
@@ -32,7 +36,7 @@
             <img src="./jpgs/logo.png" alt="Logo">
         </div>
     </header>
-    <article>
+    <article id="article">
         <nav class="upMenu">
             <div class="grid">
                 <ul class="navList">

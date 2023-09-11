@@ -55,6 +55,7 @@ article{
     background-image: url('./jpgs/dishes/article-back.jpg');
     background-repeat-x: no-repeat;
     background-size: cover;
+    position: relative;
 }
 
 
