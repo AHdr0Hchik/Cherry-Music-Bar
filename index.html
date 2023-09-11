@@ -20,10 +20,11 @@
             $el4.css({'height': heightMenu});
             let isPositionFixed = ($el.css('position') == 'fixed');
             if ($(this).scrollTop() > heightHeader && !isPositionFixed){
-                $el.css({'position': 'fixed', 'top': '0px'});
+                $el.css({'position': 'fixed', 'top': '0px', 'backdropFilter': 'blur(5px)'});
+
             }
             if ($(this).scrollTop() < heightHeader && isPositionFixed){
-                $el.css({'position': 'absolute', 'top': '0px'});
+                $el.css({'position': 'absolute', 'top': '0px', 'backdropFilter': 'none'});
             }
         });
     </script>
