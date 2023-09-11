@@ -11,23 +11,23 @@
 
 <body>
     <script>
+        $(document).load(function () {
+            let heightMenu = $('.upMenu').css( "height" );
+            $('.empty').css({'height': heightMenu});
+        });
+    </script>
+    <script>
         $(window).scroll(function(){
             const $el = $('.upMenu');
             const $el3 = $('#header');
-            const $el4 = $('.menu');
             let heightHeader = parseInt($el3.css( "height" ));
-            let heightMenu = $el.css( "height" );
 
             let isPositionFixed = ($el.css('position') == 'fixed');
             if ($(this).scrollTop() > heightHeader && !isPositionFixed){
-                console.log(heightMenu);
                 $el.css({'position': 'fixed', 'top': '0px'});
-                $el4.css({'margin-top': heightMenu});
-                console.log($el4.css('margin-top'));
             }
-            if ($(this).scrollTop() < heightHeader+50 && isPositionFixed){
+            if ($(this).scrollTop() < heightHeader && isPositionFixed){
                 $el.css({'position': 'absolute', 'top': '0px'});
-                $el4.css({'margin-top':0});
             }
         });
     </script>
