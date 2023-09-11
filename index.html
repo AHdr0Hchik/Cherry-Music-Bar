@@ -14,7 +14,7 @@
         $(window).scroll(function(){
             const $el = $('.upMenu');
             const $el3 = $('#header');
-            const $el4 = $('#article');
+            const $el4 = $('.menu');
             let heightHeader = parseInt($el3.css( "height" ));
             let heightMenu = $el.css( "height" );
 
@@ -27,7 +27,7 @@
             }
             if ($(this).scrollTop() < heightHeader+50 && isPositionFixed){
                 $el.css({'position': 'absolute', 'top': '0px'});
-                $el4.css({'margin-top':'0'});
+                $el4.css({'margin-top':0});
             }
         });
     </script>
