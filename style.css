@@ -117,7 +117,9 @@ footer{
     transition-duration: .5s;
 }
 
-
+.empty{
+    height: 100px;
+}
 .menu{
     position: relative;
     display: grid;
