@@ -45,10 +45,11 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
 @media only screen and (max-width: 1365px) {
     .grid {
         display: none;
-        position: relative;
-        backdrop-filter: blur(2px);
+        position: absolute;
+        z-index: 10;
         height: 100vh;
         width: 100vw;
+        background-color: white;
     }
     .toggleMenu {
         background-image: url("./jpgs/ui/menu.svg");
@@ -56,11 +57,54 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
         background-position:center;
         background-repeat:no-repeat;
         background-color: transparent;
+        position: absolute;
+        z-index: 11;
         width: 80px;
         height: 80px;
-
-        float: right;
-        margin-right: 15px;
+        right: 15px;
+    }
+    .buttons{
+        width: 100vw;
+        height: 80px;
+    }
+    .authorize {
+        background-image: url("./jpgs/ui/login.svg");
+        background-size: cover;
+        background-position:center;
+        background-repeat:no-repeat;
+        background-color: transparent;
+        position: absolute;
+        z-index: 11;
+        width: 80px;
+        height: 80px;
+        left: 15px;
+    }
+    .navList{
+        width: 75%;
+        margin: 0 auto;
+    }
+    .navPoint{
+        width: 100%;
+        height: 15%;
+        text-align: center;
+        background-color: #bef574;
+        border-radius: 5vh;
+        margin: 3vh;
+    }
+    .navPoint>a{
+        font-size: 8vh;
+        font-family: main;
+        color: white;
+        padding: 20px;
+        line-height: 15vh;
+    }
+    .null{
+        height: 80px;
+    }
+    .navPoint:hover, .navPoint>a:hover{
+        background-color: #afe06e;
+        transition-duration: .5s;
+        color: #f5ffcf;
     }
 }
 @media only screen and (min-width: 1366px) {
@@ -73,8 +117,9 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
         margin: 5px auto;
         font-size: 32px;
         width: 75%;
-
-
+    }
+    .navList>.null{
+        display: none;
 
     }
     .navPoint{
