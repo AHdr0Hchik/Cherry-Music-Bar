@@ -81,7 +81,7 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
     }
     .navList{
         width: 75%;
-        margin: 0 auto;
+        margin: 0 9%;
     }
     .navPoint{
         width: 100%;
@@ -97,9 +97,6 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
         color: white;
         padding: 20px;
         line-height: 15vh;
-    }
-    .null{
-        height: 80px;
     }
     .navPoint:hover, .navPoint>a:hover{
         background-color: #afe06e;
@@ -117,10 +114,6 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
         margin: 5px auto;
         font-size: 32px;
         width: 75%;
-    }
-    .navList>.null{
-        display: none;
-
     }
     .navPoint{
         float:left;
