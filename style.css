@@ -42,8 +42,65 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
     font-family: 'main';
     src: url(./fonts/main.ttf);
 }
+@media only screen and (max-width: 1365px) {
+    .grid {
+        display: none;
+        position: relative;
+        backdrop-filter: blur(2px);
+        height: 100vh;
+        width: 100vw;
+    }
+    .toggleMenu {
+        background-image: url("./jpgs/ui/menu.svg");
+        background-size: cover;
+        background-position:center;
+        background-repeat:no-repeat;
+        background-color: transparent;
+        width: 80px;
+        height: 80px;
+
+        float: right;
+        margin-right: 15px;
+    }
+}
+@media only screen and (min-width: 1366px) {
+    .mobileMenu{
+        display: none;
+    }
+    .navList{
+        display: flex;
+        flex-flow: row wrap;
+        margin: 5px auto;
+        font-size: 32px;
+        width: 75%;
 
 
+
+    }
+    .navPoint{
+        float:left;
+        display: block;
+        text-align: center;
+        width: auto;
+        margin: 0 auto;
+
+    }
+    .navPoint>a{
+        display: block;
+        margin: 0 auto;
+        color: #aaa;
+        line-height: 150%;
+        font-family: main;
+
+
+
+    }
+    .navPoint>a:hover{
+        color: #bef574;
+        transition-duration: .5s;
+        font-size: 36px;
+    }
+}
 header{
     background-image: url('./jpgs/dishes/header-back.jpg');
     background-repeat-x: no-repeat;
@@ -56,6 +113,15 @@ article{
     background-repeat-x: no-repeat;
     background-size: cover;
     position: relative;
+}
+
+.upMenu {
+    position:absolute;
+    top:0;
+    width:100%;
+    z-index:1000;
+    background: linear-gradient(rgba(0, 0, 0, 0.75) 20%, transparent);
+    margin: 0 auto;
 }
 
 
@@ -76,47 +142,7 @@ footer{
     height: 150px;
     background-color: brown;
 }
-.upMenu {
-    position:absolute;
-    top:0;
-    width:100%;
-    z-index:1000;
-    background: linear-gradient(rgba(0, 0, 0, 0.75) 20%, transparent);
-    margin: 0 auto;
-}
-.navList{
-    display: flex;
-    flex-flow: row wrap;
-    margin: 5px auto;
-    font-size: 32px;
-    width: 75%;
 
-
-
-}
-.navPoint{
-    float:left;
-    display: block;
-    text-align: center;
-    width: auto;
-    margin: 0 auto;
-
-}
-.navPoint>a{
-    display: block;
-    margin: 0 auto;
-    color: #aaa;
-    line-height: 150%;
-    font-family: main;
-
-
-
-}
-.navPoint>a:hover{
-    color: #bef574;
-    transition-duration: .5s;
-    font-size: 36px;
-}
 
 
 .menu{

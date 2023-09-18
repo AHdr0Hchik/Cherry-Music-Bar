@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="./js/menu.js"></script>
     <script src="./jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
@@ -34,7 +35,8 @@
     </header>
     <article id="article">
         <nav class="upMenu">
-            <div class="grid">
+            <button onclick="myFunction()" class="toggleMenu"></button>
+            <div class="grid" id="grid">
                 <ul class="navList">
                     <li class="navPoint"><a href="">Главная</a></li>
                     <li class="navPoint"><a href="">Новости</a></li>
@@ -43,6 +45,7 @@
                     <li class="navPoint"><a href="">Войти</a></li>
                 </ul>
             </div>
+
         </nav>
         <div class="empty"></div>
         <div class="menu">
