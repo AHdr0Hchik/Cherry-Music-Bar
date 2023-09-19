@@ -40,7 +40,7 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
 /*---------*/
 @font-face {
     font-family: 'main';
-    src: url(./fonts/main.ttf);
+    src: url(../fonts/main.ttf);
 }
 @media only screen and (max-width: 1365px) {
     .grid {
@@ -52,7 +52,7 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
         background-color: white;
     }
     .toggleMenu {
-        background-image: url("./jpgs/ui/menu.svg");
+        background-image: url("../jpgs/ui/menu.svg");
         background-size: cover;
         background-position:center;
         background-repeat:no-repeat;
@@ -68,7 +68,7 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
         height: 80px;
     }
     .authorize {
-        background-image: url("./jpgs/ui/login.svg");
+        background-image: url("../jpgs/ui/login.svg");
         background-size: cover;
         background-position:center;
         background-repeat:no-repeat;
@@ -80,28 +80,35 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
         left: 15px;
     }
     .navList{
-        width: 75%;
-        margin: 0 9%;
+        width: calc(100vw - 50px);
     }
     .navPoint{
         width: 100%;
-        height: 15%;
+        height: 10vh;
         text-align: center;
         background-color: #bef574;
         border-radius: 5vh;
-        margin: 3vh;
+        margin: 2vh;
+        text-transform: uppercase;
+        transition-duration: .3s;
     }
     .navPoint>a{
-        font-size: 8vh;
+        font-size: 5vh;
         font-family: main;
         color: white;
         padding: 20px;
-        line-height: 15vh;
+        line-height: 10vh;
+        transition-duration: .3s;
     }
-    .navPoint:hover, .navPoint>a:hover{
+    .navPoint:hover{
         background-color: #afe06e;
-        transition-duration: .5s;
+        transition-duration: .3s;
+
+    }
+    .navPoint>a:hover{
+        font-size: calc(5vh + 4px);
         color: #f5ffcf;
+        transition-duration: .3s;
     }
 }
 @media only screen and (min-width: 1366px) {
@@ -114,6 +121,7 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
         margin: 5px auto;
         font-size: 32px;
         width: 75%;
+        text-transform: uppercase;
     }
     .navPoint{
         float:left;
@@ -140,14 +148,14 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
     }
 }
 header{
-    background-image: url('./jpgs/dishes/header-back.jpg');
+    background-image: url('../jpgs/dishes/header-back.jpg');
     background-repeat-x: no-repeat;
     background-size: cover;
     height: 100vh;
 }
 
 article{
-    background-image: url('./jpgs/dishes/article-back.jpg');
+    background-image: url('../jpgs/dishes/article-back.jpg');
     background-repeat-x: no-repeat;
     background-size: cover;
     position: relative;
@@ -167,7 +175,7 @@ article{
     position: relative;
     max-width: 50%;
     max-height: 50%;
-    top: 25%;
+    top: 40vh;
     margin: 0 auto;
     box-sizing: border-box;
 
@@ -195,7 +203,7 @@ footer{
     align-items: center;
 }
 .category{
-    margin:5px auto;
+    margin:15px auto;
     margin-top: 70px;
     width: 25vw;
     height: auto;
@@ -206,25 +214,25 @@ footer{
     max-width: 100%;
     height: auto;
     display: block;
-    border-radius: 32px 32px 0 0;
+    border-radius: 24px 24px 0 0;
 }
 .descCategory{
     width: 100%;
     background-color: white;
     height: 100%;
     text-align: center;
-    font-size: 200%;
+    font-size: 175%;
     font-family: main;
-    line-height: 100px;
-    border-radius: 0 0 32px 32px;
+    line-height: 5vh;
+    border-radius: 0 0 24px 24px;
+
+    transition-duration: .3s;
 }
 .descCategory:hover {
     background-color: rgba(255,255,255, 0.5);
-    font-size: 225%;
+    font-size: 200%;
     color: #bef574;
     transition-duration: .3s;
-
-
 }
 
 

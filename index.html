@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <script src="./js/menu.js"></script>
     <script src="./jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./css/style.css">
 
     <title>Test</title>
 </head>
@@ -36,17 +36,18 @@
     <article id="article">
         <nav class="upMenu">
             <div class="buttons" id="buttons">
-                <button onclick="" class="authorize"></button>
+                <button onclick="document.location='./signIn.html'" class="authorize"></button>
                 <button onclick="menuToggle()" class="toggleMenu"></button>
             </div>
 
             <div class="grid" id="grid" >
                 <ul class="navList">
                     <li class="navPoint"><a href="">Главная</a></li>
+                    <li class="navPoint"><a href="signIn.html">Войти</a></li>
                     <li class="navPoint"><a href="">Новости</a></li>
-                    <li class="navPoint"><a href="">Забронировать</a></li>
+                    <li class="navPoint"><a href="">Бронь</a></li>
                     <li class="navPoint"><a href="">Доставка</a></li>
-                    <li class="navPoint"><a href="">Войти</a></li>
+
                 </ul>
             </div>
 
