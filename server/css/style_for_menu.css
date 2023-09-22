@@ -5,8 +5,14 @@ header{
     height: 10vh;
     box-sizing: border-box;
 }
-
-
-
-
-
+.logo>a {
+    position: absolute;
+    height: 8vh;
+    width: auto;
+    padding: 1vh;
+    justify-content: center;
+}
+.logo>a>img{
+    width: auto;
+    max-height: 8vh;
+}
