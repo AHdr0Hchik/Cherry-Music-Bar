@@ -7,6 +7,6 @@ function menuToggle() {
     }
     else {
         menu.style.cssText = 'display: flex';
-        buttons.style.cssText = 'background-color: white';
+        buttons.style.cssText = 'background-color: #efefef';
     }
 }

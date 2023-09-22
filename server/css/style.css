@@ -49,7 +49,7 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
         z-index: 10;
         height: 100vh;
         width: 100vw;
-        background-color: white;
+        background-color: #efefef;
     }
     .toggleMenu {
         background-image: url("../../jpgs/ui/menu.svg");
@@ -64,7 +64,7 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
         right: 15px;
     }
     .buttons{
-        width: 100vw;
+        width: 100%;
         height: 80px;
     }
     .authorize {
@@ -83,11 +83,13 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
         width: calc(100vw - 50px);
     }
     .navPoint{
+        padding: 5px;
         width: 100%;
         height: 10vh;
         text-align: center;
-        background-color: #bef574;
+        border: .5vw solid #c8f48e;
         border-radius: 5vh;
+        background-color: #efefef;
         margin: 2vh;
         text-transform: uppercase;
         transition-duration: .3s;
@@ -95,9 +97,9 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
     .navPoint>a{
         font-size: 5vh;
         font-family: main;
-        color: white;
+        color: #c8f48e;
         padding: 20px;
-        line-height: 10vh;
+        line-height: 9vh;
         transition-duration: .3s;
     }
     .navPoint:hover{
