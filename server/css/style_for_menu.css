@@ -151,7 +151,8 @@ header{
     background-image: url('../../jpgs/dishes/header-back.jpg');
     background-repeat-x: no-repeat;
     background-size: cover;
-    height: 100vh;
+    height: 10vh;
+    box-sizing: border-box;
 }
 
 article{
@@ -172,17 +173,15 @@ article{
 
 
 .logo {
-    position: relative;
-    max-width: 50%;
-    max-height: 50%;
-    top: 40vh;
-    margin: 0 auto;
-    box-sizing: border-box;
-
+    position: absolute;
+    height: 8vh;
+    width: auto;
+    padding: 1vh;
+    justify-content: center;
 }
 .logo>img{
-    max-width: 50vw;
-    max-height: 50vh;
+    width: auto;
+    max-height: 8vh;
 }
 footer{
     height: 150px;

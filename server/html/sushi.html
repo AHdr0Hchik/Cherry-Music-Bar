@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+  <html lang="ru">
+  <head>
+  <meta charset="UTF-8">
+  <script src="../js/menu.js"></script>
+  <script src="../../jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/style_for_menu.css">
+
+  <title>Суши Cherry Music Bar</title>
+</head>
+
+
+<body>
+  <script src="../js/upMenu.js">
+    $(window).scroll(function(){
+      const $el = $('.upMenu');
+      const $el3 = $('#header');
+      const $el4 = $('.empty');
+      let heightHeader = parseInt($el3.css( "height" ));
+      let heightMenu = $el.css( "height" );
+      $el4.css({'height': heightMenu});
+      let isPositionFixed = ($el.css('position') == 'fixed');
+      if ($(this).scrollTop() > heightHeader && !isPositionFixed){
+        $el.css({'position': 'fixed', 'top': '0px', 'backdropFilter': 'blur(3px)'});
+      }
+      if ($(this).scrollTop() < heightHeader && isPositionFixed){
+        $el.css({'position': 'absolute', 'top': '0px', 'backdropFilter': 'none'});
+      }
+    });
+  </script>
+
+  <header id="#header">
+    <div class="logo">
+      <img src="../../jpgs/logo.png" alt="Logo">
+    </div>
+  </header>
+
+  <article>
+    <nav class="upMenu">
+      <div class="buttons" id="buttons">
+        <button onclick="document.location='./login.html'" class="authorize"></button>
+        <button onclick="menuToggle()" class="toggleMenu"></button>
+      </div>
+
+      <div class="grid" id="grid" >
+        <ul class="navList">
+          <li class="navPoint"><a href="">Главная</a></li>
+          <li class="navPoint"><a href="login.html">Войти</a></li>
+          <li class="navPoint"><a href="">Новости</a></li>
+          <li class="navPoint"><a href="">Бронь</a></li>
+          <li class="navPoint"><a href="">Доставка</a></li>
+
+        </ul>
+      </div>
+
+    </nav>
+    <div class="empty"></div>
+    <div class="menu">
+      <div class="category">
+        <img src="../../jpgs/dishes/dish.jpg" alt="123">
+        <div class="descCategory">
+          <p><a href="./pizzas.html">Пиццы</a></p>
+        </div>
+      </div>
+      <div class="category">
+        <img src="../../jpgs/dishes/dish.jpg" alt="123">
+        <div class="descCategory">
+          <p><a href="./sushi.html">Роллы</a></p>
+        </div>
+      </div>
+      <div class="category">
+        <img src="../../jpgs/dishes/dish.jpg" alt="123">
+        <div class="descCategory">
+          <p><a href="./burgers.html">Бургеры</a></p>
+        </div>
+      </div>
+      <div class="category">
+        <img src="../../jpgs/dishes/dish.jpg" alt="123">
+        <div class="descCategory">
+          <p><a href="./salads.html">Салаты</a></p>
+        </div>
+      </div>
+      <div class="category">
+        <img src="../../jpgs/dishes/dish.jpg" alt="123">
+        <div class="descCategory">
+          <p><a href="./meat.html">Мясное</a></p>
+        </div>
+      </div>
+      <div class="category">
+        <img src="../../jpgs/dishes/dish.jpg" alt="123">
+        <div class="descCategory">
+          <p><a href="./garnier.html">Гарнир</a></p>
+        </div>
+      </div>
+    </div>
+
+  </article>
+
+</body>
+</html>
