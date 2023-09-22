@@ -172,14 +172,14 @@ article{
 }
 
 
-.logo {
+.logo>a {
     position: absolute;
     height: 8vh;
     width: auto;
     padding: 1vh;
     justify-content: center;
 }
-.logo>img{
+.logo>a>img{
     width: auto;
     max-height: 8vh;
 }
@@ -202,7 +202,6 @@ footer{
     align-items: center;
     justify-content: center;
 }
-
 .category{
     margin:15px auto;
     width: 25vw;
