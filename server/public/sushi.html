@@ -1,39 +1,25 @@
 <!DOCTYPE html>
-  <html lang="ru">
-  <head>
+<html lang="ru">
+<head>
   <meta charset="UTF-8">
-  <script src="../js/menu.js"></script>
-  <script src="../../jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+  <script src="js/menu.js"></script>
+  <script src="js/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/style_for_menu.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style_for_menu.css">
+
+
 
   <title>Суши Cherry Music Bar</title>
 </head>
 
 
 <body>
-  <script src="../js/upMenu.js">
-    $(window).scroll(function(){
-      const $el = $('.upMenu');
-      const $el3 = $('#header');
-      const $el4 = $('.empty');
-      let heightHeader = parseInt($el3.css( "height" ));
-      let heightMenu = $el.css( "height" );
-      $el4.css({'height': heightMenu});
-      let isPositionFixed = ($el.css('position') == 'fixed');
-      if ($(this).scrollTop() > heightHeader && !isPositionFixed){
-        $el.css({'position': 'fixed', 'top': '0px', 'backdropFilter': 'blur(3px)'});
-      }
-      if ($(this).scrollTop() < heightHeader && isPositionFixed){
-        $el.css({'position': 'absolute', 'top': '0px', 'backdropFilter': 'none'});
-      }
-    });
-  </script>
+  <script src="js/upMenu.js"></script>
 
   <header id="header">
     <div class="logo">
-      <a href="index.html"><img src="../../jpgs/logo.png" alt="Logo"></a>
+      <a href="index.html"><img src="jpgs/logo.png" alt="Logo"></a>
     </div>
   </header>
 
@@ -46,8 +32,8 @@
 
       <div class="grid" id="grid" >
         <ul class="navList">
-          <li class="navPoint"><a href="index.html">Главная</a></li>
-          <li class="navPoint"><a href="login.html">Войти</a></li>
+          <li class="navPoint"><a href="/">Главная</a></li>
+          <li class="navPoint"><a href="/login">Войти</a></li>
           <li class="navPoint"><a href="">Новости</a></li>
           <li class="navPoint"><a href="">Бронь</a></li>
           <li class="navPoint"><a href="">Доставка</a></li>
@@ -59,49 +45,49 @@
     <div class="empty"></div>
     <div class="menu">
       <div class="category">
-        <img src="../../jpgs/dishes/rolls.jpg" alt="123">
+        <img src="jpgs/dishes/rolls.jpg" alt="123">
         <div class="descCategory">
           <p><a href="#">Ролл 1</a></p>
         </div>
       </div>
       <div class="category">
-        <img src="../../jpgs/dishes/rolls.jpg" alt="123">
+        <img src="jpgs/dishes/rolls.jpg" alt="123">
         <div class="descCategory">
           <p><a href="#">Ролл 2</a></p>
         </div>
       </div>
       <div class="category">
-        <img src="../../jpgs/dishes/rolls.jpg" alt="123">
+        <img src="jpgs/dishes/rolls.jpg" alt="123">
         <div class="descCategory">
           <p><a href="#">Ролл 3</a></p>
         </div>
       </div>
       <div class="category">
-        <img src="../../jpgs/dishes/rolls.jpg" alt="123">
+        <img src="jpgs/dishes/rolls.jpg" alt="123">
         <div class="descCategory">
           <p><a href="#">Ролл 4</a></p>
         </div>
       </div>
       <div class="category">
-        <img src="../../jpgs/dishes/rolls.jpg" alt="123">
+        <img src="jpgs/dishes/rolls.jpg" alt="123">
         <div class="descCategory">
           <p><a href="#">Ролл 5</a></p>
         </div>
       </div>
       <div class="category">
-        <img src="../../jpgs/dishes/rolls.jpg" alt="123">
+        <img src="jpgs/dishes/rolls.jpg" alt="123">
         <div class="descCategory">
           <p><a href="#">Ролл 6</a></p>
         </div>
       </div>
       <div class="category">
-        <img src="../../jpgs/dishes/rolls.jpg" alt="123">
+        <img src="jpgs/dishes/rolls.jpg" alt="123">
         <div class="descCategory">
           <p><a href="#">Ролл 7</a></p>
         </div>
       </div>
       <div class="category">
-        <img src="../../jpgs/dishes/rolls.jpg" alt="123">
+        <img src="jpgs/dishes/rolls.jpg" alt="123">
         <div class="descCategory">
           <p><a href="#">Ролл 8</a></p>
         </div>

@@ -52,7 +52,7 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
         background-color: #efefef;
     }
     .toggleMenu {
-        background-image: url("../../jpgs/ui/menu.svg");
+        background-image: url("../jpgs/ui/menu.svg");
         background-size: cover;
         background-position:center;
         background-repeat:no-repeat;
@@ -68,7 +68,7 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
         height: 80px;
     }
     .authorize {
-        background-image: url("../../jpgs/ui/login.svg");
+        background-image: url("../jpgs/ui/login.svg");
         background-size: cover;
         background-position:center;
         background-repeat:no-repeat;
@@ -97,7 +97,7 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
     .navPoint>a{
         font-size: 5vh;
         font-family: main;
-        color: #c8f48e;
+        color: black;
         padding: 20px;
         line-height: 9vh;
         transition-duration: .3s;
@@ -150,14 +150,14 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
     }
 }
 header{
-    background-image: url('../../jpgs/dishes/header-back.jpg');
+    background-image: url('../jpgs/dishes/header-back.jpg');
     background-repeat-x: no-repeat;
     background-size: cover;
     height: 100vh;
 }
 
 article{
-    background-image: url('../../jpgs/body-back.jpg');
+    background-image: url('../jpgs/body-back.jpg');
     background-repeat-x: no-repeat;
     background-size: cover;
     position: relative;
