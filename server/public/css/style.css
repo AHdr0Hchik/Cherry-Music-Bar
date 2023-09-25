@@ -212,7 +212,7 @@ footer{
     width: 30vw;
     height: auto;
     max-width: 600px;
-    max-height: 800px;
+    max-height: 1000px;
     padding: 5px;
     border: .3vw solid #c8f48e;
     background-color: rgba(255, 237, 122, 0.2);
@@ -228,6 +228,9 @@ footer{
 .category>img{
     width: 100%;
     height: auto;
+    max-width: 600px;
+    max-height: 800px;
+
     display: block;
     border-radius: 8px 8px 0 0;
 }

@@ -18,14 +18,7 @@ const connection = mysql.createConnection({
    password: "Tempor82"
 });
 
-connection.connect(function(err){
-   if (err) {
-      return console.error("Ошибка: " + err.message);
-   }
-   else{
-      console.log("Подключение к серверу MySQL успешно установлено");
-   }
-});
+
 
 const createPath = (page) => path.resolve(__dirname, 'public', `${page}.html`);
 
@@ -42,20 +35,80 @@ app.get('/login', (req, res) => {
    console.log(req, res)
 });
 
-
+//features
 app.get('/register', (req, res) => {
    res.sendFile(createPath('register'));
    console.log(req, res)
 });
-app.get('/sushi', (req, res) => {
-   res.sendFile(createPath('sushi'));
-   const sqlGet = `SELECT * FROM sushi`;
+
+//categories
+app.get(`/japan_kitchen`,(req, res) => {
+   const category = 'japan_kitchen';
+   res.sendFile(createPath(`${category}`));
+
+});
+app.get(`/kitchen`,(req, res) => {
+   const category = 'kitchen';
+   res.sendFile(createPath(`${category}`));
+
+});
+app.get(`/burgers`,(req, res) => {
+   const category = 'burgers';
+   res.sendFile(createPath(`${category}`));
+
+});
+
+app.get(`/bakery`,(req, res) => {
+   const category = 'bakery';
+   res.sendFile(createPath(`${category}`));
+
+});
+
+//subcategories: japan
+app.get('/japan_kitchen/rolls', (req, res) => {
+   const category = 'rolls';
+   res.sendFile(createPath(`${category}`));
+   getTableData(`${category}`);
+});
+
+//subcategories: bakery
+app.get(`/bakery/pizzas`,(req, res) => {
+   const category = 'pizzas';
+   res.sendFile(createPath(`${category}`));
+   getTableData(`${category}`);
+
+});
+app.get(`/bakery/khachapuri`,(req, res) => {
+   const category = 'khachapuri';
+   res.sendFile(createPath(`${category}`));
+   getTableData(`${category}`);
+
+});
+app.get(`/bakery/sbor_pizza`,(req, res) => {
+   const category = 'sbor_pizza';
+   res.sendFile(createPath(`${category}`));
+   getTableData(`${category}`);
+
+});
+
+
+
+
+function getTableData(table_name){
+   connection.connect(function(err){
+      if (err) {
+         return console.error("Ошибка: " + err.message);
+      }
+      else{
+         console.log("Подключение к серверу MySQL успешно установлено");
+      }
+   });
+
+   const sqlGet = `SELECT * FROM ${table_name}`;
    connection.query(sqlGet, function(err, results) {
       if(err) console.log(err);
-      const sushi = results;
-      for(let i=0; i < sushi.length; i++){
-         console.log(sushi[i].name);
-      }
+      const res = results;
+      console.log(res);
    });
 
    connection.end(function(err) {
@@ -64,5 +117,6 @@ app.get('/sushi', (req, res) => {
       }
       console.log("Подключение закрыто");
    });
-});
+
+};
 
