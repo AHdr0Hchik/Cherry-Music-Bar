@@ -207,13 +207,16 @@ footer{
 }
 
 .category{
+    display: block;
     margin:15px auto;
     width: 30vw;
     height: auto;
-    padding: 7px;
-    border: .5vw solid #c8f48e;
+    max-width: 600px;
+    max-height: 800px;
+    padding: 5px;
+    border: .3vw solid #c8f48e;
     background-color: rgba(255, 237, 122, 0.2);
-    border-radius: calc(24px + 7px);
+    border-radius: calc(8px + 5px);
     box-sizing: border-box;
 
 
@@ -223,10 +226,10 @@ footer{
     transition-duration: .3s;
 }
 .category>img{
-    max-width: 100%;
+    width: 100%;
     height: auto;
     display: block;
-    border-radius: 24px 24px 0 0;
+    border-radius: 8px 8px 0 0;
 }
 
 .descCategory{
@@ -237,7 +240,7 @@ footer{
     font-size: 175%;
     font-family: main;
     line-height: 5vh;
-    border-radius: 0 0 24px 24px;
+    border-radius: 0 0 8px 8px;
 
     transition-duration: .3s;
 }
