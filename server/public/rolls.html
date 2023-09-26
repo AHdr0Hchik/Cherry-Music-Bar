@@ -12,37 +12,57 @@
   <title>Роллы | Cherry Music Bar</title>
 </head>
 <body onload="htmlGenerator('rolls')">
-<script src="../js/upMenu.js"></script>
+  <script src="../js/upMenu.js"></script>
+  <script type="text/javascript">
+    if ($("#lot-info").length) {
+      $('#lot-info').on('swipeup',function(){alert("Меню-закройся!");} );
+    }
+  </script>
 
-<header id="header">
-  <div class="logo">
-    <a href="index.html"><img src="../jpgs/logo.png" alt="Logo"></a>
+
+  <header id="header">
+    <div class="logo">
+      <a href="index.html"><img src="../jpgs/logo.png" alt="Logo"></a>
+    </div>
+  </header>
+
+  <article>
+    <nav class="upMenu">
+      <div class="buttons" id="buttons">
+        <button onclick="document.location='../login.html'" class="authorize"></button>
+        <button onclick="menuToggle()" class="toggleMenu"></button>
+      </div>
+
+      <div class="grid" id="grid" >
+        <ul class="navList">
+          <li class="navPoint"><a href="/">Главная</a></li>
+          <li class="navPoint"><a href="/login">Войти</a></li>
+          <li class="navPoint"><a href="">Новости</a></li>
+          <li class="navPoint"><a href="">Бронь</a></li>
+          <li class="navPoint"><a href="">Доставка</a></li>
+
+        </ul>
+      </div>
+
+    </nav>
+    <div class="empty"></div>
+    <div class="menu" id="menu"></div>
+
+  </article>
+  <div class="lot-info" id="lot-info">
+    <div class="lot-info-body">
+      <button onclick="lotClose()" class="lot-info-close">Х</button>
+      <img class="lot-info-img" id="lot-img" src="/jpgs/dishes/pizzas.jpg" alt="">
+      <div class="lot-info-text">
+        <p class="lot-info-name fz36ffMain" id="lot-name">Пицца баварская</p>
+        <p class="lot-info-description" id="lot-description">Вкуснейшая пицца с грибами, помидорами баварскими колбасками и сыром</p>
+        <p class="lot-info-price fz36ffMain" id="lot-price">500 Р</p>
+        <button class="btn-add-to-cart fz36ffMain">В корзину</button>
+      </div>
+    </div>
   </div>
-</header>
 
-<article>
-  <nav class="upMenu">
-    <div class="buttons" id="buttons">
-      <button onclick="document.location='../login.html'" class="authorize"></button>
-      <button onclick="menuToggle()" class="toggleMenu"></button>
-    </div>
 
-    <div class="grid" id="grid" >
-      <ul class="navList">
-        <li class="navPoint"><a href="/">Главная</a></li>
-        <li class="navPoint"><a href="/login">Войти</a></li>
-        <li class="navPoint"><a href="">Новости</a></li>
-        <li class="navPoint"><a href="">Бронь</a></li>
-        <li class="navPoint"><a href="">Доставка</a></li>
-
-      </ul>
-    </div>
-
-  </nav>
-  <div class="empty"></div>
-  <div class="menu" id="menu"></div>
-
-</article>
 
 </body>
 </html>

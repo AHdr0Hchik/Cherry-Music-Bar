@@ -112,6 +112,80 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
         color: #f5ffcf;
         transition-duration: .3s;
     }
+
+    .lot-info{
+        position: fixed;
+        width: 100vw; height: 50vh;
+        background-color: rgba(255, 255, 255, 1);
+        border-radius: 24px 24px 0 0;
+        bottom: 0;
+        vertical-align: center;
+        z-index: 1001;
+    }
+    .lot-info-close{
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+    .lot-info-body{
+        width: 640px;
+        height: auto;
+        display: flex;
+        box-sizing: border-box;
+        position: relative;
+        margin: 0 auto;
+        border-radius: 0 0 24px 24px;
+        background-color: white;
+    }
+    .lot-info-img {
+        max-width: 300px;
+        max-height: 400px;
+        border-radius: 0 0 0 24px;
+    }
+    .lot-info-text{
+        position: relative;
+        top:0px;
+        right: 0px;
+        height: 400px;
+        width: 50%;
+    }
+    .lot-info-name{
+        font-family: main;
+        position: relative;
+        margin: 0 auto;
+        text-align: center;
+        line-height: 72px;
+    }
+    .lot-info-description{
+        position: relative;
+        top: 20px;
+        text-align: center;
+        width: 80%;
+        height: 50%;
+        word-wrap: break-word;
+        font-family: main;
+        margin: 0 auto;
+    }
+    .lot-info-price{
+        position: absolute;
+        left: 0px;
+        bottom: 0;
+        margin: 20px;
+    }
+    .btn-add-to-cart{
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        background-color: transparent;
+        padding: 10px; margin: 10px;
+        margin-right: 0px;
+        border-radius: 8px;
+        transition-duration: .3s;
+    }
+    .btn-add-to-cart:hover{
+        background-color: #e3e3e3;
+        transition-duration: .3s;
+    }
 }
 @media only screen and (min-width: 1366px) {
     .mobileMenu{
@@ -148,6 +222,87 @@ h1,h2,h3,h4,h5,h6{font-size:inherit; font-weight: 400;}
         transition-duration: .5s;
         font-size: 36px;
     }
+
+    .lot-info{
+        position: fixed;
+        width: 100vw; height: 100vh;
+        background-color: rgba(255, 255, 255, 0.5);
+        top: 0;
+        left: 0;
+        vertical-align: center;
+        z-index: 1001;
+    }
+    .lot-info-close{
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+    .lot-info-body{
+        width: 640px;
+        height: auto;
+        display: flex;
+        box-sizing: border-box;
+        position: relative;
+        margin: 0 auto;
+        border-radius: 0 0 24px 24px;
+        background-color: white;
+        border: 3px solid #f5ffcf;
+    }
+    .lot-info-img {
+        max-width: 300px;
+        max-height: 400px;
+        border-radius: 0 0 0 24px;
+        border: 2px solid #f5ffcf;
+    }
+    .lot-info-text{
+        position: relative;
+        top:0px;
+        right: 0px;
+        height: 400px;
+        width: 50%;
+    }
+    .lot-info-name{
+        position: relative;
+        margin: 0 auto;
+        text-align: center;
+        line-height: 72px;
+    }
+    .lot-info-description{
+        position: relative;
+        top: 20px;
+        text-align: center;
+        width: 80%;
+        height: 50%;
+        word-wrap: break-word;
+        font-family: main;
+        margin: 0 auto;
+    }
+    .lot-info-price{
+        position: absolute;
+        left: 0px;
+        bottom: 0;
+        margin: 20px;
+    }
+    .btn-add-to-cart{
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        background-color: transparent;
+        padding: 10px; margin: 10px;
+        margin-right: 0px;
+        border-radius: 8px;
+        transition-duration: .3s;
+    }
+    .btn-add-to-cart:hover{
+        background-color: #e3e3e3;
+        transition-duration: .3s;
+    }
+
+    .fz36ffMain{
+        font-size: 36px;
+        font-family: main;
+    }
+
 }
 header{
     background-image: url('../jpgs/dishes/header-back.jpg');
@@ -254,6 +409,12 @@ footer{
     color: #bef574;
     transition-duration: .3s;
 }
+
+.fz36ffMain{
+    font-size: 36px;
+    font-family: main;
+}
+
 
 
 

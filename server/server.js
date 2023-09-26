@@ -47,8 +47,8 @@ app.get(`/japan_kitchen`,(req, res) => {
    res.sendFile(createPath(`${category}`));
 
 });
-app.get(`/kitchen`,(req, res) => {
-   const category = 'kitchen';
+app.get(`/main_kitchen`,(req, res) => {
+   const category = 'main_kitchen';
    res.sendFile(createPath(`${category}`));
 
 });
@@ -64,34 +64,30 @@ app.get(`/bakery`,(req, res) => {
 
 });
 
-//subcategories: japan
-app.get('/japan_kitchen/rolls', (req, res) => {
-   const category = 'rolls';
-   res.sendFile(createPath(`${category}`));
-   getTableData(`${category}`);
-});
-
 //subcategories: bakery
-app.get(`/bakery/pizzas`,(req, res) => {
-   const category = 'pizzas';
-   res.sendFile(createPath(`${category}`));
-   getTableData(`${category}`);
+getAppGet('bakery', 'pizzas');
+getAppGet('bakery', 'khachapuri');
+getAppGet('bakery', 'sbor_pizza');
+//subcategories: japan
+getAppGet('japan_kitchen', 'rolls');
+getAppGet('japan_kitchen', 'gunkans');
+getAppGet('japan_kitchen', 'sets');
+getAppGet('japan_kitchen', 'japan_burger');
+//subcategories: main_kitchen
+getAppGet('main_kitchen', 'starters');
+getAppGet('main_kitchen', 'main_dishes');
+getAppGet('main_kitchen', 'side_dishes');
+getAppGet('main_kitchen', 'desserts');
+getAppGet('main_kitchen', 'hot_appetizers');
+getAppGet('main_kitchen', 'cold_platter');
 
-});
-app.get(`/bakery/khachapuri`,(req, res) => {
-   const category = 'khachapuri';
-   res.sendFile(createPath(`${category}`));
-   getTableData(`${category}`);
-
-});
-app.get(`/bakery/sbor_pizza`,(req, res) => {
-   const category = 'sbor_pizza';
-   res.sendFile(createPath(`${category}`));
-   getTableData(`${category}`);
-
-});
-
-
+function getAppGet(category, subcategory){
+   app.get(`/${category}/${subcategory}`,(req, res) => {
+      const category = `${subcategory}`;
+      res.sendFile(createPath(`${category}`));
+      getTableData(`${category}`);
+   });
+}
 
 
 function getTableData(table_name){
@@ -110,13 +106,5 @@ function getTableData(table_name){
       const res = results;
       console.log(res);
    });
-
-   connection.end(function(err) {
-      if (err) {
-         return console.log("Ошибка: " + err.message);
-      }
-      console.log("Подключение закрыто");
-   });
-
 };
 
