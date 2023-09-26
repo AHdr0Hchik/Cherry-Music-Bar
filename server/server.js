@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mysql = require("mysql");
+const fs = require("fs");
 
 
 const app = express();
@@ -65,7 +66,7 @@ app.get(`/bakery`,(req, res) => {
 });
 
 //subcategories: bakery
-getAppGet('bakery', 'pizzas');
+getAppGet('bakery', 'pizza');
 getAppGet('bakery', 'khachapuri');
 getAppGet('bakery', 'sbor_pizza');
 //subcategories: japan
@@ -84,13 +85,14 @@ getAppGet('main_kitchen', 'cold_platter');
 function getAppGet(category, subcategory){
    app.get(`/${category}/${subcategory}`,(req, res) => {
       const category = `${subcategory}`;
-      res.sendFile(createPath(`${category}`));
-      getTableData(`${category}`);
+      res.sendFile(createPath(category));
+      console.log(category);
+      getTableDataJSON(category);
    });
 }
 
 
-function getTableData(table_name){
+function getTableDataJSON(table_name){
    connection.connect(function(err){
       if (err) {
          return console.error("Ошибка: " + err.message);
@@ -103,8 +105,9 @@ function getTableData(table_name){
    const sqlGet = `SELECT * FROM ${table_name}`;
    connection.query(sqlGet, function(err, results) {
       if(err) console.log(err);
-      const res = results;
-      console.log(res);
+      fs.writeFile("./public/json/thing.json", JSON.stringify(results), function(err, result) {
+         if(err) console.log('error', err);
+      });
    });
 };
 
