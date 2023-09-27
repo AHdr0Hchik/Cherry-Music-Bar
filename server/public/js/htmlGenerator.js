@@ -1,4 +1,5 @@
 
+
 function readJSON() {
     const fs = require("fs");
     fs.readFile('../json/thing.js', 'utf8', function (err, data) {
@@ -7,7 +8,7 @@ function readJSON() {
         return obj;
     });
 }
-function htmlGenerator(subcategory) {
+/*function htmlGenerator(subcategory) {
     const subcat_descript = {
         'pizza': 'Пицца',
         'rolls': 'Ролл',
@@ -33,6 +34,8 @@ function htmlGenerator(subcategory) {
     };
     cartGenerate();
 }
+
+*/
 
 function lotDescription() {
     const el = document.body;

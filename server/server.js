@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const mysql = require("mysql");
 const fs = require("fs");
+const {response} = require("express");
 
 
 const app = express();
@@ -86,7 +87,6 @@ function getAppGet(category, subcategory){
    app.get(`/${category}/${subcategory}`,(req, res) => {
       const category = `${subcategory}`;
       res.sendFile(createPath(category));
-      console.log(category);
       getTableDataJSON(category);
    });
 }
@@ -108,6 +108,7 @@ function getTableDataJSON(table_name){
       fs.writeFile("./public/json/thing.json", JSON.stringify(results), function(err, result) {
          if(err) console.log('error', err);
       });
+      console.log(results);
    });
 };
 
