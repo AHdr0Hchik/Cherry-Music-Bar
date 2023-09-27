@@ -37,14 +37,7 @@ function readJSON() {
 
 */
 
-function lotDescription() {
-    const el = document.body;
-    const elChild = document.createElement("div");
-    elChild.className = 'lot-info';
-    elChild.id = 'lot-info';
-    elChild.innerHTML = '<div class="lot-info-body"><button onclick="lotClose()" class="lot-info-close">Х</button><img class="lot-info-img" id="lot-img" src="/jpgs/dishes/pizzas.jpg" alt=""><div class="lot-info-text"><p class="lot-info-name fz36ffMain" id="lot-name">Пицца баварская</p><p class="lot-info-description" id="lot-description">Вкуснейшая пицца с грибами, помидорами баварскими колбасками и сыром</p><p class="lot-info-price fz36ffMain" id="lot-price">500 Р</p><button class="btn-add-to-cart fz36ffMain">В корзину</button></div></div>';
-    el.appendChild(elChild);
-}
+
 function lotClose() {
     document.getElementById("lot-info").remove();
 

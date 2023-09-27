@@ -5,8 +5,6 @@ $(window).scroll(function(){
     let heightHeader = parseInt($el3.css( "height" ));
     let heightMenu = $el.css( "height" );
     $el4.css({'height': heightMenu});
-    console.log(heightHeader);
-    console.log($(this).scrollTop)
     let isPositionFixed = ($el.css('position') == 'fixed');
     if ($(this).scrollTop() > heightHeader && !isPositionFixed){
         $el.css({'position': 'fixed', 'top': '0px', 'backdropFilter': 'blur(3px)'});
