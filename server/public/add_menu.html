@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <script src="../js/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<form action="/addMenu" method="POST" id="add_menu">
+  <label for="name">Категория</label>
+  <select id="cat" name="category">
+  </select>
+  <label for="name">Название</label>
+  <input type="text" id="name" name="name" placeholder="Название блюда">
+  <label for="name">Описание</label>
+  <textarea id="desc" name="description" placeholder="Описание блюда"></textarea>
+  <label for="name">Цена</label>
+  <input type="text" id="price" name="price" placeholder="Цена">
+
+  <button type="submit" id="btn-form">Добавить</button>
+</form>
+<script type="text/javascript" src="js/dbData.js"></script>
+<script type="text/javascript" src="js/addMenu.js"></script>
+</body>
+</html>

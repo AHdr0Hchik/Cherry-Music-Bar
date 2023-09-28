@@ -2,10 +2,14 @@ const express = require('express');
 const path = require('path');
 const mysql = require("mysql");
 const fs = require("fs");
-const {response} = require("express");
+const bodyParser = require('body-parser');
 
 
 const app = express();
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+   extended: true
+}));
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'));
@@ -66,6 +70,13 @@ app.get(`/bakery`,(req, res) => {
 
 });
 
+app.get(`/add_menu`,(req, res) => {
+   const category = 'add_menu';
+   res.sendFile(createPath(`${category}`));
+   tableNames();
+
+});
+
 //subcategories: bakery
 getAppGet('bakery', 'pizza');
 getAppGet('bakery', 'khachapuri');
@@ -83,6 +94,12 @@ getAppGet('main_kitchen', 'desserts');
 getAppGet('main_kitchen', 'hot_appetizers');
 getAppGet('main_kitchen', 'cold_platter');
 
+app.post('/addMenu', (req, res) => {
+   console.log(req.body);
+   setTableData(req.body.name, req.body.description, req.body.price, req.body.category);
+   res.redirect('/add_menu');
+});
+
 function getAppGet(category, subcategory){
    app.get(`/${category}/${subcategory}`,(req, res) => {
       const category = `${subcategory}`;
@@ -91,7 +108,21 @@ function getAppGet(category, subcategory){
    });
 }
 
+function setTableData(nameLot, descriptionLot, priceLot, categoryLot) {
+   connection.connect(function(err){
+      if (err) {
+         return console.error("Ошибка: " + err.message);
+      }
+      else{
+         console.log("Подключение к серверу MySQL успешно установлено");
+      }
+   });
 
+   connection.query(`INSERT INTO ? (id, name, description, price, imgUrl) VALUES (?,?,?,?,?)`, [categoryLot, null, nameLot, descriptionLot, priceLot, './jpgs/dishes/dish.jpg'], function(err, data) {
+      if(err) return console.log(err);
+      console.log(data);
+   });
+}
 function getTableDataJSON(table_name){
    connection.connect(function(err){
       if (err) {
@@ -112,3 +143,22 @@ function getTableDataJSON(table_name){
    });
 };
 
+function tableNames() {
+   connection.connect(function(err){
+      if (err) {
+         return console.error("Ошибка: " + err.message);
+      }
+      else{
+         console.log("Подключение к серверу MySQL успешно установлено");
+      }
+   });
+
+   connection.query(`SELECT table_name FROM information_schema.tables WHERE table_schema ='cherrymenu';`, function(err, results){
+      if(err) console.log(err);
+      fs.writeFile("./public/json/categories.json", JSON.stringify(results), function(err, result) {
+         if(err) console.log('error', err);
+      });
+      console.log(results);
+   });
+
+}
