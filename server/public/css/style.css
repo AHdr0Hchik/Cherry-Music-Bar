@@ -347,14 +347,17 @@ footer{
 }
 
 
-
+.empty{
+    height: 70px;
+}
 .menu{
     position: relative;
-    display: grid;
-    grid-template-columns: repeat(2, 0.25fr);
+    display: flex;
+    flex-wrap: wrap;
+    grid-template-columns: repeat(2, 0.1fr);
     grid-column-gap: 36px;
     grid-row-gap: 9px;
-    max-width: 100%;
+    max-width: 75%;
     margin:0 auto;
     height: 100%;
     align-items: center;
@@ -362,11 +365,13 @@ footer{
 }
 
 .category{
+    flex-grow: 1;
+    flex-basis: auto;
     display: block;
     margin:15px auto;
     width: 30vw;
     height: auto;
-    max-width: 600px;
+    max-width: 300px;
     max-height: 1000px;
     padding: 5px;
     border: .3vw solid #c8f48e;

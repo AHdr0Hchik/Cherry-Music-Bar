@@ -5,14 +5,17 @@ header{
     height: 10vh;
     box-sizing: border-box;
 }
+.logo{
+    width: 80px;
+    height: 80px;
+}
 .logo>a {
-    position: absolute;
+    position: relative;
     height: 8vh;
     width: auto;
     padding: 1vh;
-    justify-content: center;
 }
-.logo>a>img{
+.logo>img{
     width: auto;
     max-height: 8vh;
 }
