@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <script src="../js/menu.js"></script>
-    <script src="../js/htmlGenerator.js"></script>
     <script src="../js/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/style.css">
@@ -11,8 +10,8 @@
 
     <title>Бургеры | Cherry Music Bar</title>
 </head>
-<body onload="htmlGenerator('burgers')">
-<script src="../js/upMenu.js"></script>
+<body>
+
 
 <header id="header">
     <div class="logo">
@@ -44,5 +43,12 @@
 
 </article>
 
+    <script type="text/javascript" src = "../js/data.js"></script>
+    <script type="text/javascript" src="../js/upMenu.js"></script>
+    <script type="text/javascript">
+        if ($("#lot-info").length) {
+            $('#lot-info').on('swipeup',function(){alert("Меню-закройся!");} );
+        }
+    </script>
 </body>
 </html>

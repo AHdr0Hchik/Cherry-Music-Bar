@@ -102,9 +102,9 @@ app.post('/addMenu', (req, res) => {
 
 function getAppGet(category, subcategory){
    app.get(`/${category}/${subcategory}`,(req, res) => {
-      const category = `${subcategory}`;
-      res.sendFile(createPath(category));
-      getTableDataJSON(category);
+      console.log(subcategory);
+      res.sendFile(createPath('menu'));
+      getTableDataJSON(subcategory);
    });
 }
 
