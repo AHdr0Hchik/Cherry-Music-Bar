@@ -5,7 +5,28 @@ $.getJSON(url, function (data) {
     console.log(data);
 
     for(let i = 0; i<data.length;i++) {
-        $('.menu').append('<a class="category" id="'+data[i].id+'"><img src=".'+data[i].imgUrl+'" alt="123"><div class="descCategory"><p id="name-'+i+'">'+data[i].name+'</p></div></a>')
+        $('#products-container').append('<div class="col-md-6">\n' +
+            '                    <div class="card mb-4" data-id="'+data[i].id+'">\n' +
+            '                        <img class="product-img" src=".'+data[i].imgUrl+'" alt="">\n' +
+            '                        <div class="card-body text-center">\n' +
+            '                            <h4 class="item-title">'+data[i].name+'</h4>\n' +
+            '                            <div class="details-wrapper">\n' +
+            '                                <div class="items counter-wrapper">\n' +
+            '                                    <div class="items__control" data-action="minus">-</div>\n' +
+            '                                    <div class="items__current" data-counter>1</div>\n' +
+            '                                    <div class="items__control" data-action="plus">+</div>\n' +
+            '                                </div>\n' +
+            '\n' +
+            '                                <div class="price">\n' +
+            '                                    <div class="price__currency">'+data[i].price+' ₽</div>\n' +
+            '                                </div>\n' +
+            '                            </div>\n' +
+            '\n' +
+            '                            <button data-cart type="button" class="btn btn-block btn-outline-warning">+ в корзину</button>\n' +
+            '\n' +
+            '                        </div>\n' +
+            '                    </div>\n' +
+            '                </div>')
     }
 });
 
@@ -44,5 +65,4 @@ $(document).ready(function() {
     $(document).on("click", "#desc_close", function() {
         $( "#lot-info" ).remove();
     });
-    $('body').append('<button class="btn-cart" id="btn_cart" ><img src="../jpgs/ui/cart.svg" alt="" class="cart-img"></button>');
 });

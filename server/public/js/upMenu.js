@@ -7,9 +7,9 @@ $(window).scroll(function(){
     $el4.css({'height': heightMenu});
     let isPositionFixed = ($el.css('position') == 'fixed');
     if ($(this).scrollTop() > heightHeader && !isPositionFixed){
-        $el.css({'position': 'fixed', 'top': '0px', 'backdropFilter': 'blur(3px)'});
+        $el.css({'position': 'fixed', 'top': '0', 'backdropFilter': 'blur(3px)'});
     }
     if ($(this).scrollTop() < heightHeader && isPositionFixed){
-        $el.css({'position': 'absolute', 'top': '0px', 'backdropFilter': 'none'});
+        $el.css({'position': 'relative', 'backdropFilter': 'none'});
     }
 });

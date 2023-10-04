@@ -4,6 +4,7 @@ header{
     background-size: cover;
     height: 10vh;
     box-sizing: border-box;
+    position: relative;
 }
 .logo{
     position: absolute;
