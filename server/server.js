@@ -26,57 +26,61 @@ const connection = mysql.createConnection({
 
 
 
-const createPath = (page) => path.resolve(__dirname, 'public', `${page}.html`);
+const createPath = (page) => path.resolve(__dirname, 'public', `${page}.ejs`);
 
 app.listen(PORT, 'localhost', (error) => {
    error ? console.log(error) : console.log(`Listening port ${PORT}`);
 });
 
 app.get('/', (req, res) => {
-   res.sendFile(createPath('index'));
+   res.render(createPath('index'));
    console.log(req, res)
 });
 app.get('/login', (req, res) => {
-   res.sendFile(createPath('login'));
+   res.render(createPath('login'));
    console.log(req, res)
 });
 
 //features
 app.get('/register', (req, res) => {
-   res.sendFile(createPath('register'));
+   res.render(createPath('register'));
    console.log(req, res)
 });
 
 //categories
 app.get(`/japan_kitchen`,(req, res) => {
    const category = 'japan_kitchen';
-   res.sendFile(createPath(`${category}`));
+   res.render(createPath(`${category}`));
 
 });
 app.get(`/main_kitchen`,(req, res) => {
    const category = 'main_kitchen';
-   res.sendFile(createPath(`${category}`));
-
-});
-app.get(`/burgers`,(req, res) => {
-   const category = 'burgers';
-   res.sendFile(createPath(`${category}`));
+   res.render(createPath(`${category}`));
 
 });
 
 app.get(`/bakery`,(req, res) => {
    const category = 'bakery';
-   res.sendFile(createPath(`${category}`));
+   res.render(createPath(`${category}`));
 
 });
 
 app.get(`/add_menu`,(req, res) => {
    const category = 'add_menu';
-   res.sendFile(createPath(`${category}`));
+   res.render(createPath(`${category}`));
    tableNames();
 
 });
 
+
+//cart
+app.get(`/add-to-cart`,(req, res) => {
+   res.render(createPath('index'));
+
+
+});
+
+getAppGet('burgers', 'burgers');
 //subcategories: bakery
 getAppGet('bakery', 'pizza');
 getAppGet('bakery', 'khachapuri');
@@ -95,16 +99,14 @@ getAppGet('main_kitchen', 'hot_appetizers');
 getAppGet('main_kitchen', 'cold_platter');
 
 app.post('/addMenu', (req, res) => {
-   console.log(req.body);
    setTableData(req.body.name, req.body.description, req.body.price, req.body.category);
    res.redirect('/add_menu');
 });
 
 function getAppGet(category, subcategory){
    app.get(`/${category}/${subcategory}`,(req, res) => {
-      console.log(subcategory);
-      res.sendFile(createPath('menu'));
       getTableDataJSON(subcategory);
+      res.render(createPath('menu'), {subcategory: `${subcategory}`});
    });
 }
 

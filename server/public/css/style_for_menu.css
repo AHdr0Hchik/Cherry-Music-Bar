@@ -6,14 +6,12 @@ header{
     box-sizing: border-box;
 }
 .logo{
+    position: absolute;
+    box-sizing: border-box;
     width: 80px;
     height: 80px;
-}
-.logo>a {
-    position: relative;
-    height: 8vh;
-    width: auto;
-    padding: 1vh;
+    top:0;
+    padding: 10px;
 }
 .logo>img{
     width: auto;

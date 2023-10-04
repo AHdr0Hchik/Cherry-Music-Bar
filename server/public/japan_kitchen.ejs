@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/style_for_menu.css">
+    <link rel="icon" href="jpgs/favicon.ico">
 
     <title>Японская кухня | Cherry Music Bar</title>
 </head>
@@ -16,31 +17,10 @@
 <script src="js/upMenu.js"></script>
 
 <header id="header">
-    <div class="logo">
-        <a href="/">
-            <img src="jpgs/logo.png" alt="Logo">
-        </a>
-    </div>
+    <a class="logo" href="/"><img src="../jpgs/logo.png" alt="Logo"></a>
 </header>
 <article id="article">
-    <nav class="upMenu">
-        <div class="buttons" id="buttons">
-            <button onclick="document.location='./login'" class="authorize"></button>
-            <button onclick="menuToggle()" class="toggleMenu"></button>
-        </div>
-
-        <div class="grid" id="grid" >
-            <ul class="navList">
-                <li class="navPoint"><a href="/">Главная</a></li>
-                <li class="navPoint"><a href="/login.html">Войти</a></li>
-                <li class="navPoint"><a href="">Новости</a></li>
-                <li class="navPoint"><a href="">Бронь</a></li>
-                <li class="navPoint"><a href="">Доставка</a></li>
-
-            </ul>
-        </div>
-
-    </nav>
+    <%- include('upmenu'); -%>
     <div class="empty"></div>
     <div class="menu">
         <a href="/japan_kitchen/sets" class="category">
@@ -71,9 +51,8 @@
 
 
 </article>
+<button class="btn-cart"><img src="./jpgs/ui/cart.svg" alt="" class="cart-img"></button>
 
-<footer>
-
-</footer>
+<%- include('footer'); -%>
 </body>
 </html>
