@@ -6,6 +6,7 @@
 
     <script src="js/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/style_for_menu.css">
     <link rel="icon" href="jpgs/favicon.ico">
@@ -14,45 +15,110 @@
 </head>
 
 <body>
-<script src="js/upMenu.js"></script>
 
 <header id="header">
     <a class="logo" href="/"><img src="../jpgs/logo.png" alt="Logo"></a>
 </header>
-<article id="article">
-    <%- include('upmenu'); -%>
-    <div class="empty"></div>
-    <div class="menu">
-        <a href="/japan_kitchen/sets" class="category">
-            <img src="./jpgs/dishes/sets.jpg" alt="123">
-            <div class="descCategory">
-                <p>Сеты</p>
+<%- include('upmenu'); -%>
+<div class="container mb-5">
+    <div class="row">
+
+        <!-- Товары -->
+        <div class="col-md-8">
+            <div class="row" id="products-container">
+
+                <a href="/japan_kitchen/sets" class="col-md-6">
+                    <div class="card mb-4" data-id="1">
+                        <img class="product-img" src="./jpgs/dishes/dish.jpg" alt="">
+                        <div class="card-body text-center">
+                            <h4 class="item-title">Сеты роллов</h4>
+                        </div>
+                    </div>
+                </a>
+                <a href="/japan_kitchen/rolls" class="col-md-6">
+                    <div class="card mb-4" data-id="1">
+                        <img class="product-img" src="./jpgs/dishes/dish.jpg" alt="">
+                        <div class="card-body text-center">
+                            <h4 class="item-title">Роллы</h4>
+                        </div>
+                    </div>
+                </a>
+                <a href="/japan_kitchen/japan_burgers" class="col-md-6">
+                    <div class="card mb-4" data-id="1">
+                        <img class="product-img" src="./jpgs/dishes/dish.jpg" alt="">
+                        <div class="card-body text-center">
+                            <h4 class="item-title">Японские бургеры</h4>
+                        </div>
+                    </div>
+                </a>
+                <a href="/japan_kitchen/gunkans" class="col-md-6">
+                    <div class="card mb-4" data-id="1">
+                        <img class="product-img" src="./jpgs/dishes/dish.jpg" alt="">
+                        <div class="card-body text-center">
+                            <h4 class="item-title">Гунканы</h4>
+                        </div>
+                    </div>
+                </a>
             </div>
-        </a>
-        <a href="/japan_kitchen/gunkans" class="category">
-            <img src="./jpgs/dishes/gunkans.jpg" alt="123">
-            <div class="descCategory">
-                <p>Гунканы</p>
+        </div>
+
+        <!-- Корзина -->
+        <div class="col-md-4">
+
+            <!-- Корзина -->
+            <div class="mb-4 card">
+                <div class="card-body">
+                    <h4 class="card-title">Ваш заказ</h4>
+
+                    <div data-cart-empty="" class="alert alert-secondary none" role="alert">
+                        Корзина пуста
+                    </div>
+
+                    <!-- cart-wrapper -->
+                    <div class="cart-wrapper"></div>
+                    <!-- // cart-wrapper -->
+
+                    <!-- Стоимость заказа -->
+                    <div class="cart-total">
+                        <p data-cart-delivery class="none">
+                            <span class="h5">Доставка:</span>
+                            <span class="delivery-cost">250 ₽</span><br>
+                        </p>
+                        <p><span class="h5">Итого:</span>
+                            <span class="total-price">0</span>
+                            <span class="rouble">₽</span></p>
+                    </div>
+                    <!-- // Стоимость заказа -->
+
+                </div>
+
+                <!-- Оформить заказ -->
+                <div id="order-form" class="card-body border-top">
+                    <h4 class="card-title">Оформить заказ</h4>
+                    <form>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Ваш номер телефона">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Заказать</button>
+                    </form>
+                </div>
+                <!-- // Оформить заказ -->
+
             </div>
-        </a>
-        <a href="/japan_kitchen/rolls" class="category">
-            <img src="./jpgs/dishes/rolls.jpg" alt="123">
-            <div class="descCategory">
-                <p>Роллы</p>
-            </div>
-        </a>
-        <a href="/japan_kitchen/japan_burger" class="category">
-            <img src="./jpgs/dishes/japan_burger.jpg" alt="123">
-            <div class="descCategory">
-                <p>Японские бургеры</p>
-            </div>
-        </a>
+            <!-- // Корзина -->
+
+        </div>
+
     </div>
+</div>
 
 
-</article>
-<button class="btn-cart"><img src="./jpgs/ui/cart.svg" alt="" class="cart-img"></button>
 
 <%- include('footer'); -%>
+
+<script type="text/javascript" src="../js/upMenu.js"></script>
+<script type="text/javascript" src="../js/toggleCartStatus.js"></script>
+<script type="text/javascript" src="../js/calcCartPrice.js"></script>
+<script type="text/javascript" src="../js/cart.js"></script>
 </body>
 </html>

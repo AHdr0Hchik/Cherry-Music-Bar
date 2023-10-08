@@ -19,53 +19,121 @@
 <header id="header">
   <a class="logo" href="/"><img src="../jpgs/logo.png" alt="Logo"></a>
 </header>
+<%- include('upmenu'); -%>
+Десерты
+<div class="container mb-5">
+  <div class="row">
 
-<article id="article">
-  <%- include('upmenu'); -%>
-  <div class="empty"></div>
-  <div class="menu">
-    <a href="/main_kitchen/starters" class="category">
-      <img src="./jpgs/dishes/dish.jpg" alt="123">
-      <div class="descCategory">
-        <p>Первое</p>
+    <!-- Товары -->
+    <div class="col-md-8">
+      <div class="row" id="products-container">
+
+        <a href="/main_kitchen/starters" class="col-md-6">
+          <div class="card mb-4" data-id="1">
+            <img class="product-img" src="./jpgs/dishes/dish.jpg" alt="">
+            <div class="card-body text-center">
+              <h4 class="item-title">Первое</h4>
+            </div>
+          </div>
+        </a>
+        <a href="/main_kitchen/main_dishes" class="col-md-6">
+          <div class="card mb-4" data-id="1">
+            <img class="product-img" src="./jpgs/dishes/dish.jpg" alt="">
+            <div class="card-body text-center">
+              <h4 class="item-title">Второе</h4>
+            </div>
+          </div>
+        </a>
+        <a href="/main_kitchen/hot_appetizers" class="col-md-6">
+          <div class="card mb-4" data-id="1">
+            <img class="product-img" src="./jpgs/dishes/dish.jpg" alt="">
+            <div class="card-body text-center">
+              <h4 class="item-title">Горячие закуски</h4>
+            </div>
+          </div>
+        </a>
+        <a href="/main_kitchen/cold_platter" class="col-md-6">
+          <div class="card mb-4" data-id="1">
+            <img class="product-img" src="./jpgs/dishes/dish.jpg" alt="">
+            <div class="card-body text-center">
+              <h4 class="item-title">Холодные закуски</h4>
+            </div>
+          </div>
+        </a>
+        <a href="/main_kitchen/side_dishes" class="col-md-6">
+          <div class="card mb-4" data-id="1">
+            <img class="product-img" src="./jpgs/dishes/dish.jpg" alt="">
+            <div class="card-body text-center">
+              <h4 class="item-title">Гарниры</h4>
+            </div>
+          </div>
+        </a>
+        <a href="/main_kitchen/desserts" class="col-md-6">
+          <div class="card mb-4" data-id="1">
+            <img class="product-img" src="./jpgs/dishes/dish.jpg" alt="">
+            <div class="card-body text-center">
+              <h4 class="item-title">Десерты</h4>
+            </div>
+          </div>
+        </a>
       </div>
-    </a>
-    <a href="/main_kitchen/main_dishes" class="category">
-      <img src="./jpgs/dishes/dish.jpg" alt="123">
-      <div class="descCategory">
-        <p>Второе</p>
+    </div>
+
+    <!-- Корзина -->
+    <div class="col-md-4">
+
+      <!-- Корзина -->
+      <div class="mb-4 card">
+        <div class="card-body">
+          <h4 class="card-title">Ваш заказ</h4>
+
+          <div data-cart-empty="" class="alert alert-secondary none" role="alert">
+            Корзина пуста
+          </div>
+
+          <!-- cart-wrapper -->
+          <div class="cart-wrapper"></div>
+          <!-- // cart-wrapper -->
+
+          <!-- Стоимость заказа -->
+          <div class="cart-total">
+            <p data-cart-delivery class="none">
+              <span class="h5">Доставка:</span>
+              <span class="delivery-cost">250 ₽</span><br>
+            </p>
+            <p><span class="h5">Итого:</span>
+              <span class="total-price">0</span>
+              <span class="rouble">₽</span></p>
+          </div>
+          <!-- // Стоимость заказа -->
+
+        </div>
+
+        <!-- Оформить заказ -->
+        <div id="order-form" class="card-body border-top">
+          <h4 class="card-title">Оформить заказ</h4>
+          <form>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Ваш номер телефона">
+            </div>
+            <button type="submit" class="btn btn-primary">Заказать</button>
+          </form>
+        </div>
+        <!-- // Оформить заказ -->
+
       </div>
-    </a>
-    <a href="/main_kitchen/hot_appetizers" class="category">
-      <img src="./jpgs/dishes/dish.jpg" alt="123">
-      <div class="descCategory">
-        <p>Горячие закуски</p>
-      </div>
-    </a>
-    <a href="/main_kitchen/cold_platter" class="category">
-      <img src="./jpgs/dishes/dish.jpg" alt="123">
-      <div class="descCategory">
-        <p>Холодные закуски</p>
-      </div>
-    </a>
-    <a href="/main_kitchen/side_dishes" class="category">
-      <img src="./jpgs/dishes/dish.jpg" alt="123">
-      <div class="descCategory">
-        <p>Гарниры</p>
-      </div>
-    </a>
-    <a href="/main_kitchen/desserts" class="category">
-      <img src="./jpgs/dishes/dish.jpg" alt="123">
-      <div class="descCategory">
-        <p>Десерты</p>
-      </div>
-    </a>
+      <!-- // Корзина -->
+
+    </div>
+
   </div>
+</div>
 
-
-</article>
-<button class="btn-cart"><img src="./jpgs/ui/cart.svg" alt="" class="cart-img"></button>
 
 <%- include('footer'); -%>
+
+<script type="text/javascript" src="../js/upMenu.js"></script>
+<script type="text/javascript" src="../js/toggleCartStatus.js"></script>
+<script type="text/javascript" src="../js/cart.js"></script>
 </body>
 </html>

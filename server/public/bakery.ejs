@@ -6,6 +6,7 @@
 
   <script src="../js/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/style_for_menu.css">
   <link rel="icon" href="jpgs/favicon.ico">
@@ -13,37 +14,103 @@
 </head>
 
 <body>
-<script src="../js/upMenu.js"></script>
 
-<header id="header">
-  <a class="logo" href="/"><img src="../jpgs/logo.png" alt="Logo"></a>
-</header>
-<article id="article">
+
+
+  <header id="header">
+    <a class="logo" href="/"><img src="../jpgs/logo.png" alt="Logo"></a>
+  </header>
   <%- include('upmenu'); -%>
-  <div class="empty"></div>
-  <div class="menu">
-    <a href="/bakery/pizza" class="category">
-      <img src="../jpgs/dishes/dish.jpg" alt="123">
-      <div class="descCategory">
-        <p>Пицца</p>
-      </div>
-    </a>
-    <a href="/bakery/khachapuri" class="category">
-      <img src="../jpgs/dishes/dish.jpg" alt="123">
-      <div class="descCategory">
-        <p>Хачапури</p>
-      </div>
-    </a>
-    <a href="/bakery/sbor_pizza" class="category">
-      <img src="../jpgs/dishes/dish.jpg" alt="123">
-      <div class="descCategory">
-        <p>Сборная пицца</p>
-      </div>
-    </a>
-  </div>
-</article>
-<button class="btn-cart"><img src="./jpgs/ui/cart.svg" alt="" class="cart-img"></button>
+  <div class="container mb-5">
+    <div class="row">
 
-<%- include('footer'); -%>
+      <!-- Товары -->
+      <div class="col-md-8">
+        <div class="row" id="products-container">
+
+          <a href="/bakery/pizza" class="col-md-6">
+            <div class="card mb-4" data-id="1">
+              <img class="product-img" src="./jpgs/dishes/dish.jpg" alt="">
+              <div class="card-body text-center">
+                <h4 class="item-title">Пиццы</h4>
+              </div>
+            </div>
+          </a>
+          <a href="/bakery/khachapuri" class="col-md-6">
+            <div class="card mb-4" data-id="1">
+              <img class="product-img" src="./jpgs/dishes/dish.jpg" alt="">
+              <div class="card-body text-center">
+                <h4 class="item-title">Хачапури</h4>
+              </div>
+            </div>
+          </a>
+          <a href="/bakery/sbor_pizza" class="col-md-6">
+            <div class="card mb-4" data-id="1">
+              <img class="product-img" src="./jpgs/dishes/dish.jpg" alt="">
+              <div class="card-body text-center">
+                <h4 class="item-title">Сборная пицца</h4>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Корзина -->
+      <div class="col-md-4">
+
+        <!-- Корзина -->
+        <div class="mb-4 card">
+          <div class="card-body">
+            <h4 class="card-title">Ваш заказ</h4>
+
+            <div data-cart-empty="" class="alert alert-secondary none" role="alert">
+              Корзина пуста
+            </div>
+
+            <!-- cart-wrapper -->
+            <div class="cart-wrapper"></div>
+            <!-- // cart-wrapper -->
+
+            <!-- Стоимость заказа -->
+            <div class="cart-total">
+              <p data-cart-delivery class="none">
+                <span class="h5">Доставка:</span>
+                <span class="delivery-cost">250 ₽</span><br>
+              </p>
+              <p><span class="h5">Итого:</span>
+                <span class="total-price">0</span>
+                <span class="rouble">₽</span></p>
+            </div>
+            <!-- // Стоимость заказа -->
+
+          </div>
+
+          <!-- Оформить заказ -->
+          <div id="order-form" class="card-body border-top">
+            <h4 class="card-title">Оформить заказ</h4>
+            <form>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Ваш номер телефона">
+              </div>
+              <button type="submit" class="btn btn-primary">Заказать</button>
+            </form>
+          </div>
+          <!-- // Оформить заказ -->
+
+        </div>
+        <!-- // Корзина -->
+
+      </div>
+
+    </div>
+  </div>
+
+  <%- include('footer'); -%>
+
+  <script type="text/javascript" src="../js/upMenu.js"></script>
+  <script type="text/javascript" src="../js/toggleCartStatus.js"></script>
+  <script type="text/javascript" src="../js/calcCartPrice.js"></script>
+  <script type="text/javascript" src="../js/cart.js"></script>
 </body>
+
 </html>

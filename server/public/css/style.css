@@ -226,6 +226,11 @@ p{margin: 0;}
         font-size: 18px;
         margin-left: 15px;
     }
+    .price {
+        margin: 0 auto;
+        margin-top: 10px;
+        font-family: main;
+    }
 
     .cart-total {
         font-size: 18px;
@@ -272,17 +277,28 @@ p{margin: 0;}
 
     }
 
+
+
     .items__control {
         width: 40px;
         cursor: pointer;
         transition: 0.2s ease-in;
         text-align: center;
     }
-
     .items__control:hover {
         background: #eb5a1e;
         color: #FFF;
     }
+
+    .size-wrapper {
+        margin: 0 5px;
+    }
+    .active {
+        background: #eb5a1e;
+        color: #FFF;
+    }
+
+
 
     .items__current {
         width: 40px;
@@ -319,20 +335,25 @@ p{margin: 0;}
 
 body{
     background-image: url('../jpgs/body-back.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    background-size: cover;
+    position: relative;
 }
 header{
     position: relative;
     background-image: url('../jpgs/dishes/header-back.jpg');
     background-repeat-x: no-repeat;
     background-size: cover;
+    -moz-background-size: cover;
+    background-position: center;
     height: 100vh;
 }
 
 article{
-    background-image: url('../jpgs/body-back.jpg');
-    background-repeat-x: no-repeat;
-    background-size: cover;
-    position: relative;
+
 }
 
 .upMenu {
@@ -410,6 +431,19 @@ footer{
     background-color: #d5d5d5;
     transition-duration: .3s;
 }
+
+.card{
+    background-color: rgba(255,255,255,0.8);
+    transition-duration: .3s;
+}
+.card:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+    transition-duration: .3s;
+}
+.form-control {
+    margin-bottom: 10px;
+}
+
 
 
 
