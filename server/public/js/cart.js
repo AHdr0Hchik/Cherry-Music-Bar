@@ -158,8 +158,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         }
         if(event.target.hasAttribute('data-toProcess')) {
+            try {
+                const response = fetch('/', {
+                    method: 'post',
+                    body: {
+                        name: "Andrey"
+                    }
+                });
+                console.log('Completed!', response);
+            } catch(err) {
+                console.error(`Error: ${err}`);
+            }
             localStorage.removeItem('cart-list');
-            location.reload();
         }
 
 

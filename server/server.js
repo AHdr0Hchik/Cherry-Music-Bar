@@ -3,6 +3,8 @@ const path = require('path');
 const mysql = require("mysql");
 const fs = require("fs");
 const bodyParser = require('body-parser');
+const http = require('http');
+
 
 
 const app = express();
@@ -14,7 +16,25 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 app.set('view engine', 'ejs')
 app.use(express.static('public'));
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
+const HOSTNAME = process.env.HOSTNAME;
+
+/*http.createServer(function (req, res){
+   const url = req.url;
+   console.log(url);
+
+   switch (url) {
+      case('/'):
+         app.get('/', (req, res) => {
+            res.render(createPath('index'));
+         });
+      default:
+         res.statusCode = 404;
+         console.log('404');
+   }
+
+
+}).listen(PORT, HOSTNAME);*/
 
 const connection = mysql.createConnection({
    host: "localhost",
@@ -32,19 +52,18 @@ app.listen(PORT, 'localhost', (error) => {
    error ? console.log(error) : console.log(`Listening port ${PORT}`);
 });
 
+
+
 app.get('/', (req, res) => {
    res.render(createPath('index'));
-   console.log(req, res)
-});
+})
 app.get('/login', (req, res) => {
    res.render(createPath('login'));
-   console.log(req, res)
 });
 
 //features
 app.get('/register', (req, res) => {
    res.render(createPath('register'));
-   console.log(req, res)
 });
 
 //categories
@@ -122,7 +141,6 @@ function setTableData(nameLot, descriptionLot, priceLot, categoryLot) {
 
    connection.query(`INSERT INTO ? (id, name, description, price, imgUrl) VALUES (?,?,?,?,?)`, [categoryLot, null, nameLot, descriptionLot, priceLot, './jpgs/dishes/dish.jpg'], function(err, data) {
       if(err) return console.log(err);
-      console.log(data);
    });
 }
 function getTableDataJSON(table_name){
@@ -141,7 +159,6 @@ function getTableDataJSON(table_name){
       fs.writeFile("./public/json/thing.json", JSON.stringify(results), function(err, result) {
          if(err) console.log('error', err);
       });
-      console.log(results);
    });
 };
 
@@ -160,7 +177,6 @@ function tableNames() {
       fs.writeFile("./public/json/categories.json", JSON.stringify(results), function(err, result) {
          if(err) console.log('error', err);
       });
-      console.log(results);
    });
 
 }
