@@ -48,8 +48,8 @@ const connection = mysql.createConnection({
 
 const createPath = (page) => path.resolve(__dirname, 'public', `${page}.ejs`);
 
-app.listen(PORT, 'localhost', (error) => {
-   error ? console.log(error) : console.log(`Listening port ${PORT}`);
+app.listen(PORT,() => {
+   console.log(`Listening port ${PORT}`);
 });
 
 
