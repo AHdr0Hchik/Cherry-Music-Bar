@@ -1,4 +1,3 @@
-// Div внутри корзины, в который мы добавляем товары
 const cartWrapper =  document.querySelector('.cart-wrapper');
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -158,18 +157,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         }
         if(event.target.hasAttribute('data-toProcess')) {
-            try {
-                const response = fetch('/', {
-                    method: 'post',
-                    body: {
-                        name: "Andrey"
-                    }
-                });
-                console.log('Completed!', response);
-            } catch(err) {
-                console.error(`Error: ${err}`);
-            }
+            const totalPriceEl = document.querySelector('.total-price');
+            fetch("/toProcess", {
+                method: "POST",
+                body: JSON.stringify({
+                    price: parseInt(totalPriceEl.innerText),
+                    cardnum: '0000111122223333',
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            });
             localStorage.removeItem('cart-list');
+            window.location.replace("/");
         }
 
 
@@ -206,13 +206,56 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 });
 
+const form = document.querySelector('.form-group');
+let city = form.querySelector('#delivery-city');
+offToProcess = () => {
+    if(city.value===''){
+        document.querySelector('[data-toProcess]').classList.add('none');
+    } else {
+        document.querySelector('[data-toProcess]').classList.remove('none');
+    }
+}
+offToProcess();
+city.addEventListener('change',function(){
+    offToProcess();
+    if(city.value==='self'){
+        form.querySelector('[data-adress]').classList.add('none');
+    } else {
+        form.querySelector('[data-adress]').classList.remove('none');
+    }
+    calcCartPriceAndDelivery();
+});
+
 function calcCartPriceAndDelivery() {
+    const form = document.querySelector('.form-group');
+    const city = form.querySelector('#delivery-city').value;
     const cartWrapper = document.querySelector('.cart-wrapper');
     const priceElements = cartWrapper.querySelectorAll('.price__currency');
     const totalPriceEl = document.querySelector('.total-price');
     const deliveryCost = document.querySelector('.delivery-cost');
     const cartDelivery = document.querySelector('[data-cart-delivery]');
 
+    switch (city) {
+        case '':
+            deliveryCost.innerText = 'Выберите тариф';
+            break;
+        case 'self':
+            deliveryCost.innerText = '0 ₽';
+            break;
+        case 'Kir':
+            deliveryCost.innerText = '200 ₽';
+            break;
+        case 'Zhd':
+            deliveryCost.innerText = '400 ₽';
+            break;
+        case 'Sch':
+            deliveryCost.innerText = '500 ₽';
+            break;
+        case 'Ena':
+            deliveryCost.innerText = '500 ₽';
+            break;
+        default: deliveryCost.innerText = '0 ₽';
+    }
     // Общая стоимость товаров
     let priceTotal = 0;
 
@@ -223,7 +266,9 @@ function calcCartPriceAndDelivery() {
         // Добавляем стоимость товара в общую стоимость (кол-во * цену)
         priceTotal += parseInt(item.innerText) * parseInt(amountEl.innerText);
     });
-    priceTotal += parseInt(deliveryCost.innerText);
+    if(city.length) {
+        priceTotal += parseInt(deliveryCost.innerText);
+    }
     // Отображаем цену на странице
     totalPriceEl.innerText = priceTotal;
 
@@ -234,13 +279,13 @@ function calcCartPriceAndDelivery() {
         cartDelivery.classList.add('none');
     }
 
+
     // Указываем стоимость доставки
     /*if (priceTotal >= 600) {
         deliveryCost.classList.add('free');
         deliveryCost.innerText = 'бесплатно';
     } else {
         deliveryCost.classList.remove('free');*/
-    deliveryCost.innerText = '250 ₽';
     /*}
 
      */

@@ -44,7 +44,7 @@ const connection = mysql.createConnection({
    password: "Tempor82"
 });
 
-
+const token = 'abcdefg';
 
 const createPath = (page) => path.resolve(__dirname, 'public', `${page}.ejs`);
 
@@ -117,6 +117,12 @@ getAppGet('main_kitchen', 'desserts');
 getAppGet('main_kitchen', 'hot_appetizers');
 getAppGet('main_kitchen', 'cold_platter');
 
+
+app.post("/toProcess", function(req, res){
+   console.log(payProcess(req.body.price, req.body.cardnum));
+   console.log('Payment in process');
+});
+
 app.post('/addMenu', (req, res) => {
    setTableData(req.body.name, req.body.description, req.body.price, req.body.category);
    res.redirect('/add_menu');
@@ -180,3 +186,12 @@ function tableNames() {
    });
 
 }
+
+function payProcess(price, cardNum) {
+   const payAdress = `${cardNum}/${price}/${token}`;
+
+   return payAdress;
+}
+
+
+
