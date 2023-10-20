@@ -44,6 +44,16 @@ const connection = mysql.createConnection({
    password: "Tempor82"
 });
 
+/*
+const connection = mysql.createConnection({
+   host: "127.0.0.1",
+   port: "3306",
+   user: "sqluser",
+   database: "cherrymenu",
+   password: "password"
+});
+ */
+
 const token = 'abcdefg';
 
 const createPath = (page) => path.resolve(__dirname, 'public', `${page}.ejs`);
