@@ -4,9 +4,12 @@ document.addEventListener('click', function (event) {
         const frontSide = groupCard.querySelector('.front');
         const backSide = groupCard.querySelector('.back');
 
-        backSide.style.height = frontSide.clientHeight + 'px';
-        console.log(frontSide.clientHeight);
-        console.log(backSide.style.height);
+        if(frontSide.clientHeight > 50) {
+            backSide.style.height = frontSide.clientHeight + 'px';
+            console.log(frontSide.clientHeight);
+            console.log(backSide.style.height);
+        }
+
 
         if(backSide.classList.contains('none')) {
             setTimeout(() => {
