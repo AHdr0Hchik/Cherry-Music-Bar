@@ -5,8 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const loc = window.location.pathname;
     const dir = loc.split("/").pop();
 
+    // Клик по области окна
     window.addEventListener('click', function (event) {
-
+        // Выбор размера пиццы
         if(event.target.dataset.action === 'pizza') {
             const size = event.target;
             const card = event.target.closest('.card');
@@ -58,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
         }
+        // Обновляем local storage
         updateStorage();
         // Проверяем клик на + или - внутри коризины
         if (event.target.hasAttribute('data-action') && event.target.closest('.cart-wrapper')) {
@@ -156,13 +158,34 @@ document.addEventListener('DOMContentLoaded', () => {
             calcCartPriceAndDelivery();
 
         }
+
+        // Нажатие на кнопку "Заказать"
         if(event.target.hasAttribute('data-toProcess')) {
+            const items = cartWrapper.querySelectorAll('.cart-item');
+            const itemsData = [];
+            // Сбор информации о заказе
+            for(let i=0; i<items.length; i++) {
+                const itemData = items[i].dataset.id;
+                const size = parseInt(items[i].querySelector('.cart-item__details').innerText);
+                const item = {
+                    category: itemData.split(' ')[0],
+                    id: itemData.split(' ')[1],
+                    name: items[i].querySelector('.cart-item__title').innerText,
+                    price: parseInt(items[i].querySelector('.price__currency').innerText.split(' ')[0]),
+                    count: parseInt(items[i].querySelector('[data-counter]').innerText),
+                    size: size,
+                }
+                itemsData.push(item);
+            }
             const totalPriceEl = document.querySelector('.total-price');
+
+            // Отправка данных на сервер
             fetch("/toProcess", {
                 method: "POST",
                 body: JSON.stringify({
                     price: parseInt(totalPriceEl.innerText),
                     cardnum: '0000111122223333',
+                    itemsData: itemsData
                 }),
                 headers: {
                     "Content-type": "application/json; charset=UTF-8"
@@ -206,26 +229,28 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 });
 
+// Отображение в зависимости от способа доставки
 const form = document.querySelector('.form-group');
 let city = form.querySelector('#delivery-city');
 offToProcess = () => {
     if(city.value===''){
         document.querySelector('[data-toProcess]').classList.add('none');
+        form.querySelector('[data-adress]').classList.add('none');
+    } else if(city.value==='self') {
+        form.querySelector('[data-adress]').classList.add('none');
+        document.querySelector('[data-toProcess]').classList.remove('none');
     } else {
         document.querySelector('[data-toProcess]').classList.remove('none');
+        form.querySelector('[data-adress]').classList.remove('none');
     }
 }
 offToProcess();
 city.addEventListener('change',function(){
     offToProcess();
-    if(city.value==='self'){
-        form.querySelector('[data-adress]').classList.add('none');
-    } else {
-        form.querySelector('[data-adress]').classList.remove('none');
-    }
     calcCartPriceAndDelivery();
 });
 
+// Пересчёт общей стоимости заказа
 function calcCartPriceAndDelivery() {
     const form = document.querySelector('.form-group');
     const city = form.querySelector('#delivery-city').value;
@@ -290,12 +315,3 @@ function calcCartPriceAndDelivery() {
 
      */
 }
-
-
-// Отслеживаем клик на странице
-
-
-
-/*
-
-            */

@@ -94,20 +94,17 @@ app.get(`/bakery`,(req, res) => {
 
 });
 
+//admin pages
 app.get(`/add_menu`,(req, res) => {
    const category = 'add_menu';
    res.render(createPath(`${category}`));
    tableNames();
-
+});
+app.get(`/admin_orders`,(req, res) => {
+   const category = 'admin_orders';
+   res.render(createPath(`${category}`));
 });
 
-
-//cart
-app.get(`/add-to-cart`,(req, res) => {
-   res.render(createPath('index'));
-
-
-});
 
 getAppGet('burgers', 'burgers');
 //subcategories: bakery
@@ -130,6 +127,9 @@ getAppGet('main_kitchen', 'cold_platter');
 
 app.post("/toProcess", function(req, res){
    console.log(payProcess(req.body.price, req.body.cardnum));
+   fs.writeFile("./public/json/order.json", JSON.stringify(req.body.itemsData), function(err, result) {
+      if(err) console.log('error', err);
+   });
    console.log('Payment in process');
 });
 
@@ -159,6 +159,7 @@ function setTableData(nameLot, descriptionLot, priceLot, categoryLot) {
       if(err) return console.log(err);
    });
 }
+
 function getTableDataJSON(table_name){
    connection.connect(function(err){
       if (err) {
@@ -167,6 +168,7 @@ function getTableDataJSON(table_name){
       else{
          console.log("Подключение к серверу MySQL успешно установлено");
       }
+
    });
 
    const sqlGet = `SELECT * FROM ${table_name}`;
@@ -176,6 +178,8 @@ function getTableDataJSON(table_name){
          if(err) console.log('error', err);
       });
    });
+
+   connection.end();
 };
 
 function tableNames() {

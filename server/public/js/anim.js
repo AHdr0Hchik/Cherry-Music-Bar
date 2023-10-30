@@ -6,8 +6,6 @@ document.addEventListener('click', function (event) {
 
         if(frontSide.clientHeight > 50) {
             backSide.style.height = frontSide.clientHeight + 'px';
-            console.log(frontSide.clientHeight);
-            console.log(backSide.style.height);
         }
 
 

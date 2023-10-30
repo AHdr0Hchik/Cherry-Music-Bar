@@ -1,18 +1,12 @@
 
-const url = "../json/thing.json";
+const url_thing = "../json/thing.json";
+const url_order = "../json/order.json"
 
-$.getJSON(url, function (data) {
+$.getJSON(url_thing, function (data) {
     const loc = window.location.pathname;
     const dir = loc.split("/").pop();
 
     for(let i = 0; i<data.length;i++) {
-        const backSide = `<div class="card mb-4 back none" data-id="${dir} ${data[i].id}">
-                            <div class="card-body text-center">
-                                <h4 class="item-title">${data[i].name}</h4>
-                                <h5 class="item-desc">${data[i].description}</h5>
-                                <button data-anim type="button" class="btn btn-block btn-outline-warning">назад</button>
-                            </div>
-                        </div>`
         if(dir != 'pizza') {
             $('#products-container').append('<div class="col-md-6">\n' +
                 '                    <div class="card mb-4 front" data-id="'+dir+ ' ' + data[i].id + '">\n' +
@@ -82,5 +76,25 @@ $.getJSON(url, function (data) {
         }
 
     }
+});
+
+$.getJSON(url_order, function (data) {
+    let info = [];
+    let sum = 0;
+    for(let i=0; i<data.length; i++) {
+        if(data[i].size!==null) {
+            info += data[i].name + `(${data[i].count} шт, ${data[i].size} см), `;
+        }
+
+        sum += data[i].price * data[i].count;
+    }
+    const str = `<tr>
+                    <td></td>
+                    <td>${info}</td>
+                    <td>${sum} ₽</td>
+                    <td class="table-success"><button>Принять</button></td>
+                    <td class="table-danger"><button>Отклонить</button></td>
+                </tr>`;
+    document.querySelector('.table').insertAdjacentHTML('beforeend', str);
 });
 
