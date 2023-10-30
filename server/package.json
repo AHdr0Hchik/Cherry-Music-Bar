@@ -14,10 +14,15 @@
     "cookie-parser": "^1.4.6",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "express-mysql-session": "^3.0.0",
     "express-session": "^1.17.3",
     "jquery.kladr": "^2.2.2",
     "mysql": "^2.18.1",
-    "mysql2": "^3.6.1"
+    "mysql2": "^3.6.2",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "sequelize": "^6.33.0",
+    "sequelize-cli": "^6.6.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

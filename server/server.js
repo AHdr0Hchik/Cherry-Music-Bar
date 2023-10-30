@@ -1,9 +1,13 @@
 const express = require('express');
 const path = require('path');
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const fs = require("fs");
 const bodyParser = require('body-parser');
-const http = require('http');
+const crypto = require('crypto');
+const session = require("express-session");
+const MySQLStore = require('express-mysql-session')(session);
+const passport = require('passport')
+    , LocalStrategy = require('passport-local').Strategy;
 
 
 
@@ -12,9 +16,10 @@ app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
    extended: true
 }));
-
 app.set('view engine', 'ejs')
 app.use(express.static('public'));
+app.use(passport.initialize());
+app.use(passport.session());
 
 const PORT = process.env.PORT || 4000;
 const HOSTNAME = process.env.HOSTNAME;
@@ -44,6 +49,11 @@ const connection = mysql.createConnection({
    password: "Tempor82"
 });
 
+const sessionStore = new MySQLStore({
+   checkExpirationInterval: parseInt(process.env.SESSIONSDB_CHECK_EXP_INTERVAL, 10),
+   expiration: parseInt(process.env.SESSIONSDB_EXPIRATION, 10)
+}, connection);
+
 /*
 const connection = mysql.createConnection({
    host: "127.0.0.1",
@@ -55,6 +65,19 @@ const connection = mysql.createConnection({
  */
 
 const token = 'abcdefg';
+
+/* Create a cookie that expires in 1 day */
+var expireDate = new Date();
+expireDate.setDate(expireDate.getDate() + 1);
+
+app.use(session({
+   resave: true,
+   saveUninitialized: true,
+   secret: process.env.SESSIONSDB_SECRET,
+   store: sessionStore,
+   cookie: { expires: expireDate }
+}));
+
 
 const createPath = (page) => path.resolve(__dirname, 'public', `${page}.ejs`);
 
