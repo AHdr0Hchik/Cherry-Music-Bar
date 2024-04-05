@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <script src="/js/menu.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style_for_menu.css">
+    <link rel="icon" href="/jpgs/favicon.ico">
+
+    <title>Столы | Cherry Music Bar</title>
+</head>
+<style>
+    .container {
+    margin: 10px;
+    background-color: white;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 10px;
+    }
+</style>
+<body id="">
+    <div class="container">
+        <div id="main">
+        <div id="is_razdel" style="display:none">0</div>
+
+        <div id="eh"></div>
+        <table border="0">
+            <tbody>
+                <tr>
+                    <td>
+                        <div id="knopki pro" style="overflow-x:auto; width:420px;">
+                            <table border="0">
+                                <tbody>
+                                    <tr valign="top">
+                                        <% categories.forEach(category => { %>
+                                        <td>
+                                            <!--Категория и её модальное окно-->
+                                            <div name="butt_proizv" class="proizv btn btn-success" data-toggle="modal" data-target="#myModal_category_<%=category.id %>" style="width:90%; left:5;" id="category_<%= category.id %>"><%= category.category_name %></div>
+                                            <div class="modal fade" id="myModal_category_<%=category.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-scrollable">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h3><%= category.name %></h3>
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                        </div>
+                                                        <div class="modal-body d-flex align-content-center flex-wrap justify-content-around">
+                                                            <% const this_subcategories = subcategories.filter(subcategory => subcategory.category === category.id); %>
+                                                            <% this_subcategories.forEach((subcategory, index) => { %>
+                                                                
+                                                                <!--Подкатегория и её модальное окно-->
+                                                                <button type="button" class="btn btn-primary" id="<%= subcategory.id %>" data-toggle="modal" data-target="#myModal_subcategory_<%= subcategory.id %>"> <%= subcategory.subcategory_name %> </button>
+                                                                <div class="modal fade" id="myModal_subcategory_<%=subcategory.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-dialog-scrollable">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h3><%= subcategory.name %></h3>
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                            </div>
+                                                                            <div class="modal-body d-flex align-content-center flex-wrap justify-content-around">
+                                                                                <% const this_menuList = menu.filter(item => item.subcategory == subcategory.id); %>
+                                                                                <% this_menuList.forEach((orderLine, index) => { %>
+                                                                                    <%if(orderLine.price == 0 && orderLine.price30 != 0) {%>
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="card mb-4" data-id="<%= orderLine.id %>">
+                                                                                                <div class="card-body text-center">
+                                                                                                    <h4 class="item-title" id="<%= orderLine.subcategory %>"><%= orderLine.name %></h4>
+                                                                                                    <div class="details-wrapper">
+                                                                                                        <div class="items counter-wrapper">
+                                                                                                            <div class="items__control" data-action="minus">-</div>
+                                                                                                            <div class="items__current" data-counter>1</div>
+                                                                                                            <div class="items__control" data-action="plus">+</div>
+                                                                                                        </div>
+                                                                                                        <div class="items size-wrapper">
+                                                                                                            <div class="items__control active" data-action="pizza" data-sb-curent-price="<%= orderLine.price30 %>" data-sb-curent-size="30" data-sb-curent-id-or-vendor-code="0030pz">30</div>
+                                                                                                            <div class="items__control" data-action="pizza" data-sb-curent-price="<%= orderLine.price36 %>" data-sb-curent-size="36" data-sb-curent-id-or-vendor-code="0036pz">36</div>
+                                                                                                            <div class="items__control" data-action="pizza" data-sb-curent-price="<%= orderLine.price50 %>" data-sb-curent-size="50" data-sb-curent-id-or-vendor-code="0050pz">50</div>
+                                                                                                        </div>
+                                                                                                        <div class="price">
+                                                                                                            <div class="price__currency"><%= orderLine.price30 %> ₽</div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <button data-cart type="button" class="btn btn-block btn-outline-warning">Добавить</button>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    <% } else {%>
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="card mb-4" data-id="<%= orderLine.id %>">
+                                                                                                <div class="card-body text-center">
+                                                                                                    <h4 class="item-title" id="<%= orderLine.subcategory %>"><%= orderLine.name %></h4>
+                                                                                                    <div class="details-wrapper">
+                                                                                                        <div class="items counter-wrapper">
+                                                                                                            <div class="items__control" data-action="minus">-</div>
+                                                                                                            <div class="items__current" data-counter>1</div>
+                                                                                                            <div class="items__control" data-action="plus">+</div>
+                                                                                                        </div>
+                                                                                        
+                                                                                                        <div class="price">
+                                                                                                            <div class="price__currency"><%= orderLine.price %> ₽</div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                        
+                                                                                                    <button data-cart type="button" class="btn btn-block btn-outline-warning">Добавить</button>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <% } %>
+                                                                                <% }) %>
+                                                                            </div>
+                    
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            <% }) %>
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <% }); %>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div id="search">
+                            <input type="text" name="poisk" placeholder="Поиск по названию или штрих-код" style="width:300;" class="input-medium search-query" onfocus="start_find()" onblur="stop_find()">
+                        </div>
+                    </td>
+                    <td>
+                        <div style="width:480px; left:15px;">
+                            <table border="0" style="width:470px;">
+                                <tbody>
+                                    <tr>
+                                        <td align="center">
+                                            <button data-toprocess class="proizv btn btn-success " style="width: 70px;left:5;">В РАБОТУ</button>
+                                        </td>
+                                        <td align="center">
+                                            <button class="proizv btn btn-danger " style="width: 70px;left:5;" onclick="window.location.href='/admin/tables'">ОТМЕНА</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="pos" id="<%= userData.id %>_<%= table_info.id %>:<%= table_info.count%>"><%= userData.firstname %> <%= userData.lastname %>&gt; <%= table_info.name %>:<%= parseInt(table_info.count)+1 %></div>
+                        </div>
+                    </td>
+                </tr>
+
+                <div id="zakazik">
+                    <table border="1" id="zkz" class="table table-striped table-bordered table-condensed">
+                        <thead>
+                            <th colspan="3" class="text-center">Текущие изменения</th>
+                        </thead>
+                        <tbody class="cart-wrapper">
+                            <tr style="font-weight:bold; font-size:10pt;">
+                                <td align="center">Наименование</td>
+                                <td align="center">Кол-во</td>
+                                <td align="center">Цена</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr><td colspan="3">Сумма: <span id="sum" class="total-price">0 <span>руб.</span></span></td></tr> 
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div id="ranee_zakazano">
+		    
+                    <table border="1" class="table table-striped table-bordered table-condensed">
+                        <tbody>
+                            <% if(locals.orderData) { %> 
+                            <tr align="center"><td colspan="3"><b>Заказано ранее</b></td></tr>
+                                <% orderData.forEach(orderLine => { %>
+                                <tr id="<%= orderLine.id %>">
+                                    <td align="left"><%= orderLine.name %> <%= orderLine.size || '' %></td>
+                                    <td align="right"><%= orderLine.count %></td>
+                                    <td align="right"><%= orderLine.price %></td>
+                                </tr>
+                                <% }); %>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/admin/updateTableOrder.js"></script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <script src="/js/menu.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style_for_menu.css">
+    <link rel="icon" href="/jpgs/favicon.ico">
+
+    <title>Меню | Cherry Music Bar</title>
+</head>
+<style>
+    .well {
+    min-height: 20px;
+    padding: 19px;
+    margin-bottom: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.05);
+    -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.05);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.05);
+}
+.container {
+    margin: 10px;
+    background-color: white;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 10px;
+}
+</style>
+<body id="">
+    <script type="text/javascript">
+        function show_history() {
+            const sel=document.getElementsByName('postav')[0]
+            const id = sel.options[ sel.selectedIndex ].value
+
+            sel=document.getElementsByName('ts_y')[0];
+            const time_start= sel.options[ sel.selectedIndex ].text+"-";
+            sel=document.getElementsByName('ts_m')[0];
+            time_start+= sel.options[ sel.selectedIndex ].text+"-";
+            sel=document.getElementsByName('ts_d')[0];
+            time_start+= sel.options[ sel.selectedIndex ].text;
+            
+            sel=document.getElementsByName('tf_y')[0];
+            const time_finish= sel.options[ sel.selectedIndex ].text+"-";
+            sel=document.getElementsByName('tf_m')[0];
+            time_finish+= sel.options[ sel.selectedIndex ].text+"-";
+            sel=document.getElementsByName('tf_d')[0];
+            time_finish+= sel.options[ sel.selectedIndex ].text;
+            
+            sel=document.getElementsByName('ts_hour')[0];
+            const hs = sel.options[ sel.selectedIndex ].text;
+            sel=document.getElementsByName('tf_hour')[0];
+            const hf = sel.options[ sel.selectedIndex ].text;
+            
+            if (document.getElementById('every').checked==true) every=1; else every=0;
+            fetch('/admin/get_stats', {
+                method: POST,
+                body: {
+                    time_start: time_start,
+                    time_finish: time_finish,
+                    hs: hs,
+                    hf: hf
+                },
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            });
+        }
+    </script>
+    <form action="/admin/get_stats" method="post" class="well form-inline" style="background-color: aliceblue; margin: 10px; border-radius: 25px;">
+        Товарные категории
+           <select name="postav">
+            <option value="-1" selected="">все блюда</option>
+            <% dto.forEach(dto => { %>
+                <option value="<%= dto.subcategory_id %>"><%= dto.subcategory_name %> (<%= dto.category_name %>)</option>
+            <% }); %>
+            </select>
+        
+        <div id="when">
+            <select style="width:70;" name="ts_d">
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+                <option value="29">29</option>
+                <option value="30">30</option>
+                <option value="31">31</option>
+            </select>&nbsp;&nbsp;
+            <select style="width:70;" name="ts_m">
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+            </select>&nbsp;&nbsp;
+            <select style="width:100;" name="ts_y"><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option><option value="2014">2014</option><option value="2015">2015</option><option value="2016">2016</option><option value="2017">2017</option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option><option value="2021">2021</option><option value="2022">2022</option><option value="2023">2023</option><option value="2024" selected="">2024</option><option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option><option value="2028">2028</option><option value="2029">2029</option><option value="2030">2030</option>
+            </select>&nbsp;&nbsp;часы:
+            <select style="width:70;" name="ts_hour"><option value="00">00</option><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="8" selected="">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option>
+            </select>
+            <br>До <select style="width:70;" name="tf_d"><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28" selected="">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option>
+            </select>&nbsp;&nbsp;
+            <select style="width:70;" name="tf_m"><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+            </select>&nbsp;&nbsp;<select style="width:100;" name="tf_y"><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option><option value="2014">2014</option><option value="2015">2015</option><option value="2016">2016</option><option value="2017">2017</option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option><option value="2021">2021</option><option value="2022">2022</option><option value="2023">2023</option><option value="2024" selected="">2024</option><option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option><option value="2028">2028</option><option value="2029">2029</option><option value="2030">2030</option>
+            </select>&nbsp;&nbsp;часы:<select style="width:70;" name="tf_hour"><option value="0">00</option><option value="1">01</option><option value="2">02</option><option value="3">03</option><option value="4">04</option><option value="5">05</option><option value="6">06</option><option value="7">07</option><option value="8" selected="">08</option><option value="9">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option></select> 
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="checkOrderHistory" id="flexRadioDefault1">
+                <label class="form-check-label" for="checkOrderHistory">
+                  Просмотреть историю счетов
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="checkDishHistory" id="flexRadioDefault2">
+                <label class="form-check-label" for="checkDishHistory">
+                  Просмотреть историю продажи блюд
+                </label>
+              </div>
+        </div>
+        
+        
+          <button type="submit" class="btn btn-large btn-primary">Смотреть историю</button>
+          &nbsp;&nbsp;&nbsp;
+        </form>
+        
+        <% if(locals.orderHistory) {%>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>Дата заказа</td>
+                        <td>Детали заказа</td>
+                        <td>Сумма заказа</td>
+                        <td>Размер скидки</td>
+                        <td>Сумма заказа с учётом скидки</td>
+                        <td>Комментарий к заказу</td>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                <% orderHistory.forEach(order => { %>
+                    <tr onclick="document.getElementById('<%= order.id %>').classList.remove('none')">
+                        <td><%= order.orderDate %></td>
+                        <td>
+                            <% if(order.isComplete) {%>
+                                <p>Заказ завершён</p>
+                            <% } else {%>
+                                <div style="display: flex; justify-content: space-around;">
+                                    <button type="button" class="btn btn-success">
+                                        Завершить
+                                    </button>
+                                    <button type="button" class="btn btn-danger">
+                                        Отклонить
+                                    </button>
+                                </div>
+                            <% } %>
+                        </td>
+                        <td><%= order.sum %></td>
+                        <td><%= order.sale %>%</td>
+                        <td><%= order.sumWithSale %></td>
+                        <td><%= order.description %></td>
+                    </tr>
+                    <tr data-orderDetails id="<%= order.id %>" onclick="this.classList.add('none')" class="none">
+                        <td colspan="6">
+                            <% order.orderLineArray.forEach(dish => { %>
+                                <p><%= dish.name %> - <%= dish.price %> руб - <%= dish.count %> шт</p>
+                            <% }); %>
+                        </td>  
+                    </tr>
+                <%}); %>
+                </tbody>
+            </table>
+        <%}%>
+
+        <% if(locals.dishHistory) {%>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>Название блюда</td>
+                        <td>Цена без скидки</td>
+                        <td>Количество продано</td>
+                        <td>Выручка без учёта скидки</td>
+                        <td>Выручка с учётом скидки</td>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                <% dishHistory.forEach(dish => { %>
+                    <tr>
+                        <td><%= dish.name %></td>
+                        <td><%= dish.price %></td>
+                        <td><%= dish.totalSales %></td>
+                        <td><%= dish.sum %></td>
+                        <td><%= dish.sumWithSale %></td>
+                    </tr>
+                <%}); %>
+                </tbody>
+            </table>
+        <%}%>
+    <%- include('footer'); -%>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <script src="/js/menu.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style_for_menu.css">
+    <link rel="icon" href="/jpgs/favicon.ico">
+
+    <title>Столы | Cherry Music Bar</title>
+</head>
+<style>
+    .container {
+    margin: 10px;
+    background-color: white;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 10px;
+    }
+</style>
+<body>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sum = <%= order.sum %>;
+            const saleInput = document.querySelector('#sale_input');
+            // Клик по области окна
+            saleInput.addEventListener('change', function (event) {
+                document.querySelector('#sale').innerText = (sum - sum * (1 - saleInput.value/100)).toFixed(2);
+                document.querySelector('#sumWithSale').innerText = (sum * (1 - saleInput.value/100)).toFixed(2);
+            });
+        });
+        function completeOrder() {
+            const sale = document.querySelector('#sale_input').value;
+            fetch(`/admin/tables/complete_order_handler`, {
+                method: "POST",
+                body: JSON.stringify({
+                    order_id: <%= order.id %>,
+                    sale: sale
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            });
+            setTimeout(() => {
+                window.location.href='/admin/tables';
+            }, 100)
+            
+        }
+    </script>
+
+    <div class="container" id="<%= order.id %>">
+        <h1 class="fw-bold fs-2">Расчёт с клиентом</h1>
+        <div class="form-gorup">
+            <label for="sale_input" style="padding-bottom: 5px;">Введите размер скидки</label>
+            <input class="form-control" type="number" id="sale_input" name="sale_input" placeholder="Введите размер скидки" value="0">
+        </div>
+        <p>Скидка составляет: <span data-sum="<%= order.sum %>" id="sale"><%= order.sum - order.sumWithSale %></span> руб.</p>
+        <table id="orderLineArray" class="table table-striped table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th colspan="4">Детали заказа</th>
+                </tr>
+                <tr>
+                    <td align="left">№</td>
+                    <td align="left">Название</td>
+                    <td align="right">Количество</td>
+                    <td align="right">Сумма (с учётом скидки)</td>
+                </tr>
+            </thead>
+            <tbody>
+                <% order.orderLineArray.forEach((orderLine, index) => { %>
+                    <tr id="<%= orderLine.id %>">
+                        <td align="left"><%= index+1 %></td>
+                        <td align="left"><%= orderLine.name %> <%= orderLine.size || '' %></td>
+                        <td align="right"><%= orderLine.count %></td>
+                        <td align="right"><%= orderLine.price %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2"><p>Всего к оплате: <span id="sumWithSale"><%= order.sumWithSale %></span></p></td>
+                    <td colspan="2" align="center"><button type="button" class="btn btn-success btn-lg" onclick="completeOrder()">Завершить заказ</button></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/admin/updateTableOrder.js"></script>
+</body>
+</html>

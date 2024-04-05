@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить в меню</title>
+</head>
+<style>
+  .pizza-price {
+    display: flex;
+    flex-direction: column;
+    max-width: 200px;
+  }
+  .none {
+    display: none;
+  }
+</style>
+<body>
+  <form action="/add_dish">
+    <label for="category">Категория</label>
+    <select id="cat" name="category">
+      <% categories.forEach(category => { %>
+        <option value="<%= category.id %>"><%= category.category_name %></option>
+      <% }); %>
+    </select>
+    <label for="subcategory">Подкатегория</label>
+    <select id="subcat" name="subcategory">
+      <% subcategories.forEach(category => { %>
+        <option value="<%= category.id %>"><%= category.subcategory_name %></option>
+      <% }); %>
+    </select>
+    <label for="name">Название</label>
+    <input type="text" id="name" name="name" placeholder="Название блюда">
+    <label for="name">Описание</label>
+    <textarea id="desc" name="description" placeholder="Описание блюда"></textarea>
+    <div class="prices" id="prices">
+      <label for="name">Цена</label>
+      <input type="text" id="price" name="price" placeholder="Цена">
+    </div>
+    <div class="pizza-price none" id="pizza-price">
+      <label for="price30">Цена за 30</label>
+      <input type="text" id="price30" name="price30" placeholder="Цена">
+      <label for="price36">Цена за 36</label>
+      <input type="text" id="price36" name="price36" placeholder="Цена">
+      <label for="price50">Цена за 50</label>
+      <input type="text" id="price50" name="price50" placeholder="Цена">
+    </div>
+    
+
+    <button type="submit" id="btn-form">Добавить</button>
+  </form>
+  
+<script type="text/javascript" src="js/dbData.js"></script>
+<script type="text/javascript" src="js/addMenu.js"></script>
+</body>
+</html>

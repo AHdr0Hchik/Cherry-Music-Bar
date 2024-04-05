@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <script src="/js/menu.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style_for_menu.css">
+    <link rel="icon" href="/jpgs/favicon.ico">
+
+    <title>Cherry Music Bar</title>
+</head>
+
+<body onload="showPopup()">
+    <%- include('popup'); -%>
+    <header id="header">
+        <div class="logo">
+            <img src="/jpgs/logo.png" alt="Logo">
+        </div>
+    </header>
+    <%- include('upmenu'); -%>
+    <div class="container mb-5">
+        <div class="row">
+
+            <!-- Товары -->
+            <div class="col-md-8">
+                <div class="row" id="products-container">
+
+                    <% categories.forEach(category => { %>
+                        <a href="/subcategories?category_id=<%= category.id %>" class="col-md-6">
+                            <div class="card mb-4" data-id="<%= category.id %>">
+                                <img class="product-img" src="<%= category.imgUrl %>" alt="">
+                                <div class="card-body text-center">
+                                    <h4 class="item-title"><%= category.category_name %></h4>
+                                </div>
+                            </div>
+                        </a>
+                    <% }); %>
+                </div>
+            </div>
+
+            <!-- Корзина -->
+            <div class="col-md-4">
+
+                <!-- Корзина -->
+                <div class="mb-4 card">
+                    <div class="card-body">
+                        <h4 class="card-title">Ваш заказ</h4>
+
+                        <div data-cart-empty="" class="alert alert-secondary none" role="alert">
+                            Корзина пуста
+                        </div>
+
+                        <!-- cart-wrapper -->
+                        <div class="cart-wrapper"></div>
+                        <!-- // cart-wrapper -->
+
+                        <!-- Стоимость заказа -->
+                        <div class="cart-total">
+                            <p data-cart-delivery class="none">
+                                <span class="h5">Доставка:</span>
+                                <span class="delivery-cost">250 ₽</span><br>
+                            </p>
+                            <p><span class="h5">Итого:</span>
+                                <span class="total-price">0</span>
+                                <span class="rouble">₽</span></p>
+                        </div>
+                        <!-- // Стоимость заказа -->
+
+                    </div>
+
+                    <!-- Оформить заказ -->
+                    <%- include('zakaz'); -%>
+                    <!-- // Оформить заказ -->
+
+                </div>
+                <!-- // Корзина -->
+
+            </div>
+
+        </div>
+    </div>
+
+    <%- include('footer'); -%>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/upMenu.js"></script>
+    <script type="text/javascript" src="/js/toggleCartStatus.js"></script>
+    <script type="text/javascript" src="/js/cart.js"></script>
+</body>
+</html>

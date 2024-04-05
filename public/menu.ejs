@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <script src="/js/menu.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style_for_menu.css">
+    <link rel="icon" href="/jpgs/favicon.ico">
+
+    <title>Меню | Cherry Music Bar</title>
+</head>
+<body id="">
+
+    <header id="header">
+        <a class="logo" href="/"><img src="../jpgs/logo.png" alt="Logo"></a>
+    </header>
+    <%- include('upmenu'); -%>
+    <div class="container mb-5">
+        <div class="row">
+
+            <!-- Товары -->
+            <div class="col-md-8">
+                <div class="row" id="products-container">
+                    <% menu.forEach(dish => { %>
+                        <% if(dish.subcategory != 11) {%>
+                            <div class="col-md-6">
+                                <div class="card mb-4 front" data-id="<%= dish.id %>">
+                                    <img class="product-img" src="<%= dish.imgUrl %>" alt="<%= dish.name %>">
+                                    <div class="card-body text-center">
+                                        <h4 class="item-title" id="<%= dish.subcategory %>"><%= dish.name %></h4>
+                                        <div class="details-wrapper">
+                                            <div class="items counter-wrapper">
+                                                <div class="items__control" data-action="minus">-</div>
+                                                <div class="items__current" data-counter>1</div>
+                                                <div class="items__control" data-action="plus">+</div>
+                                            </div>
+                            
+                                            <div class="price">
+                                                <div class="price__currency"><%= dish.price %> ₽</div>
+                                            </div>
+                                        </div>
+                            
+                                        <button data-cart type="button" class="btn btn-block btn-outline-warning">+ в корзину</button>
+                            
+                                        <button data-anim type="button" class="btn btn-block btn-outline-warning" style="margin-left: 20px">к описанию</button>
+                                    </div>
+                                </div>
+                            
+                                <div class="card mb-4 back none" data-id="">
+                                    <div class="card-body text-center">
+                                        <h4 class="item-title"><%= dish.name %></h4>
+                                        <h5 class="item-desc"><%= dish.description %></h5>
+                                        <button data-anim type="button" class="btn btn-block btn-outline-warning">назад</button>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } else { %>
+                            <div class="col-md-6">
+                                <div class="card mb-4 front" data-id="<%= dish.id %>">
+                                    <img class="product-img" src="<%= dish.imgUrl %>" alt="<%= dish.name %>">
+                                    <div class="card-body text-center">
+                                        <h4 class="item-title" id="<%= dish.subcategory %>"><%= dish.name %></h4>
+                                        <div class="details-wrapper">
+                                            <div class="items counter-wrapper">
+                                                <div class="items__control" data-action="minus">-</div>
+                                                <div class="items__current" data-counter>1</div>
+                                                <div class="items__control" data-action="plus">+</div>
+                                            </div>
+                                            <div class="items size-wrapper">
+                                                <div class="items__control active" data-action="pizza" data-sb-curent-price="<%= dish.price30 %>" data-sb-curent-size="30" data-sb-curent-id-or-vendor-code="0030pz">30</div>
+                                                <div class="items__control" data-action="pizza" data-sb-curent-price="<%= dish.price36 %>" data-sb-curent-size="36" data-sb-curent-id-or-vendor-code="0036pz">36</div>
+                                                <div class="items__control" data-action="pizza" data-sb-curent-price="<%= dish.price50 %>" data-sb-curent-size="50" data-sb-curent-id-or-vendor-code="0050pz">50</div>
+                                            </div>
+                                            <div class="price">
+                                                <div class="price__currency"><%= dish.price30 %> ₽</div>
+                                            </div>
+                                        </div>
+                                        <button data-cart type="button" class="btn btn-block btn-outline-warning">+ в корзину</button>
+                                        <button data-anim type="button" class="btn btn-block btn-outline-warning" style="margin-left: 20px">к описанию</button>
+                                    </div>
+                                </div>
+                                <div class="card mb-4 back none" data-id="${dir} ${data[i].id}">
+                                    <div class="card-body text-center">
+                                        <h4 class="item-title"><%= dish.name %></h4>
+                                        <h5 class="item-desc"><%= dish.description %></h5>
+                                        <button data-anim type="button" class="btn btn-block btn-outline-warning">назад</button>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+                    <% }); %>
+                </div>
+            </div>
+
+            <!-- Корзина -->
+            <div class="col-md-4">
+
+                <!-- Корзина -->
+                <div class="mb-4 card">
+                    <div class="card-body">
+                        <h4 class="card-title">Ваш заказ</h4>
+
+                            <div data-cart-empty class="alert alert-secondary" role="alert">
+                                Корзина пуста
+                            </div>
+
+                            <!-- cart-wrapper -->
+                            <div class="cart-wrapper">
+
+                            </div>
+                            <!-- // cart-wrapper -->
+
+                            <!-- Стоимость заказа -->
+                            <div class="cart-total">
+                                <p data-cart-delivery class="none">
+                                    <span class="h5">Доставка:</span>
+                                    <span class="delivery-cost">250 ₽</span><br>
+                                </p>
+                                <p><span class="h5">Итого:</span>
+                                    <span class="total-price">0</span>
+                                    <span class="rouble">₽</span></p>
+                            </div>
+                            <!-- // Стоимость заказа -->
+
+                    </div>
+
+                    <!-- Оформить заказ -->
+                    <%- include('zakaz'); -%>
+                    <!-- // Оформить заказ -->
+
+                </div>
+                <!-- // Корзина -->
+
+            </div>
+
+        </div>
+    </div>
+
+    <%- include('footer'); -%>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/upMenu.js"></script>
+    <script type="text/javascript" src="/js/toggleCartStatus.js"></script>
+    <script type="text/javascript" src="/js/cart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="http://cdn.jsdelivr.net/npm/suggestions-jquery@22.6.0/dist/css/suggestions.min.css" rel="stylesheet" />
+    <script src="http://cdn.jsdelivr.net/npm/suggestions-jquery@22.6.0/dist/js/jquery.suggestions.min.js"></script>
+
+    <!-- <script>
+        $("#address").suggestions({
+            token: "9208654235c6df310184f7826c5f3f730cbe5f07",
+            type: "ADDRESS",
+            constraints: {
+                locations: {
+                    country_iso_code: 'RU',
+                    city: ['Кировское', 'Енакиево', 'Шахтёрск', 'Ждановка']
+                }
+            },
+            /* Вызывается, когда пользователь выбирает одну из подсказок */
+            onSelect: function(suggestion) {
+                console.log(suggestion);
+            }
+        });
+    </script> -->
+    <!-- <script type="text/javascript" src="/js/autocomplete.js"></script> -->
+</body>
+</html>

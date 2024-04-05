@@ -1,0 +1,20 @@
+header{
+    background-image: url('../jpgs/dishes/header-back.jpg');
+    background-repeat-x: no-repeat;
+    background-size: cover;
+    height: 10vh;
+    box-sizing: border-box;
+    position: relative;
+}
+.logo{
+    position: absolute;
+    box-sizing: border-box;
+    width: 80px;
+    height: 80px;
+    top:0;
+    padding: 10px;
+}
+.logo>img{
+    width: auto;
+    max-height: 8vh;
+}

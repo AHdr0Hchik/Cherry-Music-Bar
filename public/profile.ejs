@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <script src="/js/menu.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style_for_menu.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="icon" href="/jpgs/favicon.ico">
+
+    <title>Cherry Music Bar</title>
+</head>
+
+<body onload="showPopup()">
+
+    <%- include('popup'); -%>
+    <header id="header">
+        <div class="logo">
+            <img src="/jpgs/logo.png" alt="Logo">
+        </div>
+    </header>
+    <%- include('upmenu'); -%>
+    <div class="container" style="background-color: aliceblue; border-radius: 25px; padding: 25px; margin: 25px auto">
+        <div class="row">
+                <p class="first_name">Имя: <span><%= user.firstname %> </span></p>
+                <p class="last_name">Фамилия: <span><%= user.lastname %> </span></p>
+                <p style="display: flex;" class="pnohe" id="phone">Номер телефона: <% if(!user.phoneNumber) { %><a class="link-offset-2 link-underline link-underline-opacity-50" onclick="updatePhoneNumber()">Добавить номер телефона</a><% } else { %><span><%= user.phoneNumber %></span><% } %></p>
+                <p style="display: flex;" class="address" id="address">Адрес: <% if(!user.address) { %><a class="link-offset-2 link-underline link-underline-opacity-50" onclick="updateAddress()">Добавить адрес доставки</a><% } else { %><span><%= user.address %></span><% } %></p>
+        </div>
+    </div>
+
+    <%- include('footer'); -%>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        function updatePhoneNumber() {
+            const phoneBlock = document.getElementById('phone');
+            phoneBlock.removeChild(phoneBlock.lastChild);
+            
+            const form = document.createElement('form');
+            form.action = "/auth/updatePhoneNumber";
+            form.method = "POST";
+
+            const input = document.createElement('input');
+            input.type = "phone";
+            input.name = "newPhone";
+            input.placeholder = "Введите номер телефона";
+
+            const button = document.createElement('button');
+            button.type = "submit";
+            button.textContent = "Подтвердить";
+
+            form.appendChild(input);
+            form.appendChild(button);
+
+            phoneBlock.appendChild(form);
+        }
+        function updateAddress() {
+            const phoneBlock = document.getElementById('address');
+            phoneBlock.removeChild(phoneBlock.lastChild);
+            
+            const form = document.createElement('form');
+            form.action = "/auth/updateAddress";
+            form.method = "POST";
+
+            const input = document.createElement('input');
+            input.type = "text";
+            input.name = "newAddress";
+            input.placeholder = "Введите адрес";
+
+            const button = document.createElement('button');
+            button.type = "submit";
+            button.textContent = "Подтвердить";
+
+            form.appendChild(input);
+            form.appendChild(button);
+
+            phoneBlock.appendChild(form);
+        }
+    </script>
+</body>
+</html>

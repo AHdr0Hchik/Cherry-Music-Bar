@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <script src="/js/menu.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style_for_menu.css">
+    <link rel="icon" href="/jpgs/favicon.ico">
+
+    <title>Столы | Cherry Music Bar</title>
+</head>
+<style>
+    .container {
+    margin: 10px;
+    background-color: white;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 10px;
+    }
+    a, a:visited {
+        color:white;
+    }
+    a:hower {
+        color: rgb(220, 220, 220);
+    }
+    .modal-dialog {
+        width: 50%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+        .modal-content {
+        height: auto;
+        min-height: 100%;
+        border-radius: 0;
+    }
+</style>
+<body id="">
+    <div class="container">
+        <div class="row">
+            
+            <div class="col" style="max-width: 200px;">
+                <% tables.forEach((table, index) => {%>
+                    <% for(let i=0; i<table.count; i++) { %>
+                        <% var hasMatch = orders.some(function(order) { return order.pos === table.id + ':' + i; }); %>
+                        <% if (!hasMatch) { %>
+                            <div style="padding-bottom: 10px; padding-right: 10px;">
+                                <a href="/admin/tables/add_to_table?id=<%= table.id %>&count=<%= i %>&new=1" class="btn btn-large btn-success" style="width:90%">
+                                    <%= table.name %>:<%= i+1 %>
+                                </a>
+                            </div>
+                        <% } %>
+                    <%}%>
+                <% }); %>
+            </div>
+            <div class="col" style="max-width: 200px;">
+                <% tables.forEach((table, index) => {%>
+                    <% for(let i=0; i<table.count; i++) { %>
+                        <% var index = orders.findIndex(function(order) { return order.pos === table.id + ':' + i; }); %>
+                        <% if (index !== -1) { %>
+                            <div style="padding-bottom: 10px; padding-right: 10px;">
+                                <button class="btn btn-large btn-primary" data-toggle="modal" data-target="#myModal_<%=table.id%>_<%=i%>" style="width:90%" id="<%= table.id %>:<%= i %>">
+                                    <p><%= table.name %>:<%= i+1 %></p>
+                                    <p><%= orders[index].name %></p>
+                                    <p><%= orders[index].sum %> руб.</p>
+                                </button>
+                            </div>
+
+                            <div class="modal fade" id="myModal_<%=table.id%>_<%=i%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3><%= table.name %>:<%= i+1 %>  / Сумма заказа без скидки: <%= orders[index].sum %> руб. </h3>
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table table-striped table-bordered table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th>№</th>
+                                                        <th>БЛЮДО</th>
+                                                        <th>Кол</th>
+                                                        <th>Сумма</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                <% orders[index].orderLineArray.forEach((orderLine, index) => { %>
+                                                    <tr>
+                                                        <td><%= index+1 %></td>
+                                                        <td><%= orderLine.name %> <%= orderLine.size || '' %></td>
+                                                        <td><%= orderLine.count %></td>
+                                                        <td><%= orderLine.count * orderLine.price %></td>
+                                                    </tr>
+                                                <% }) %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">Закрыть</button>
+                                            <a href="/admin/tables/complete_order?order_id=<%= orders[index].id %>" class="btn btn-warning btn-lg">Расчёт</a>
+                                            <a href="/admin/tables/add_to_table?id=<%= table.id %>&count=<%= i %>&new=0" class="btn btn-success btn-lg">+ Добавить в заказ</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+                    <%}%>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
