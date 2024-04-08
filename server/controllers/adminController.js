@@ -5,6 +5,7 @@ const Tables = require('../classes/Tables');
 const Token = require('../classes/Token');
 const ApiError = require('../classes/exceptions/api-error');
 const Order = require('../classes/Order');
+const OrderLine = require('../classes/OrderLine');
 
 const db = new Database;
 
@@ -146,3 +147,99 @@ exports.complete_order_handler = async (req, res) => {
         return ApiError.UnknownError();
     }
 };
+
+exports.nomenclature = async (req, res) => {
+    try {
+        console.log(req.query);
+        const [subcategories] = await db.connection.promise().query('SELECT * FROM menu_subcategories WHERE type=?;', [req.query.type]);
+        const [categories] = await db.connection.promise().query('SELECT id, category_name FROM menu_categories');
+        const [rawMenu] = await db.connection.promise().query('SELECT * FROM menu');
+    
+        const menu = Object.values(rawMenu.reduce((acc, item) => {
+            const subcategory = item.subcategory;
+            if (!acc[subcategory]) {
+              acc[subcategory] = [];
+            }
+            acc[subcategory].push(item);
+            return acc;
+        }, {}));
+    
+        return res.render(createPath('nomenclature'), {subcategories: subcategories, categories: categories, menu: menu, type: req.query.type});      
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError();
+    }
+    
+}
+
+exports.item_edit = async (req, res) => {
+    try {
+        let subcategories;
+        if(req.query.type) {
+            [subcategories] = await db.connection.promise().query('SELECT * FROM menu_subcategories WHERE type = ?;', [req.query.type]);
+        } else {
+            [subcategories] = await db.connection.promise().query('SELECT * FROM menu_subcategories;');
+        }
+        const [components_cats] = await db.connection.promise().query('SELECT * FROM menu_subcategories WHERE type<>"production"');
+        const [components] = await db.connection.promise().query('SELECT menu.*, menu_subcategories.id AS subcategory_id, menu_subcategories.subcategory_name, menu_subcategories.type FROM menu JOIN menu_subcategories ON menu.subcategory = menu_subcategories.id WHERE menu_subcategories.type<>"production"');
+        console.log(components);
+        
+        const [packs] = await db.connection.promise().query('SELECT id, name FROM menu WHERE subcategory=15;');
+
+        if(!req.query.orderLine) {
+            return res.render(createPath('item_edit'), {subcategories: subcategories, packs: packs, type: req.query.type});
+        }
+        const [orderLine] = await db.connection.promise().query('SELECT * FROM menu WHERE id=?', [parseInt(req.query.orderLine)]);
+        let subcategory = subcategories.find(item => item.id == orderLine[0].subcategory);
+        if (subcategory) {
+            orderLine[0].type = subcategory.type;
+        }
+        if(!orderLine[0]) {
+            return ApiError.UnknownError();
+        }
+        return res.render(createPath('item_edit'), {orderLine: orderLine[0], subcategories: subcategories, packs: packs});
+    } catch(e) {
+        console.log(e);
+        return ApiError.UnknownError();
+    }
+}
+
+exports.add_orderLine = async (req, res) => {
+    try {
+        console.log(req.body);
+        const orderLine = new OrderLine(req.body.itemData.name, req.body.itemData.subcategory);
+        await orderLine.setCategoryBySubcategory();
+        if(req.body.itemData.prices.price) {
+            orderLine.Price(req.body.itemData.prices.price);
+        } else {
+            orderLine.Price30(req.body.itemData.prices.price30);
+            orderLine.Price36(req.body.itemData.prices.price36);
+            orderLine.Price50(req.body.itemData.prices.price50);
+        }
+
+        orderLine.ForSite(req.body.itemData.forSite);
+        orderLine.WithPack(req.body.itemData.withPack);
+        orderLine.Pack_Id(req.body.itemData.pack_id);
+        
+        if(req.body.new || !req.body.itemData.id) {
+            return orderLine.addOrderLineToDB();
+        }
+        orderLine.Id(req.body.itemData.id);
+        return orderLine.updadeInDB();
+    } catch(e) {
+        console.log(e);
+        return ApiError.UnknownError();
+    }
+}
+
+exports.pos_manager = async (req, res) => {
+    try {
+        const [pos] = await db.connection.promise().query('SELECT * FROM pos;');
+
+        res.render(createPath('pos_manager'), {pos: pos});
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError();
+    }
+}
+

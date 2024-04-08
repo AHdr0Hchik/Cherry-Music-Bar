@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <script src="/js/menu.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap_old.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style_for_menu.css">
+    <link rel="stylesheet" href="/css/helpmix.css">
+    <link rel="icon" href="/jpgs/favicon.ico">
+
+    <title>Номенклатура | Cherry Music Bar</title>
+</head>
+<style>
+    .container {
+    margin: 10px;
+    background-color: white;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 10px;
+    }
+    a, a:visited {
+        color:white;
+    }
+    a:hower {
+        color: rgb(220, 220, 220);
+    }
+    .nav a { 
+        color: black;
+    }
+    .modal-dialog {
+        width: 50%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+        .modal-content {
+        height: auto;
+        min-height: 100%;
+        border-radius: 0;
+    }
+    .navbar-static-top {
+    position: static;
+    margin-bottom: 0;
+}
+
+    .navbar-inner {
+    min-height: 40px;
+    padding-right: 20px;
+    padding-left: 20px;
+    background-color: #fafafa;
+    background-image: -moz-linear-gradient(top,#fff,#f2f2f2);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#f2f2f2));
+    background-image: -webkit-linear-gradient(top,#fff,#f2f2f2);
+    background-image: -o-linear-gradient(top,#fff,#f2f2f2);
+    background-image: linear-gradient(to bottom,#fff,#f2f2f2);
+    background-repeat: repeat-x;
+    border: 1px solid #d4d4d4;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',endColorstr='#fff2f2f2',GradientType=0);
+    -webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.065);
+    -moz-box-shadow: 0 1px 4px rgba(0,0,0,0.065);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.065);
+}
+.navbar {
+    width: 100wv;
+}
+body {
+    background-image: url('../jpgs/body-back.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+</style>
+<body id="">
+    <script>
+        function showSubcategory(id) {
+            const otherDishes = document.querySelectorAll('#subcat');
+            otherDishes.forEach(item => {
+                item.classList.add('none');
+            });
+            const targetDishes = document.getElementById(`subcategory_${id}`).closest('#subcat').classList.remove('none');
+        }
+    </script>
+    <%- include('upmenu_crm') %>
+    <div class="container">
+        <h1 class="fw-bold fs-2"> Продукция производств - блюда, услуги </h1>
+        <table class="receptura_main_table">
+            <tbody>
+                <tr>
+                    <td class="td_left" onclick="" style="width: 20vw;">
+                        <div>
+                            <a class="btn btn-success" onclick=""><i class="icon-plus icon-white"></i> Добавить категорию</a>
+                            <div class="pull-right" style="widht:200px;">
+                               <label for="hid_cat_id"><input type="checkbox" onchange="" id="hid_cat_id" name="hid_cat_id">Показать скрытые категории
+                               </label>
+                            </div>
+                        
+                        </div>
+                        <table class="table table-striped table_menu">
+                            <% subcategories.forEach(subcategory => { %>
+                                <% const matchedCategory = categories.find(category => category.id === subcategory.category); %>
+                                <tr style="height: 50px;" id="<%= subcategory.id %>" onclick="showSubcategory(<%= subcategory.id %>)">
+                                    <td>
+                                        <font color="orange">продукция &gt; </font>
+                                        <font color="green"><%= matchedCategory.category_name %></font>
+                                        <br>
+                                        <br>
+                                        <font style="font-size:14px; font-weight:bold; margin-left: 20px;"></font><%= subcategory.subcategory_name %></font>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </table>
+                    </td>
+                    <td class="td_right details">
+                        <table style="width: 100%;" class="table_receptura_main_tov_list">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                      <input type="text" name="poisk" placeholder="Поиск по всем категориям" style="width:100%;" class="input-medium search-query">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td id="tov_list">
+                                        <div>
+                                            <label for="id_check_hid"><input type="checkbox" id="id_check_hid"> Показать скрытые товары (товары из скрытых категорий показаны не будут)</label>
+                                        </div>
+                                        <div>
+                                            <a href="/admin/nomenclature/item_edit?type=<%= type %>" class="btn btn-success"><i class="icon-plus icon-white"></i> Добавить</a>
+                                        </div>
+                                        <hr>
+                                        <% menu.forEach(item => { %>
+                                            <div class="subcategory none" id="subcat">
+                                                <% item.forEach(orderLine => { %> 
+                                                    <div class="width100" id="subcategory_<%= orderLine.subcategory %>">
+                                                        <div class="btn-group width100">
+                                                            <a href="/admin/nomenclature/item_edit?orderLine=<%= orderLine.id %>" class="btn btn-success" style="width:100%;"> <%= orderLine.name %>
+                                                                <i class="icon-pencil pull-right icon-white"></i>
+                                                            </a>
+                                                            <% if(orderLine.subcategory === 11) { %>
+                                                                <button onclick="" class="btn btn-primary" style="width:80px;text-align:right;"> <%= orderLine.price30.toFixed(2) %></button>
+                                                                <button onclick="" class="btn btn-primary" style="width:80px;text-align:right;"> <%= orderLine.price36.toFixed(2) %></button>
+                                                                <button onclick="" class="btn btn-primary" style="width:80px;text-align:right;"> <%= orderLine.price50.toFixed(2) %></button>
+                                                            <% } else { %>
+                                                                <button onclick="" class="btn btn-primary" style="width:80px;text-align:right;"> <%= orderLine.price.toFixed(2) %></button>
+                                                            <% } %>
+                                                            <button class="btn btn-danger" style="cursor:hand;">X&nbsp;</button>
+                                                        </div>
+                                                    </div>
+                                                <% }) %>
+                                            </div>
+                                        <% }); %>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,12 +1,11 @@
 const Database = require('./Database');
 
 class OrderLine {
-    constructor(name, category, subcategory) {
+    constructor(name, subcategory) {
         this.name = name,
-        this.category = category,
         this.subcategory = subcategory
     }
-    
+    category;
     id;
     techCard = new Array;
     selfCost;
@@ -15,7 +14,31 @@ class OrderLine {
     price36 = 0;
     price50 = 0;
     description = '';
+    forSite = false;
+    withPack = false;
+    pack_id = -1;
 
+    type;
+
+    Type(type) {
+        if(!type) return this.forSite;
+        else this.type = type
+    }
+
+    ForSite(forSite) {
+        if(!forSite) return this.forSite;
+        else this.forSite = forSite;
+    }
+
+    WithPack(withPack) {
+        if(!withPack) return this.withPack;
+        else this.withPack = withPack;
+    }
+
+    Pack_Id(pack_id) {
+        if(!pack_id) return this.pack_id;
+        else this.pack_id = pack_id;
+    }
 
     Id(id) {
         if(!id) return this.id;
@@ -94,11 +117,26 @@ class OrderLine {
         } 
     }
 
+    async setCategoryBySubcategory() {
+        const db = new Database;
+        const [subcategories] = await db.connection.promise().query('SELECT id, category FROM menu_subcategories;')
+
+        let subcategory = subcategories.find(item => item.id == this.subcategory);
+        if (subcategory) {
+            this.category = subcategory.category;
+        }
+    }
+
     //add and update db
     async addOrderLineToDB() {
         const db = new Database;
-        await db.connection.promise().query('INSERT INTO Menu (name, category, subcategory, price, price30, price36, price50, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?);',
-        [this.name, this.category, this.subcategory, this.price, this.price30, this.price36, this.price50, this.description])
+        await db.connection.promise().query('INSERT INTO Menu (name, category, subcategory, price, price30, price36, price50, is_forSite, is_withPack, pack_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
+        [this.name, this.category, this.subcategory, this.price, this.price30, this.price36, this.price50, this.forSite, this.withPack, this.pack_id]);
+    }
+    async updadeInDB() {
+        const db = new Database;
+        await db.connection.promise().query('UPDATE Menu SET name=?, category=?, subcategory=?, price=?, price30=?, price36=?, price50=?, is_forSite=?, is_withPack=?, pack_id=? where id=?;',
+        [this.name, this.category, this.subcategory, this.price, this.price30, this.price36, this.price50, this.forSite, this.withPack, this.pack_id, this.id]);
     }
 
     async updateName() {

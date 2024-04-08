@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <script src="/js/menu.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/tablesorter.style.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style_for_menu.css">
+    <link rel="stylesheet" href="/css/helpmix.css">
+    <link rel="icon" href="/jpgs/favicon.ico">
+
+    <title>Редактор | Cherry Music Bar</title>
+</head>
+<style>
+    .container {
+    margin: 10px;
+    background-color: white;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 10px;
+    }
+    a, a:visited {
+        color:white;
+    }
+    a:hower {
+        color: rgb(220, 220, 220);
+    }
+    .modal-dialog {
+        width: 50%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+        .modal-content {
+        height: auto;
+        min-height: 100%;
+        border-radius: 0;
+    }
+    .active {
+        color: black;
+        background: inherit;
+    }
+    .cena {
+        display: block;
+    }
+    .none {
+        display: none;
+    }
+</style>
+<body id="">
+    <script>
+        function subcatChecker(value) {
+            const prices = document.querySelectorAll('.controls')[1];
+            const cena = prices.querySelector('#cena');
+            const cena_label = prices.querySelector('#cena_label');
+            const cena30 = prices.querySelector('#cena30');
+            const cena30_label = prices.querySelector('#cena30_label');
+            const cena36 = prices.querySelector('#cena36');
+            const cena36_label = prices.querySelector('#cena36_label');
+            const cena50 = prices.querySelector('#cena50');
+            const cena50_label = prices.querySelector('#cena50_label');
+
+            if(value == 11) {
+                cena.classList.add('none');
+                cena_label.classList.add('none');
+                
+                cena30.classList.remove('none');
+                cena30_label.classList.remove('none');
+                cena36.classList.remove('none');
+                cena36_label.classList.remove('none');
+                cena50.classList.remove('none');
+                cena50_label.classList.remove('none');
+            } else {
+                cena.classList.remove('none');
+                cena_label.classList.remove('none');
+                
+                cena30.classList.add('none');
+                cena30_label.classList.add('none');
+                cena36.classList.add('none');
+                cena36_label.classList.add('none');
+                cena50.classList.add('none');
+                cena50_label.classList.add('none');
+            }
+        }
+
+        function saveOrderLine(id) {
+            const name = document.querySelector('#title_edited_tov').innerText;
+            const subcat = parseInt(document.querySelector('#sel_cat').value);
+            const newItem = document.querySelector('#make_copy').checked;
+            const id2 = !newItem ? id : undefined;
+            const price = document.querySelector('#cena') ? parseFloat(document.querySelector('#cena').value) : undefined;
+            const price30 = document.querySelector('#cena30') ? parseFloat(document.querySelector('#cena30').value) : undefined;
+            const price36 = document.querySelector('#cena36') ? parseFloat(document.querySelector('#cena36').value) : undefined;
+            const price50 = document.querySelector('#cena50') ? parseFloat(document.querySelector('#cena50').value) : undefined;
+            const forSite = document.querySelector('#forSite').checked;
+            const withPack = document.querySelector('#withPack').checked;
+            const pack_id = document.querySelector('#withPack').checked ? parseInt(document.querySelector('#packs').value) : -1;
+
+            const prices = {price: price, price30: price30, price36: price36, price50: price50};
+            const itemData = {id: id2, name: name, subcategory: subcat, prices: prices, forSite: forSite, withPack: withPack, pack_id: pack_id};
+
+            
+            fetch('/admin/nomenclature/add_orderLine', {
+                method: "POST",
+                body: JSON.stringify({
+                    itemData: itemData,
+                    new: newItem
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+            setTimeout(() => {
+                window.location.href='./?type=<%if(locals.orderLine) {%><%=orderLine.type%><%} else {%><%= type %><%}%>';
+            }, 100)
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const thisElement = document.querySelector('#withPack');
+            showPacks(thisElement);
+
+            function showPacks(thisEl) {
+                if(thisEl.checked) document.querySelector('#packs_input').classList.remove('none');
+                else document.querySelector('#packs_input').classList.add('none');
+            }
+        });
+
+        function showPacks(thisEl) {
+            if(thisEl.checked) document.querySelector('#packs_input').classList.remove('none');
+            else document.querySelector('#packs_input').classList.add('none');
+        }
+    </script>
+    <div class="container">
+        <h1 class="fw-bold fs-2"> Редактор номенклатуры </h1>
+        <div>
+            <% if(locals.orderLine) { %>
+                <button type="button" class="btn btn-success" id="button_save_edit_tov" onclick="saveOrderLine(<%= orderLine.id %>)">Сохранить</button>
+            <% } else { %>
+                <button type="button" class="btn btn-success" id="button_save_edit_tov" onclick="saveOrderLine()">Сохранить</button>
+            <% } %>
+            <% if(locals.orderLine) {%> 
+                <a href="./?type=<%= orderLine.type %>" class="btn btn-secondary">Отмена</a>
+            <%} else {%>
+                <a href="./?type=<%= type %>" class="btn btn-secondary">Отмена</a>
+            <%}%>
+        </div>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th style="width:50%"><font color="gray">Исходное название:</font></th>
+                    <th style="width:50%" id="title_edit_tov"><% if(locals.orderLine) { %><%= orderLine.name %><% } else { %><%= 'Новое название' %><% } %></th>
+                </tr>
+               <tr>
+                    <th><font color="gray">Отредактированное название:</font></th>
+                    <th id="title_edited_tov" name="<% if(locals.orderLine) { %><%= orderLine.id %><% } %>"><% if(locals.orderLine) { %><%= orderLine.name %><% } else {%><%= 'Новое название' %><% } %></th>
+                </tr>
+            </tbody>
+        </table>
+        <form id="form_edit_tov" autocomplete="off" class="form-horizontal" novalidate="novalidate">
+            <div class="tabbable tabs-left">
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="btn btn-primary"><a href="#tab1" data-toggle="tab">Основные сведения</a></li>
+                    <li class="btn btn-primary"><a href="#tab4" data-toggle="tab">Компоненты</a></li>
+                    <li class="btn btn-primary"><a href="#tab2" data-toggle="tab">Дополнительно</a></li>
+                    <li class="btn btn-primary"><a href="#tab3" data-toggle="tab">Ценообразование</a></li>
+                    <li class="btn btn-primary"><a href="#tab5" data-toggle="tab">Сайт</a></li>
+                    <li class="btn btn-primary"><a href="#tab6" data-toggle="tab">Фото</a></li>
+                 </ul>
+                 <div class="tab-content">
+                    <div class="tab-pane active" id="tab1">
+                        <div>
+                            <label class="checkbox">
+                            <input type="checkbox" id="hid_tov" name="hid_tovar" 0="">
+                            Скрыть товар
+                            </label>
+                            <label class="checkbox">
+                            <input type="checkbox" id="make_copy" onclick="basic_stok_visibility()">
+                            Сохранить как новый товар
+                            </label>
+                        </div>
+                        <hr>
+                        <div class="control-group">
+                            <label class="control-label" for="b_name">Наименование</label>
+                            <div class="controls">
+                              <input type="text" name="tov_name" id="b_name" placeholder="Название" onchange="document.querySelector('#title_edited_tov').innerText=this.value" class="input-xxlarge form-control" value="<% if(locals.orderLine) { %><%= orderLine.name %><% } else {%><%= 'Новое название' %><% } %>">
+                                <div style="position: relative;">
+                                    <div id="ispolz_nazv" style="position: absolute; top: -8; 
+                                                                    left: 0; width: 300px; z-index:100;
+                                                                    background-color: rgba(255, 250, 205, 1);
+                                                                    border: solid 1px teal; color:red;
+                                                                    display:none;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls">
+                                <% if(locals.orderLine) {%>
+                                    <% if(orderLine.subcategory === 11) { %>
+                                        <label for="cena30">Цена за 30см</label>
+                                        <input style="display: block;" type="number" id="cena30" name="cena" value="<%= orderLine.price30.toFixed(2) %>" class="input-medium valid form-control">
+                                        <label for="cena36">Цена за 36см</label>
+                                        <input style="display: block;" type="number" id="cena36" name="cena" value="<%= orderLine.price36.toFixed(2) %>" class="input-medium valid form-control">
+                                        <label for="cena50">Цена за 50см</label>
+                                        <input style="display: block;" type="number" id="cena50" name="cena" value="<%= orderLine.price50.toFixed(2) %>" class="input-medium valid form-control">
+                                    <% } else { %> 
+                                        <label class="control-label" for="cena">Цена продажи</label>
+                                        <input type="number" id="cena" name="cena" value="<%= orderLine.price.toFixed(2) %>" class="input-medium valid form-control">
+                                    <% } %>
+                                <% } else { %>
+                                    <label class="control-label" id="cena_label" for="cena">Цена продажи</label>
+                                    <input type="number" id="cena" name="cena" value="" placeholder="Введите стоимость" class="input-medium valid form-control cena">
+                                    <label class="none" id="cena30_label" for="cena30">Цена за 30см</label>
+                                    <input type="number" id="cena30" name="cena" value="" placeholder="Введите стоимость" class="input-medium valid form-control cena none">
+                                    <label class="none" id="cena36_label" for="cena36">Цена за 36см</label>
+                                    <input type="number" id="cena36" name="cena" value="" placeholder="Введите стоимость" class="input-medium valid form-control cena none">
+                                    <label class="none" id="cena50_label" for="cena50">Цена за 50см</label>
+                                    <input type="number" id="cena50" name="cena" value="" placeholder="Введите стоимость" class="input-medium valid form-control cena none">
+                                <% } %>
+                                
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="sel_cat">Категория</label>
+                            <div class="controls">
+                                <select id="sel_cat" name="sel_cat" class="form-control" onchange="subcatChecker(this.value)">
+                                    <option value="-1">Выберите категорию</option>
+                                    <% subcategories.forEach(( subcategory, index) => { %> 
+                                        <option id="subcat_<%= subcategory.id %>" value="<%= subcategory.id %>" <% if (locals.orderLine && subcategory.id === orderLine.subcategory) { %>selected<% } %>><%= subcategory.subcategory_name %></option>
+                                    <% }); %>
+                                    <label for="sel_cat" generated="true" class="error">не выбрана категория</label> 
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab2"></div>
+                    <div class="tab-pane" id="tab3"></div>
+                    <div class="tab-pane" id="tab5">
+                        <hr>
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input class="" type="checkbox" name="forSite" id="forSite" <% if(locals.orderLine) {%> <% if(orderLine.is_forSite) { %> <%= 'checked' %> <% }%> <% } %>>
+                                <label class="form-check-label" for="forSite">Отображать позицию на сайте</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="" type="checkbox" name="withPack" id="withPack" onchange="showPacks(this)" <% if(locals.orderLine) {%> <% if(orderLine.is_withPack) { %> <%= 'checked' %> <% }%> <% } %>>
+                                <label class="form-check-label" for="withPack">Продавать вместе с упаковкой</label>
+                            </div>
+                            <div class="col-auto none" id="packs_input">
+                                <select class="form-control" name="packs" id="packs">
+                                    <option value="-1">Выберите упаковку</option>
+                                    <% packs.forEach(pack => { %>
+                                        <option value="<%= pack.id %>" id="pack_<%= pack.id %>" <% if(locals.orderLine && orderLine.pack_id == pack.id) { %> <%= 'selected'  %><% } %> ><%= pack.name %></option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab6"></div>
+                    <div class="tab-pane" id="tab4">
+                        <a onclick="" id="button_add_komp" data-toggle="modal" data-target="#myModal_compcats"class="btn btn-info">+ добавить компонент</a>
+                        <div class="modal hide" id="myModal_compcats" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                            <div class="modal-header">
+                                <a class="close" data-dismiss="modal">×</a>
+                                <table border="0"><tbody><tr><td><font color="gray">подбираем компонент для: </font></td><td><h5 id="owner_komp">Бульон говяжий 5л</h5></td></tr></tbody></table>
+                            </div>
+                            <div class="modal-body" style="overflow:auto;">
+                                <table border="1">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width:33%;" id="komp_cat_list" valign="top">
+                                                <select onchange="basic_draw_cat_list( &quot;komp_cat_list&quot;, &quot;komp&quot;, this.options[this.selectedIndex].value)">
+                                                    <option value="type=production">ПРОДУКТЫ</option>
+                                                    
+                                                    <option value="type=packed">ФАСОВАННЫЕ ТОВАРЫ</option>
+                                                    
+                                                    <option value="type=semis">ВСЕ ПОЛУФАБРИКАТЫ</option>
+                                                    
+                                                    <option value="type=all">ВСЯ ПРОДУКЦИЯ</option>
+                                                </select>
+                                                <table class="table table-striped compact table_menu">
+                                                    <tbody>
+                                                        <tr id="cat_id_1149">
+                                                            <td onclick="recepturaPolu_komp_draw_tov_list(&quot;&quot;, 1149)">
+                                                                <font style="font-size:14px; font-weight:bold;">Алкоголь фас.</font>
+                                                            </td> 
+                                                            <td class="td_btn">
+                                                                <button class="btn btn-info" onclick="recepturaPolu_komp_draw_tov_list(&quot;&quot;, 1149)"><i class="icon-folder-open icon-white"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                            <td style="width:77%;" valign="top">
+                                            <table><tbody><tr>
+                                                <td>
+                                                <input type="text" name="komp_poisk" placeholder="Поиск компонента по всем категориям" style="width:100%;" class="input-medium search-query" onblur="basic_stop_context_find()" onfocus="basic_start_context_find(this.name, &quot;komp_tov_list&quot;, &quot;recepturaPolu_komp&quot;, &quot;as_button&quot;, [&quot;продукты&quot;, &quot;заготовки&quot;, &quot;блюда&quot;])">
+                                                </td></tr>
+                                                <tr><td id="komp_tov_list" valign="top"></td>
+                                                </tr>
+                                            </tbody></table>
+                                            </td>		
+                                        </tr>
+                                    </tbody>
+                                </table>   
+                            </div>
+                        </div>
+                        <table class="table table-bordered compact" id="spisok_komp">
+                            <thead>
+                               <tr>
+                                  <th>Название</th>
+                                  <th>Цена *</th>
+                                  <th>Количество</th>
+                                  <th>Сумма</th>
+                                  <th>Компоненты от разных<br>контрагентов</th>
+                                  <th> Поставщики компонентов</th>
+                                  <th></th>
+                               </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

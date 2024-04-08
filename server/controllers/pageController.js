@@ -10,7 +10,7 @@ const createPath = (page) => path.resolve(__dirname, '../../public', `${page}.ej
 
 //main pages
 exports.index = async (req, res) => { 
-    const [categories] = await db.connection.promise().query(`SELECT * FROM menu_categories`);
+    const [categories] = await db.connection.promise().query(`SELECT * FROM menu_categories WHERE hidden="0"`);
     if(!req.cookies.refreshToken) {
        res.render(createPath('index'), {categories: categories, isAuthorized: false});
     } else {
@@ -29,7 +29,9 @@ exports.subcategories = async (req, res) => {
 
 exports.menu = async (req, res) => {
    
-    const [menuList] = await db.connection.promise().query(`SELECT * FROM menu WHERE subcategory=${req.query.subcategory_id}`);
+    const [menuList] = await db.connection.promise().query(`SELECT * FROM menu WHERE subcategory=${req.query.subcategory_id} AND is_forSite=1`);
+    const [packs] = await db.connection.promise().query('SELECT id, name, price FROM menu WHERE subcategory ="15";');
+    
     if(!req.cookies.refreshToken) {
        if(req.query.subcategory_id != 11) {
           res.render(createPath('menu'), {menu: menuList, isAuthorized: false});
