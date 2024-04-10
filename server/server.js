@@ -3,6 +3,8 @@ const express = require('express');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const Sequelize = require('sequelize');
+
 const errorMiddleware = require('./middlewares/error-middleware');
 const roleMiddleware = require('./middlewares/role-middleware');
 const authMiddleware = require('./middlewares/auth-middleware');

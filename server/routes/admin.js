@@ -21,7 +21,13 @@ router.get('/nomenclature', adminController.nomenclature);
 
 router.get('/nomenclature/item_edit', adminController.item_edit);
 
+router.get('/nomenclature/edit_subcategory', adminController.subcategory_edit);
+
+router.get('/nomenclature/delete_subcategory', adminController.subcategory_delete);
+
 router.get('/pos_manager', adminController.pos_manager);
+
+router.get('/pos_manager/pos_edit', adminController.pos_edit);
 
 //post
 
@@ -32,6 +38,10 @@ router.post('/to_proccess_crm', adminController.to_proccess_crm);
 router.post('/tables/complete_order_handler', adminController.complete_order_handler);
 
 router.post('/nomenclature/add_orderLine', adminController.add_orderLine);
+
+router.post('/nomenclature/subcategory_handler', adminController.subcategory_handler)
+
+router.post('/pos_manager/pos_update', adminController.pos_update);
 
 
 module.exports = router;

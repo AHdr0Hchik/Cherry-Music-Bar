@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/css/helpmix.css">
     <link rel="icon" href="/jpgs/favicon.ico">
 
-    <title>Места продаж | Cherry Music Bar</title>
+    <title>Редактор категорий | Cherry Music Bar</title>
 </head>
 <style>
     .container {
@@ -90,24 +90,37 @@ body {
     </script>
     <%- include('upmenu_crm') %>
     <div class="container">
-        <div id="error_div"></div>
-        <div class="page-header">
-            <h1 class="fw-bold fs-2"> Редактор номенклатуры </h1>
-        </div>
-        <table class="table table-striped table-bordered">
-            <tbody>
-                <tr>
-                    <td colspan="2"><a class="btn btn-success" href="/admin/pos_manager/pos_edit?new">Создать группу столов</a></td>
-                </tr>
-                    <% pos.forEach(pos => { %>
-                        <tr>
-                            <td><%= pos.name %></td>
-                            <td style="width:60px;"><a href="/admin/pos_manager/pos_edit?pos_id=<%= pos.id%>" class="btn btn-success"><i class="icon-pencil icon-white"></i></a></td>
-                        </tr>
-                        
-                    <% }); %>
-            </tbody>
-        </table>							
+        <h2 class="fw-bold fs-2">Редактор подкатегорий</h2>
+        <form action="/admin/nomenclature/subcategory_handler" method="POST">
+            <table class="table table-striped" style="width: 60%;" border="1">
+                <tbody>
+                    <tr>
+                        <td valign="top">	  
+                            <label class="checkbox">
+                                <input type="checkbox" id="hid_this_cat" name="hidden">	Скрывать эту категорию
+                            </label>
+                            <br>
+                            Наименование
+                            <br>
+                            <input type="text" id="cat_name" name="subcategory_name" class="input-xxlarge" novalidate="true" value="<%= locals.subcategory ? subcategory.subcategory_name : '' %>">
+                            <br><hr> 
+                        </td>
+                        <td valign="top">      
+                            <div id="check_block">	     
+                                    Категория:<br>
+                                    <% categories.forEach(category => { %>
+                                        <input type="radio" name="category_id" value="<%= category.id %>" <% if (locals.subcategory && subcategory.category === category.id) { %>checked<% } %>><%= category.category_name %><br>
+                                    <% }); %>                               
+                            </div>
+                            <input type="text" value="<%= type %>" name="type" hidden="true">
+                            <input type="number" value="<%= locals.subcategory ? subcategory.id : ''%>" name="subcategory_id" hidden="true">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type="submit" class="btn btn-success" value="сохранить" onclick="">
+        </form>
+        
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

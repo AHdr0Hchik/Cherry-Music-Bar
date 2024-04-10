@@ -6,6 +6,7 @@ const Token = require('../classes/Token');
 const ApiError = require('../classes/exceptions/api-error');
 const Order = require('../classes/Order');
 const OrderLine = require('../classes/OrderLine');
+const Model = require('../models');
 
 const db = new Database;
 
@@ -50,7 +51,17 @@ exports.get_stats = async (req, res) => {
 }
 
 exports.tables = async (req, res) => {
-    const tables = await new Tables().getTables();
+    const token = new Token;
+    const userData = await token.decodeToken(req.cookies.refreshToken);
+
+    const tables = await Model.pos.findAll({
+        where: {
+          [Model.Op.or]: [
+            Model.sequelize.literal(`FIND_IN_SET(${userData.id}, can_works) > 0`),
+            {can_works: '-1'}
+          ]
+        }
+    });
     const [orders] = await db.connection.promise().query('SELECT * FROM History where pos<>"site" and isComplete="0"');
     const [users] = await db.connection.promise().query('SELECT id, firstName FROM Users WHERE role="admin"');
 
@@ -74,21 +85,43 @@ exports.add_to_table = async (req, res) => {
 
         //table checker
         order.Pos(`${req.query.id}:${req.query.count}`);
-        console.log(req.query);
         if(await order.findOrderByPos() && req.query.new === '1') {
             return res.redirect('/admin/tables');
         }
 
         //table info
-        const [table_name] = await db.connection.promise().query('SELECT name FROM pos WHERE id=?', [req.query.id]);
-        const table_info = {id: req.query.id, name: table_name[0].name, count: req.query.count};
+        let tableData = await Model.pos.findOne({
+            attributes: ['id', 'name', 'can_sells'],
+            where: {
+                id: parseInt(req.query.id)
+            }
+        });
+        
+        const table_info = {id: req.query.id, name: tableData.name, count: req.query.count, can_sells: tableData.can_sells};
 
         const [orderDataRaw]= await db.connection.promise().query('SELECT orderLineArray FROM History WHERE isComplete=0 AND pos=?', [`${table_info.id}:${table_info.count}`]);
         if(orderDataRaw.length>0) {
             var orderData = JSON.parse(orderDataRaw[0].orderLineArray);
         }
-    
-        const [categories] = await db.connection.promise().query(`SELECT * FROM menu_categories`);
+        let categories;
+
+        if(tableData.can_sells==='-1') {
+            categories = await Model.categories.findAll();
+        } else {
+            const categoryIds = tableData.can_sells.split(',').map(Number);
+
+            categories = await Model.categories.findAll({
+                where: {
+                    [Model.Op.and]: [
+                        {id: categoryIds},
+                        {hidden: 0}
+                    ]
+                
+                }
+            });
+        }
+        
+
         const [subcategories] = await db.connection.promise().query(`SELECT * FROM menu_subcategories`);
         const [menu] = await db.connection.promise().query(`SELECT * FROM menu`);
         
@@ -101,7 +134,6 @@ exports.add_to_table = async (req, res) => {
 
 exports.to_proccess_crm = async (req, res) => {
     try {
-        console.log(req.body);
         const agentId_pos = req.body.orderDetails.split('_');
         const order = new Order();
         order.Pos(agentId_pos[1]);
@@ -141,7 +173,6 @@ exports.complete_order_handler = async (req, res) => {
         await order.calculateTotalCost();
         await order.updateOrder();
         await order.isComplete();
-        console.log(order);
     } catch(e) {
         console.log(e);
         return ApiError.UnknownError();
@@ -150,7 +181,6 @@ exports.complete_order_handler = async (req, res) => {
 
 exports.nomenclature = async (req, res) => {
     try {
-        console.log(req.query);
         const [subcategories] = await db.connection.promise().query('SELECT * FROM menu_subcategories WHERE type=?;', [req.query.type]);
         const [categories] = await db.connection.promise().query('SELECT id, category_name FROM menu_categories');
         const [rawMenu] = await db.connection.promise().query('SELECT * FROM menu');
@@ -204,9 +234,89 @@ exports.item_edit = async (req, res) => {
     }
 }
 
-exports.add_orderLine = async (req, res) => {
+exports.subcategory_delete = async (req, res) => {
+    try {
+        if(!req.query.id) return res.redirect(`/admin/nomenclature?type=${req.query.type}`);
+        await Model.subcategories.destroy({
+            where: {
+                id: parseInt(req.query.id)
+            }
+        });
+        await Model.menu.destroy({
+            where: {
+                subcategory: parseInt(req.query.id)
+            }
+        })
+        return res.redirect(`/admin/nomenclature?type=${req.query.type}`);
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError();
+    }
+}
+
+exports.subcategory_edit = async (req, res) => {
+    try {
+        const categories = await Model.categories.findAll({
+            where: {
+                hidden: 0
+            }
+        });
+        let subcategory;
+        if(req.query.id) {
+            console.log('123');
+            subcategory = await Model.subcategories.findOne({
+                where: {
+                    id: req.query.id
+                }
+            });
+        }
+        return res.render(createPath('edit_subcategory'), {subcategory: subcategory,categories: categories, type: req.query.type});
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError
+    }
+}
+
+exports.subcategory_handler = async (req, res) => {
     try {
         console.log(req.body);
+        Model.subcategories.findOne({
+            where: {
+                id: req.body.subcategory_id
+            }
+        }).then(count => {
+            if(count) {
+                console.log(count);
+                return Model.subcategories.update(
+                {
+                    type: req.body.type,
+                    subcategory_name: req.body.subcategory_name,
+                    category: parseInt(req.body.category_id),
+                    hidden: req.body.hidden=='on' ? 1 : 0
+                },
+                {
+                    where: {
+                        id: count.id
+                    }
+                });
+            }
+            console.log('123');
+            return Model.subcategories.create({
+                type: req.body.type,
+                subcategory_name: req.body.subcategory_name,
+                category: parseInt(req.body.category_id),
+                hidden: req.body.hidden=='on' ? 1 : 0
+            });
+        });
+        return res.redirect(`/admin/nomenclature?type=production`)
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError;
+    }
+}
+
+exports.add_orderLine = async (req, res) => {
+    try {
         const orderLine = new OrderLine(req.body.itemData.name, req.body.itemData.subcategory);
         await orderLine.setCategoryBySubcategory();
         if(req.body.itemData.prices.price) {
@@ -235,11 +345,64 @@ exports.add_orderLine = async (req, res) => {
 exports.pos_manager = async (req, res) => {
     try {
         const [pos] = await db.connection.promise().query('SELECT * FROM pos;');
-
-        res.render(createPath('pos_manager'), {pos: pos});
+        return res.render(createPath('pos_manager'), {pos: pos});
     } catch(e) {
         console.log(e);
         throw ApiError.UnknownError();
+    }
+}
+
+exports.pos_edit = async (req, res) => {
+    try {
+        const [workers] = await db.connection.promise().query('SELECT id, firstname, lastname FROM users WHERE role<>"default_user";');
+        const [categories] = await db.connection.promise().query('SELECT id, category_name FROM menu_categories WHERE hidden=0');
+        const warehouses = '';
+        const makers = '';
+        if(req.query.new) {
+            return res.render(createPath('pos_edit'), {workers: workers, warehouses: warehouses, categories:categories, makers: makers});
+        }
+        const [pos] = await db.connection.promise().query('SELECT * FROM pos WHERE id=?', [req.query.pos_id]);
+
+        return res.render(createPath('pos_edit'), {pos:pos[0], workers: workers, warehouses: warehouses, categories:categories, makers: makers});
+
+        
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError();
+    }
+}
+
+exports.pos_update = async (req, res) => {
+    try {
+        console.log(req.body)
+        if(!req.body.pos_id) {
+            await Model.pos.create({
+                name: req.body.pos_name, 
+                count: req.body.pos_count, 
+                printer: req.body.bills.group_printer == 'printer' ? req.body.bills.printer_address : '', 
+                can_works: req.body.workers.join(', '),
+                can_sells: req.body.category.join(', ')
+            });
+            return res.redirect('/admin/pos_manager');
+        }
+        await Model.pos.update(
+            {
+                name: req.body.pos_name, 
+                count: parseInt(req.body.pos_count), 
+                printer: req.body.bills.group_printer == 'printer' ? req.body.bills.printer_address : '', 
+                can_works: req.body.workers != '-1' ? req.body.workers.join(', ') : '-1',
+                can_sells: req.body.category != '-1' ? req.body.category.join(', '): '-1'
+            },
+            {
+                where: {
+                    id: parseInt(req.body.pos_id),
+                },
+            }
+        );
+        return res.redirect('/admin/pos_manager');
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError;
     }
 }
 
