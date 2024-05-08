@@ -1,4 +1,5 @@
 const Database = require('./Database');
+const Model = require('../models');
 
 class Order {
     constructor(orderLineArray, address, numberPhone, sale) {
@@ -69,13 +70,41 @@ class Order {
     async calculateTotalCost() {
         try {
             let sum=0
-            console.log(this.orderLineArray);
             this.orderLineArray.forEach(orderLine => {
                 sum += orderLine.count * orderLine.price;
             });
             this.sum = sum
             this.sumWithSale = this.sum - this.sum * this.sale/100;
             return true;
+        } catch(e) {
+            console.log(e);
+            return false;
+        }
+    }
+    
+    async findOfficialLines() {
+        try {
+            console.log('start');
+            let official_orderLineArray = [];
+            const official_items = await Model.menu.findAll({
+                where: {
+                    is_official : 1
+                }
+            });
+            console.log(official_items);
+            for(let i=0; i<this.orderLineArray.length; i++) {
+                const item = await Model.menu.findOne({
+                    where: {
+                        id: parseInt(this.orderLineArray[i].id)
+                    }
+                });
+                console.log(item);
+                if (official_items.some(officialItem => officialItem.id === item.id)) {
+                    official_orderLineArray.push(this.orderLineArray[i]);
+                }
+            };
+            return official_orderLineArray;
+
         } catch(e) {
             console.log(e);
             return false;

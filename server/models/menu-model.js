@@ -62,8 +62,15 @@ module.exports = function(sequelize) {
         is_official: {
             type: Sequelize.TINYINT,
             allowNull: true
+        },
+        externalId: {
+            type: Sequelize.TEXT,
+            allowNull: true
+        },
+        nomNumber: {
+            type: Sequelize.TEXT,
+            allowNull: true
         }
-
     }, 
     {
         timestamps: false,

@@ -19,6 +19,10 @@ module.exports = function(sequelize) {
             type: Sequelize.STRING,
             allowNull: true
         },
+        printer: {
+            type: Sequelize.STRING,
+            allowNull: true
+        }
     }, 
     {
         timestamps: false,

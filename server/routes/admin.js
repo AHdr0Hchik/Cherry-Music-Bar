@@ -29,6 +29,19 @@ router.get('/pos_manager', adminController.pos_manager);
 
 router.get('/pos_manager/pos_edit', adminController.pos_edit);
 
+router.get('/pos_manager/pos_delete', adminController.pos_delete);
+
+router.get('/categories_manager', adminController.categories_manager);
+
+router.get('/categories_manager/category_edit', adminController.category_edit);
+
+router.get('/categories_manager/category_delete', adminController.category_delete);
+
+router.get('/personal_manager', adminController.personal_manager);
+
+router.get('/personal_manager/personal_editor', adminController.personal_editor);
+
+router.get('/printer/draw_prechek', adminController.draw_prechek);
 //post
 
 router.post('/get_stats', adminController.get_stats);
@@ -42,6 +55,8 @@ router.post('/nomenclature/add_orderLine', adminController.add_orderLine);
 router.post('/nomenclature/subcategory_handler', adminController.subcategory_handler)
 
 router.post('/pos_manager/pos_update', adminController.pos_update);
+
+router.post('/categories_manager/category_update', adminController.category_update);
 
 
 module.exports = router;

@@ -44,7 +44,7 @@
         border-radius: 0;
     }
     .navbar-static-top {
-    position: static;
+    categoryition: static;
     margin-bottom: 0;
 }
 
@@ -73,7 +73,7 @@
 }
 body {
     background-image: url('../jpgs/body-back.jpg');
-    background-position: center center;
+    background-categoryition: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
@@ -83,33 +83,20 @@ body {
     <div class="container">
         <div id="error_div"></div>
         <div class="page-header">
-            <h2>Редактировать группу столов</h2>
+            <h2>Редактировать производство</h2>
         </div>
-        <form class="form-horizontal" action="/admin/pos_manager/pos_update" method="post" id="addTableGroupForm" novalidate="novalidate">
+        <form class="form-horizontal" action="/admin/categories_manager/category_update" method="POST" id="addTableGroupForm" novalidate="novalidate">
 
             <div class="row">
-                <div class="span6">
-                    <div class="control-group none">
-                        <label class="control-label" for="pos_name">Новая pos или нет</label>
-                        <div class="controls">
-                            <% if(locals.pos) {%>
-                                <input class="required" value="<%= pos.id %>" name="pos_id" type="text" placeholder="Пр: Зал1, Летняя, Диваны">
-                            <% }; %>
-                        </div>
-                            
-                    </div>
+                <div class="span6"> 
                     <div class="control-group">
-                        <label class="control-label" for="pos_name">Название группы</label>
+                        <label class="control-label" for="category_name">Название производства</label>
                         <div class="controls">
-                        <input class="required" minlength="2" value="<%= locals.pos ? pos.name : undefined %>" name="pos_name" type="text" placeholder="Пр: Зал1, Летняя, Диваны" required>
-                        </div>
-                            
+                        <input class="required" minlength="2" value="<%= locals.category ? category.category_name : undefined %>" name="category_name" type="text" placeholder="Пр: Кухня, Бар" required>
+                        </div>   
                     </div>
-                    <div class="control-group">
-                        <label class="control-label" for="pos_count">Количество столов</label>
-                        <div class="controls">
-                            <input class="required number" min="1" minlength="1" maxlength="3" type="number" name="pos_count" value="<%= locals.pos ? pos.count : undefined %>" placeholder="Введите количество" required>
-                        </div>
+                    <div hidden>
+                        <input type="number" value="<%= locals.category ? category.id : ''%>" name="category_id">  
                     </div>
                     <hr>
                     <div class="control-group">
@@ -117,12 +104,12 @@ body {
                         <div class="controls">
                             <select name="bills[group_printer]" class="required" type="text" id="printer">
                                 <option value="no_print">Не печатать чек</option>
-                                <option value="printer" <%= locals.pos ? (pos.printer!='' ? 'selected': '') : ''%>>Ввести имя принтера..</option>
+                                <option value="printer" <%= locals.category ? (category.printer!='' ? 'selected': '') : ''%>>Ввести имя принтера..</option>
                             </select>
                             <div id="div_printer">
-                                <input value="<%= locals.pos ? pos.printer : '' %>" name="bills[printer_address]" class="required" type="text" id="group_printer_other">
+                                <input value="<%= locals.category ? category.printer : '' %>" name="bills[printer_address]" class="required" type="text" id="group_printer_other">
                                 <p>Пример:<br>
-                                bar1###2,1,1###192.168.1.113:9100_pos__32<br><br>
+                                bar1###2,1,1###192.168.1.113:9100_category__32<br><br>
                                 <b>bar1</b> - Имя принтера в Windows <br>
                                 (Пуск &gt; Устройства и принтеры). Если у Вас не установлен драйвер Windows принтера, укажите <b>printer</b><br>
                                 <b>2,1,1</b> - коэфициент увеличения и отступы для Windows принтера. 2 можно заменить например на 1 или 1.7<br>
@@ -135,54 +122,10 @@ body {
                     <hr>
                     <div class="control-group">
                         <div class="controls">
-                            <button class="btn btn-success" type="submit">Сохранить группу столов</button>
+                            <button class="btn btn-success" type="submit">Сохранить</button>
                         </div>
                     </div>
-                </div>
-                <div class="span6" id="can_works">
-                    <h4>С этой группой могут работать сотрудники:</h4>
-                    <div id="ofics">
-                        <label class="checkbox">
-                            <input type="checkbox" value="-1" name="workers" onchange="" class="select_all" id="select_all_ofics" <%= locals.pos && pos.can_works == -1 ? 'checked' : ''%>>
-                            <strong>Отметить всех</strong>
-                        </label>
-                        <% const workers_id = locals.pos ? pos.can_works.split(', ') : undefined; %>
-                        <% workers.forEach(worker => { %>
-                            <label class="checkbox">
-                            <input type="checkbox" data-worker name="workers[<%= worker.id %>]" value="<%= worker.id %>" <%= Array.isArray(workers_id) && workers_id.includes(worker.id.toString()) ? 'checked' : '' %>>
-                            <%= `${worker.firstname} ${worker.lastname}` %>
-                            </label>
-                        <% }); %>
-                    </div>
                 <hr>
-                <h4>Эти столы будут продавать продукцию:</h4>
-                <div id="proizvs">
-                    <h5>Категории</h5>
-                    <label class="checkbox">
-                        <input type="checkbox" value="-1" name="category" class="select_all" id="select_all_cats" <%= locals.pos && pos.can_sells == -1 ? 'checked' : ''%>
-                        <strong>Отметить все</strong>
-                    </label>
-                    <% const cats_id = locals.pos ? pos.can_sells.split(', ') : undefined; %>
-                    <% categories.forEach(category => { %>
-                        <label class="checkbox"></label>
-                            <input data-category type="checkbox" name="category[<%= category.id %>]" value="<%= category.id %>" <%= Array.isArray(cats_id) && cats_id.includes(category.id.toString()) ? 'checked' : '' %>>
-                            <%= category.category_name %>
-                        </label>
-                    <% }); %>
-                    
-                </div>
-                <div id="sklads">
-                    <h5>Склады</h5>
-                    <label class="checkbox">
-                        <input type="checkbox" value="" class="select_all">
-                        <strong>Отметить все</strong>
-                    </label>
-
-                    <label class="checkbox">
-                        <input type="checkbox" name="sklads_proizvs[172]" value="172">
-                        пф
-                    </label>
-                </div>
             </div>
         </form>
     </div>

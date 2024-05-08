@@ -1,4 +1,5 @@
 const Database = require('./Database');
+const Model = require('../models');
 
 class OrderLine {
     constructor(name, subcategory) {
@@ -109,9 +110,11 @@ class OrderLine {
 
     async getOrderLineById() {
         try {
-            const db = new Database;
-            const [results] = await db.connection.promise().query('SELECT * FROM Menu WHERE id = ?', [this.id]);
-            return results[0];
+            const orderLine = Model.menu.findOne({
+                where: {id: this.id}
+            });
+            
+            return orderLine;
         } catch(e) {
             return false
         } 
@@ -125,6 +128,16 @@ class OrderLine {
         if (subcategory) {
             this.category = subcategory.category;
         }
+    }
+
+    async getCategoryId() {
+        this.category = await Model.menu.findOne({
+            attributes: ['category'],
+            where: {
+                id: this.id
+            }
+        });
+        return this.category;
     }
 
     //add and update db

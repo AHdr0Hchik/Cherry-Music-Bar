@@ -1,5 +1,10 @@
-/server/node_modules/*
+/node_modules/*
+/node_modules
+/package.json
+/package-lock.json
 /server/node_modules
+/server/node_modules/*
 /server/package.json
 /server/package-lock.json
 /server/config
+/server/sbis

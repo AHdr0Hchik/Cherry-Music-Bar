@@ -1,6 +1,8 @@
-<div class="upMenu navbar navbar-static-top" style="width: 100%;">
+
+
+<div class="upMenu navbar navbar-static-top" style="width: 100%; display: block; padding: 0;">
     <div class="navbar-inner">
-              <div class="btn-group  pull-left">
+                <div class="btn-group">
                     <a class="btn btn-success" href="/admin/tables">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
                             <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
@@ -10,118 +12,122 @@
                   <a title="Выйти" href="index.php?class_name=users&amp;act=logout" class="btn btn-danger">&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
                     <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
-                  </svg>&nbsp;</a>		</div>
-                  <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-                    <ul class="nav">
-                        <li>
-                
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle text-body" data-toggle="dropdown">
-                              Настройки
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" tabindex="-1" href="index.php?class_name=printer&amp;act=draw_prechek" class="text-body" title="Печатаем всё">Печатаем всё</a></li>
-                        
-                                <li><a class="dropdown-item" tabindex="-1" href="index.php?class_name=cennik&amp;act=start" title="Ценники и Эткетки">Ценники и Эткетки</a></li>
-                        
-                                <li><a class="dropdown-item" tabindex="-1" href="index.php?class_name=cennik&amp;act=vesovoj" title="Файл для весов">Файл для весов</a></li>
-                        
-                                <li><a class="dropdown-item" tabindex="-1" href="index.php?class_name=admin_planshet&amp;act=view_plansheti" title="Планшеты">Планшеты</a></li>
-                        
-                                <li><a class="dropdown-item" tabindex="-1" href="index.php?class_name=admin_bill&amp;act=view_bill_template" title="Настройки чека">Настройки чека</a></li>
-                        
-                                <li><a class="dropdown-item" tabindex="-1" href="index.php?class_name=cleardb&amp;act=clear_db" title="Очистка базы данных">Очистка базы данных</a></li>
-                        
-                                <li><a class="dropdown-item" tabindex="-1" href="index.php?class_name=uchet&amp;act=export_to_site" title="Экспорт на сайт">Экспорт на сайт</a></li>       
-                            </ul>
-                        </li>
-                                    
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                Работа с клиентом
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" tabindex="-1" href="/admin/tables" title="Обслуживание столиков">Обслуживание столиков</a></li>
-                        
-                                <li><a class="dropdown-item" tabindex="-1" href="index.php?class_name=clients&amp;act=view_clients" title="Все клиенты">Все клиенты</a></li>
+                  </svg>&nbsp;</a>		
+                </div>
+                <div>
+                    <nav class="navbar navbar-light" style="margin: 0;">
+                        <ul class="nav">
+                            <li>
+                    
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle text-body" data-toggle="dropdown">
+                                  Настройки
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" tabindex="-1" href="index.php?class_name=printer&amp;act=draw_prechek" class="text-body" title="Печатаем всё">Затянуть из СБИС</a></li>
                             
-                            </ul>
-                        </li>
-                                
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                Склады
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=prihod" title="Приход товара">Приход товара</a></li>
-                        
-                                <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=pere" title="Перемещение товаров, денег">Перемещение товаров, денег</a></li>
-                        
-                                <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=vrabotu" title="Перемещение с расфасовкой">Перемещение с расфасовкой</a></li>
-                                <li><hr class="dropdown-divider"></li>	
-                                <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=u_pereuch" title="Инвентаризация">Инвентаризация</a></li>
+                                    <li><a class="dropdown-item" tabindex="-1" href="index.php?class_name=cennik&amp;act=start" title="Ценники и Эткетки">Ценники и Эткетки</a></li>
+                            
+                                    <li><a class="dropdown-item" tabindex="-1" href="index.php?class_name=cennik&amp;act=vesovoj" title="Файл для весов">Файл для весов</a></li>
+                            
+                                    <li><a class="dropdown-item" tabindex="-1" href="index.php?class_name=admin_planshet&amp;act=view_plansheti" title="Планшеты">Планшеты</a></li>
+                            
+                                    <li><a class="dropdown-item" tabindex="-1" href="index.php?class_name=admin_bill&amp;act=view_bill_template" title="Настройки чека">Настройки чека</a></li>
+                            
+                                    <li><a class="dropdown-item" tabindex="-1" href="index.php?class_name=cleardb&amp;act=clear_db" title="Очистка базы данных">Очистка базы данных</a></li>
+                            
+                                    <li><a class="dropdown-item" tabindex="-1" href="index.php?class_name=uchet&amp;act=export_to_site" title="Экспорт на сайт">Экспорт на сайт</a></li>       
+                                </ul>
+                            </li>
                                         
-                            </ul>
-                        </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    Работа с клиентом
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" tabindex="-1" href="/admin/tables" title="Обслуживание столиков">Обслуживание столиков</a></li>
+                            
+                                    <li><a class="dropdown-item" tabindex="-1" href="index.php?class_name=clients&amp;act=view_clients" title="Все клиенты">Все клиенты</a></li>
                                 
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                Расходы
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=zp_prem" title="Зарплаты">Зарплаты</a></li>
-                        
-                                <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=spis" title="Затраты и списание продуктов">Затраты и списание продуктов</a></li>
-                                        
-                            </ul>
-                        </li>
-                                
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                Отчеты
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=agent_history" title="Движение денег, товаров">Движение денег, товаров</a></li>
-                        
-                                <li><a tabindex="-1" class="dropdown-item" href="/admin/stats" title="Аналитика продаж">Аналитика продаж</a></li>
-                        
-                                <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=ostatki" title="Текущий  баланс">Текущий  баланс</a></li>
-                            </ul>
-                        </li>
-                                
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                Справочники
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=admin_postav&amp;act=view_postav" title="Поставщики">Поставщики</a></li>
-                                <li><hr class="dropdown-divider"></li>	
-                                <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=admin_sotr&amp;act=view_sotr" title="Персонал">Персонал</a></li>
-                                <li><hr class="dropdown-divider"></li>	
-                                <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=admin_proizv&amp;act=view_proizvs" title="Производства">Производства</a></li>
-                        
-                                <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=catalog&amp;act=draw1" title="Мастер рецептов">Мастер рецептов</a></li>
-                        
-                                <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=admin_sklads&amp;act=view_sklads" title="Склады">Склады</a></li>
-                        
-                                <li><a tabindex="-1" class="dropdown-item" href="/admin/pos_manager" title="Места продаж">Места продаж</a></li>
-                                <li><hr class="dropdown-divider"></li>	
-                                <li><a tabindex="-1" class="dropdown-item" href="/admin/nomenclature?type=raw" title="Исходные товары">Исходные товары</a></li>
-                        
-                                <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=receptura&amp;act=Fas" title="Фасовка">Фасовка</a></li>
-                        
-                                <li><a tabindex="-1" class="dropdown-item" href="/admin/nomenclature?type=semis" title="Полуфабрикаты">Полуфабрикаты</a></li>
-                        
-                                <li><a tabindex="-1" class="dropdown-item" href="/admin/nomenclature?type=production" title="Продукция">Продукция</a></li>
-                                <li><hr class="dropdown-divider"></li>	
-                                <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=print_menu" title="Просмотр технологических карт">Просмотр технологических карт</a></li>
-                                        
-                            </ul>
-                        </li>
-                         
-                    </ul>
-                  </nav>
+                                </ul>
+                            </li>
+                                    
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    Склады
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=prihod" title="Приход товара">Приход товара</a></li>
+                            
+                                    <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=pere" title="Перемещение товаров, денег">Перемещение товаров, денег</a></li>
+                            
+                                    <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=vrabotu" title="Перемещение с расфасовкой">Перемещение с расфасовкой</a></li>
+                                    <li><hr class="dropdown-divider"></li>	
+                                    <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=u_pereuch" title="Инвентаризация">Инвентаризация</a></li>
+                                            
+                                </ul>
+                            </li>
+                                    
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    Расходы
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=zp_prem" title="Зарплаты">Зарплаты</a></li>
+                            
+                                    <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=spis" title="Затраты и списание продуктов">Затраты и списание продуктов</a></li>
+                                            
+                                </ul>
+                            </li>
+                                    
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    Отчеты
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=agent_history" title="Движение денег, товаров">Движение денег, товаров</a></li>
+                            
+                                    <li><a tabindex="-1" class="dropdown-item" href="/admin/stats" title="Аналитика продаж">Аналитика продаж</a></li>
+                            
+                                    <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=ostatki" title="Текущий  баланс">Текущий  баланс</a></li>
+                                </ul>
+                            </li>
+                                    
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    Справочники
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=admin_postav&amp;act=view_postav" title="Поставщики">Поставщики</a></li>
+                                    <li><hr class="dropdown-divider"></li>	
+                                    <li><a tabindex="-1" class="dropdown-item" href="/admin/personal_manager" title="Персонал">Персонал</a></li>
+                                    <li><hr class="dropdown-divider"></li>	
+                                    <li><a tabindex="-1" class="dropdown-item" href="/admin/categories_manager" title="Производства">Производства</a></li>
+                            
+                                    <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=catalog&amp;act=draw1" title="Мастер рецептов">Мастер рецептов</a></li>
+                            
+                                    <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=admin_sklads&amp;act=view_sklads" title="Склады">Склады</a></li>
+                            
+                                    <li><a tabindex="-1" class="dropdown-item" href="/admin/pos_manager" title="Места продаж">Места продаж</a></li>
+                                    <li><hr class="dropdown-divider"></li>	
+                                    <li><a tabindex="-1" class="dropdown-item" href="/admin/nomenclature?type=raw" title="Исходные товары">Исходные товары</a></li>
+                            
+                                    <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=receptura&amp;act=Fas" title="Фасовка">Фасовка</a></li>
+                            
+                                    <li><a tabindex="-1" class="dropdown-item" href="/admin/nomenclature?type=semis" title="Полуфабрикаты">Полуфабрикаты</a></li>
+                            
+                                    <li><a tabindex="-1" class="dropdown-item" href="/admin/nomenclature?type=production" title="Продукция">Продукция</a></li>
+                                    <li><hr class="dropdown-divider"></li>	
+                                    <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=print_menu" title="Просмотр технологических карт">Просмотр технологических карт</a></li>
+                                            
+                                </ul>
+                            </li>
+                             
+                        </ul>
+                      </nav>
+                </div>
+                  
     </div>
   </div>
 

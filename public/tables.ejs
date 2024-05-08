@@ -171,6 +171,8 @@ body {
                                             <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">Закрыть</button>
                                             <a href="/admin/tables/complete_order?order_id=<%= orders[index].id %>" class="btn btn-warning btn-lg">Расчёт</a>
                                             <a href="/admin/tables/add_to_table?id=<%= table.id %>&count=<%= i %>&new=0" class="btn btn-success btn-lg">+ Добавить в заказ</a>
+                                            <a href="/admin/tables/remove_from_table?id=<%= table.id %>&count=<%= i %>&new=0" class="btn btn-danger btn-lg">- Убрать из заказа</a>
+                                            <a href="/admin/printer/draw_prechek?id=<%= table.id %>&count=<%= i %>" class="btn btn-primary btn-lg">Пречек</a>
                                         </div>
                                     </div>
                                 </div>

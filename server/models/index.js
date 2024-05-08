@@ -12,6 +12,7 @@ const pos = require('./pos-model')(sequelize);
 const categories = require('./category-model')(sequelize);
 const subcategories = require('./subcategory-model')(sequelize);
 const menu = require('./menu-model')(sequelize);
+const users = require('./user-model')(sequelize);
 
 
 module.exports = {
@@ -20,5 +21,6 @@ module.exports = {
     pos: pos,
     categories: categories,
     subcategories: subcategories,
-    menu: menu
+    menu: menu,
+    users: users
 }

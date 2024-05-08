@@ -1,5 +1,7 @@
 const Database = require('../classes/Database');
 const path = require('path');
+const fs = require('fs');
+const request = require('request');
 const AdminStats = require('../classes/adminStats');
 const Tables = require('../classes/Tables');
 const Token = require('../classes/Token');
@@ -7,6 +9,8 @@ const ApiError = require('../classes/exceptions/api-error');
 const Order = require('../classes/Order');
 const OrderLine = require('../classes/OrderLine');
 const Model = require('../models');
+const Printer = require('../classes/Printer');
+const SBIS = require('../classes/sbis');
 
 const db = new Database;
 
@@ -134,6 +138,7 @@ exports.add_to_table = async (req, res) => {
 
 exports.to_proccess_crm = async (req, res) => {
     try {
+        console.log(req.body);
         const agentId_pos = req.body.orderDetails.split('_');
         const order = new Order();
         order.Pos(agentId_pos[1]);
@@ -145,6 +150,9 @@ exports.to_proccess_crm = async (req, res) => {
             order.calculateTotalCost();
             order.createOrder();
         }
+        const printer = new Printer;
+        
+       // await printer.draw_info(req.body.itemsData, req.body.orderDetails);
 
         return res.redirect('/admin/tables');
     } catch(e) {
@@ -159,12 +167,13 @@ exports.complete_order = async (req, res) => {
     if(!await order.findOrderById()) {
         return res.redirect('/admin/tables');
     }
-
+    console.log(order);
     return res.render(createPath('complete_order'), {order: order});
 };
 
 exports.complete_order_handler = async (req, res) => {
     try{
+        console.log(JSON.stringify(req.body));
         const order = new Order();
         order.Id(req.body.order_id);
         await order.findOrderById();
@@ -173,6 +182,23 @@ exports.complete_order_handler = async (req, res) => {
         await order.calculateTotalCost();
         await order.updateOrder();
         await order.isComplete();
+        const official = await order.findOfficialLines();
+        if(official.length>0) {
+            const sbis = new SBIS;
+            //sbis.billRegistrationForCash(official);
+        }
+
+        const printer = new Printer();
+        console.log(order);
+        const pos_name = await Model.pos.findOne({
+            attributes: ['name'],
+            where: {
+                id: order.pos.split(':')[0]
+            }
+        });
+        order.pos=  pos_name.name + ':' + order.pos.split(':')[1];
+        order.agentId = 'Андрей Хоменко';
+        printer.printOrder(order);
     } catch(e) {
         console.log(e);
         return ApiError.UnknownError();
@@ -300,7 +326,6 @@ exports.subcategory_handler = async (req, res) => {
                     }
                 });
             }
-            console.log('123');
             return Model.subcategories.create({
                 type: req.body.type,
                 subcategory_name: req.body.subcategory_name,
@@ -317,6 +342,7 @@ exports.subcategory_handler = async (req, res) => {
 
 exports.add_orderLine = async (req, res) => {
     try {
+        console.log(JSON.stringify(req.body));
         const orderLine = new OrderLine(req.body.itemData.name, req.body.itemData.subcategory);
         await orderLine.setCategoryBySubcategory();
         if(req.body.itemData.prices.price) {
@@ -342,6 +368,75 @@ exports.add_orderLine = async (req, res) => {
     }
 }
 
+exports.categories_manager = async (req, res) => {
+    try {
+        const categories = await Model.categories.findAll();
+        return res.render(createPath('categories_manager'), {categories: categories});
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError();
+    }
+}
+
+exports.category_edit = async (req, res) => {
+    try {
+        const pos = await Model.pos.findAll();
+
+        if(!req.query.category_id) {
+            return res.render(createPath('category_edit'), {pos: pos});
+        }
+        const category = await Model.categories.findOne({
+            where: { id: req.query.category_id }
+        })
+        return res.render(createPath('category_edit'), {pos: pos, category: category });
+
+        
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError();
+    }
+}
+
+exports.category_delete = async (req, res) => {
+    try {
+        await Model.categories.destroy({
+            where: {id: req.query.category_id }
+        });
+        return res.redirect(`/admin/categories_manager`);
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError();
+    }
+}
+
+exports.category_update = async (req, res) => {
+    try {
+        console.log(req.body);
+        if(!req.body.category_id) {
+            await Model.categories.create({
+                category_name: req.body.category_name, 
+                printer: req.body.bills.group_printer == 'printer' ? req.body.bills.printer_address : '', 
+            });
+            return res.redirect('/admin/categories_manager');
+        }
+        await Model.categories.update(
+            {
+                category_name: req.body.category_name, 
+                printer: req.body.bills.group_printer == 'printer' ? req.body.bills.printer_address : '', 
+            },
+            {
+                where: {
+                    id: parseInt(req.body.category_id),
+                },
+            }
+        );
+        return res.redirect('/admin/categories_manager');
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError;
+    }
+}
+
 exports.pos_manager = async (req, res) => {
     try {
         const [pos] = await db.connection.promise().query('SELECT * FROM pos;');
@@ -358,14 +453,30 @@ exports.pos_edit = async (req, res) => {
         const [categories] = await db.connection.promise().query('SELECT id, category_name FROM menu_categories WHERE hidden=0');
         const warehouses = '';
         const makers = '';
-        if(req.query.new) {
+        if(!req.query.pos_id) {
             return res.render(createPath('pos_edit'), {workers: workers, warehouses: warehouses, categories:categories, makers: makers});
         }
-        const [pos] = await db.connection.promise().query('SELECT * FROM pos WHERE id=?', [req.query.pos_id]);
+        const pos = await Model.pos.findOne({
+            where : {
+                id: req.query.pos_id
+            }
+        });
 
-        return res.render(createPath('pos_edit'), {pos:pos[0], workers: workers, warehouses: warehouses, categories:categories, makers: makers});
+        return res.render(createPath('pos_edit'), {pos:pos, workers: workers, warehouses: warehouses, categories:categories, makers: makers});
 
         
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError();
+    }
+}
+
+exports.pos_delete = async (req, res) => {
+    try {
+        await Model.pos.destroy({
+            where: {id: req.query.pos_id }
+        });
+        return res.redirect(`/admin/pos_manager`);
     } catch(e) {
         console.log(e);
         throw ApiError.UnknownError();
@@ -380,8 +491,8 @@ exports.pos_update = async (req, res) => {
                 name: req.body.pos_name, 
                 count: req.body.pos_count, 
                 printer: req.body.bills.group_printer == 'printer' ? req.body.bills.printer_address : '', 
-                can_works: req.body.workers.join(', '),
-                can_sells: req.body.category.join(', ')
+                can_works: Array.isArray(req.body.workers) ? req.body.workers.join(', ') : req.body.workers,
+                can_sells: Array.isArray(req.body.category) ? req.body.category.join(', ') : req.body.category
             });
             return res.redirect('/admin/pos_manager');
         }
@@ -404,5 +515,56 @@ exports.pos_update = async (req, res) => {
         console.log(e);
         throw ApiError.UnknownError;
     }
+}
+
+exports.draw_prechek = async (req, res) => {
+    try{
+        console.log(JSON.stringify(req.body));
+        const order = new Order();
+        order.Id(req.body.order_id);
+        await order.findOrderById();
+        console.log(order);       
+        order.Sale(parseInt(req.body.sale));
+        await order.calculateTotalCost();
+        await order.updateOrder();
+
+        const printer = new Printer();
+        const pos_name = await Model.pos.findOne({
+            attributes: ['name'],
+            where: {
+                id: order.pos.split(':')[0]
+            }
+        });
+        order.pos=  pos_name.name + ':' + order.pos.split(':')[1];
+        order.agentId = 'Андрей Хоменко';
+        printer.printOrder(order);
+        return res.redirect('/admin/tables');
+    } catch(e) {
+        console.log(e);
+        return ApiError.UnknownError();
+    }
+};
+
+exports.personal_manager = async (req, res) => {
+    const personal = await Model.users.findAll({
+        where: {
+            role: process.env.PERSONAL_ROLES.split(', ')
+        }
+    });
+    return res.render(createPath('personal_manager'), {personal: personal});
+}
+exports.personal_editor = async (req, res) => {
+    if(!req.query.worker_id) {
+        return res.render(createPath('personal_editor'), {roles: process.env.PERSONAL_ROLES});
+    }
+
+    const workerData = await Model.users.findOne({
+        where: {id : parseInt(req.query.worker_id)}
+    })
+    if(!workerData) {
+        return res.redirect('/admin/personal_manager');
+    }
+
+    return res.render(createPath('personal_editor'), {worker: workerData});
 }
 

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <script src="/js/menu.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap_old.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style_for_menu.css">
+    <link rel="stylesheet" href="/css/helpmix.css">
+    <link rel="icon" href="/jpgs/favicon.ico">
+
+    <title>Редактор сотрудника | Cherry Music Bar</title>
+</head>
+<style>
+    .container {
+    margin: 10px;
+    background-color: white;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 10px;
+    }
+    a, a:visited {
+        color:white;
+    }
+    a:hower {
+        color: rgb(220, 220, 220);
+    }
+    .nav a { 
+        color: black;
+    }
+    .modal-dialog {
+        width: 50%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+        .modal-content {
+        height: auto;
+        min-height: 100%;
+        border-radius: 0;
+    }
+    .navbar-static-top {
+    position: static;
+    margin-bottom: 0;
+}
+
+    .navbar-inner {
+    min-height: 40px;
+    padding-right: 20px;
+    padding-left: 20px;
+    background-color: #fafafa;
+    background-image: -moz-linear-gradient(top,#fff,#f2f2f2);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#f2f2f2));
+    background-image: -webkit-linear-gradient(top,#fff,#f2f2f2);
+    background-image: -o-linear-gradient(top,#fff,#f2f2f2);
+    background-image: linear-gradient(to bottom,#fff,#f2f2f2);
+    background-repeat: repeat-x;
+    border: 1px solid #d4d4d4;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',endColorstr='#fff2f2f2',GradientType=0);
+    -webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.065);
+    -moz-box-shadow: 0 1px 4px rgba(0,0,0,0.065);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.065);
+}
+.navbar {
+    width: 100wv;
+}
+body {
+    background-image: url('../jpgs/body-back.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+</style>
+<body id="">
+    <script>
+        function showSubcategory(id) {
+            const otherDishes = document.querySelectorAll('#subcat');
+            otherDishes.forEach(item => {
+                item.classList.add('none');
+            });
+            const targetDishes = document.getElementById(`subcategory_${id}`).closest('#subcat').classList.remove('none');
+        }
+    </script>
+    <%- include('upmenu_crm') %>
+    <div class="container">
+        <div id="error_div"></div>
+        <div class="page-header">
+            <h2>Редактирование сотрудника</h2>
+        </div>
+        <form class="form-horizontal" action="index.php" method="post" id="addTableGroupForm" novalidate="novalidate">
+
+            <div class="row">
+                <div class="span6">
+                    <div class="control-group">
+                        <label class="control-label" for="user_role">Тип сотрудника</label>
+                        <div class="controls">
+                            <select name="frm[user_role]" class="required" type="text" id="user_role">
+                                <option value="admin" selected="">Администратор</option>
+                                <option value="buhg">Бухгалтер</option>
+                                <option value="kurer">Курьер</option>
+                                <option value="manager">Менеджер</option>
+                                <option value="oficant">Официант</option>
+                                <option value="director">Управляющий зала</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group" id="div_nickname">
+                        <label class="control-label" for="nickname">Имя</label>
+                        <div class="controls">
+                            <input class="required" value="Валентин" name="frm[nickname]" type="text" id="nickname" placeholder="">
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="control-group" id="div_user_email">
+                        <label class="control-label" for="user_email">Почта</label>
+                        <div class="controls">
+                            <input class="" value="" name="frm[user_email]" type="text" id="user_email" placeholder="">
+                        </div>
+                    </div>   
+                    <hr>
+                    <div class="control-group" id="div_otmena_is_posible">
+                        <label class="control-label" for="otmena_is_posible">Может делать<br> возвраты и отмены</label>
+                        <div class="controls">
+                            <input type="checkbox" value="1" id="otmena_is_posible" name="frm[otmena_is_posible]" checked="">
+                        </div>
+                    </div>   
+                    <div class="control-group" id="div_can_work_in_archiv">
+                        <label class="control-label" for="can_work_in_archiv">Архив счетов</label>
+                        <div class="controls">
+                            <input type="checkbox" value="1" id="can_work_in_archiv" name="frm[can_work_in_archiv]" checked="">
+                            <span class="help-block">Работа с архивом счетов. Может принимать деньги, как кассир.</span>
+                        </div>
+                    </div> 
+                    <hr>
+                    <div class="control-group">
+                        <h4>Работает с группами столиков:</h4>
+                        <div id="tables">
+                            <label class="checkbox">
+                            <input type="checkbox" value="" class="select_all" id="select_all_ofics">
+                            <strong>Отметить все</strong>
+                            </label>
+    
+                            <label class="checkbox">
+                            <input type="checkbox" name="tables_grouped[Летняя@@]" value="Летняя@@" checked="">
+                            Летняя@@
+                            </label>
+    
+                            <label class="checkbox">
+                            <input type="checkbox" name="tables_grouped[VIP@@]" value="VIP@@" checked="">
+                            VIP@@
+                            </label>
+    
+                            <label class="checkbox">
+                            <input type="checkbox" name="tables_grouped[ЗАЛ@@]" value="ЗАЛ@@" checked="">
+                            ЗАЛ@@
+                            </label>
+    
+                            <label class="checkbox">
+                            <input type="checkbox" name="tables_grouped[Бар@@]" value="Бар@@" checked="">
+                            Бар@@
+                            </label>
+    
+                            <label class="checkbox">
+                            <input type="checkbox" name="tables_grouped[Доставка@@]" value="Доставка@@" checked="">
+                            Доставка@@
+                            </label>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="control-group">
+                        <div class="controls">
+                            <input class="btn btn-success" type="button" onclick="do_submit_form();" value="Сохранить">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

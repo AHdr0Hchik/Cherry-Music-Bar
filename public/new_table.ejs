@@ -36,9 +36,9 @@
                                 <tbody>
                                     <tr valign="top">
                                         <% categories.forEach(category => { %>
-                                        <td>
+                                        <td style="padding: 5px;">
                                             <!--Категория и её модальное окно-->
-                                            <div name="butt_proizv" class="proizv btn btn-success" data-toggle="modal" data-target="#myModal_category_<%=category.id %>" style="width:90%; left:5;" id="category_<%= category.id %>"><%= category.category_name %></div>
+                                            <div name="butt_proizv" class="proizv btn btn-success" data-toggle="modal" data-target="#myModal_category_<%=category.id %>" style="width:110%; height: 60px;" id="category_<%= category.id %>"><%= category.category_name %></div>
                                             <div class="modal fade" id="myModal_category_<%=category.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-scrollable">
                                                     <div class="modal-content">
@@ -52,7 +52,7 @@
                                                             <% this_subcategories.forEach((subcategory, index) => { %>
                                                                 
                                                                 <!--Подкатегория и её модальное окно-->
-                                                                <button type="button" class="btn btn-primary" id="<%= subcategory.id %>" data-toggle="modal" data-target="#myModal_subcategory_<%= subcategory.id %>"> <%= subcategory.subcategory_name %> </button>
+                                                                <button type="button" class="btn btn-primary" id="<%= subcategory.id %>" data-toggle="modal" data-target="#myModal_subcategory_<%= subcategory.id %>" style="width: 90px; height: 70px; text-align: center; padding: 5px; "> <%= subcategory.subcategory_name %> </button>
                                                                 <div class="modal fade" id="myModal_subcategory_<%=subcategory.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                                                     <div class="modal-dialog modal-dialog-scrollable">
                                                                         <div class="modal-content">
@@ -177,20 +177,26 @@
                 </div>
 
                 <div id="ranee_zakazano">
-		    
                     <table border="1" class="table table-striped table-bordered table-condensed">
-                        <tbody>
-                            <% if(locals.orderData) { %> 
-                            <tr align="center"><td colspan="3"><b>Заказано ранее</b></td></tr>
-                                <% orderData.forEach(orderLine => { %>
-                                <tr id="<%= orderLine.id %>">
-                                    <td align="left"><%= orderLine.name %> <%= orderLine.size || '' %></td>
-                                    <td align="right"><%= orderLine.count %></td>
-                                    <td align="right"><%= orderLine.price %></td>
+                            <% if(locals.orderData) { %>
+                                <thead>
+                                    <th class="text-center" colspan="3">Заказано ранее</th>
+                                </thead> 
+                                <tbody>
+                                <tr style="font-weight:bold; font-size:10pt;">
+                                    <td align="center">Наименование</td>
+                                    <td align="center">Кол-во</td>
+                                    <td align="center">Цена</td>
                                 </tr>
+                                <% orderData.forEach(orderLine => { %>
+                                    <tr id="<%= orderLine.id %>" class="old_cart_item" data-id="<%= orderLine.id %>">
+                                        <td align="left"><span class="cart-item__title" id="<%= orderLine.size || '' %>"><%= orderLine.name %> <%= orderLine.size || '' %></span></td>
+                                        <td align="right"><input data-counter class="form-control" type="number" value="<%= orderLine.count %>"></td>
+                                        <td align="right"><span class="price__currency"><%= orderLine.price %></span></td>
+                                    </tr>
                                 <% }); %>
+                                </tbody>
                             <% } %>
-                        </tbody>
                     </table>
                 </div>
             </tbody>
