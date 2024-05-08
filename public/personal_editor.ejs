@@ -98,30 +98,24 @@ body {
 
             <div class="row">
                 <div class="span6">
+                    <div class="control-group" id="div_nickname">
+                        <h3 class="controls" for="nickname">Имя: <span><%= `${worker.firstname} ${worker.lastname}` %></span></h3>
+                        <hr>
+                    </div>
                     <div class="control-group">
                         <label class="control-label" for="user_role">Тип сотрудника</label>
                         <div class="controls">
                             <select name="frm[user_role]" class="required" type="text" id="user_role">
-                                <option value="admin" selected="">Администратор</option>
-                                <option value="buhg">Бухгалтер</option>
-                                <option value="kurer">Курьер</option>
-                                <option value="manager">Менеджер</option>
-                                <option value="oficant">Официант</option>
-                                <option value="director">Управляющий зала</option>
+                                <% roles.forEach((role, index) => { %> 
+                                    <option value="<%= role %>" <% if (locals.worker && worker.role === role) { %>selected<% } %>><%= roles_names[index] %></option>
+                                <% }); %>
                             </select>
                         </div>
-                    </div>
-                    <div class="control-group" id="div_nickname">
-                        <label class="control-label" for="nickname">Имя</label>
-                        <div class="controls">
-                            <input class="required" value="Валентин" name="frm[nickname]" type="text" id="nickname" placeholder="">
-                        </div>
-                        <hr>
                     </div>
                     <div class="control-group" id="div_user_email">
                         <label class="control-label" for="user_email">Почта</label>
                         <div class="controls">
-                            <input class="" value="" name="frm[user_email]" type="text" id="user_email" placeholder="">
+                            <input class="" value="<%= worker.email %>" name="frm[user_email]" type="text" id="user_email" placeholder="">
                         </div>
                     </div>   
                     <hr>
@@ -138,41 +132,6 @@ body {
                             <span class="help-block">Работа с архивом счетов. Может принимать деньги, как кассир.</span>
                         </div>
                     </div> 
-                    <hr>
-                    <div class="control-group">
-                        <h4>Работает с группами столиков:</h4>
-                        <div id="tables">
-                            <label class="checkbox">
-                            <input type="checkbox" value="" class="select_all" id="select_all_ofics">
-                            <strong>Отметить все</strong>
-                            </label>
-    
-                            <label class="checkbox">
-                            <input type="checkbox" name="tables_grouped[Летняя@@]" value="Летняя@@" checked="">
-                            Летняя@@
-                            </label>
-    
-                            <label class="checkbox">
-                            <input type="checkbox" name="tables_grouped[VIP@@]" value="VIP@@" checked="">
-                            VIP@@
-                            </label>
-    
-                            <label class="checkbox">
-                            <input type="checkbox" name="tables_grouped[ЗАЛ@@]" value="ЗАЛ@@" checked="">
-                            ЗАЛ@@
-                            </label>
-    
-                            <label class="checkbox">
-                            <input type="checkbox" name="tables_grouped[Бар@@]" value="Бар@@" checked="">
-                            Бар@@
-                            </label>
-    
-                            <label class="checkbox">
-                            <input type="checkbox" name="tables_grouped[Доставка@@]" value="Доставка@@" checked="">
-                            Доставка@@
-                            </label>
-                        </div>
-                    </div>
                     <hr>
                     <div class="control-group">
                         <div class="controls">

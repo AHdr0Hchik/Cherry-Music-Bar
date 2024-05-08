@@ -555,7 +555,7 @@ exports.personal_manager = async (req, res) => {
 }
 exports.personal_editor = async (req, res) => {
     if(!req.query.worker_id) {
-        return res.render(createPath('personal_editor'), {roles: process.env.PERSONAL_ROLES});
+        return res.render(createPath('personal_editor'), {roles: process.env.PERSONAL_ROLES.split(', '), roles_names: process.env.PERSONAL_ROLES_NAMES.split(', ')});
     }
 
     const workerData = await Model.users.findOne({
@@ -565,6 +565,6 @@ exports.personal_editor = async (req, res) => {
         return res.redirect('/admin/personal_manager');
     }
 
-    return res.render(createPath('personal_editor'), {worker: workerData});
+    return res.render(createPath('personal_editor'), {roles: process.env.PERSONAL_ROLES.split(', '), roles_names: process.env.PERSONAL_ROLES_NAMES.split(', '), worker: workerData});
 }
 
