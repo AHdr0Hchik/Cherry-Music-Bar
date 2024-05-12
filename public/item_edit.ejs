@@ -274,7 +274,7 @@
                                     <tbody>
                                         <tr>
                                             <td style="width:33%;" id="komp_cat_list" valign="top">
-                                                <select onchange="basic_draw_cat_list( &quot;komp_cat_list&quot;, &quot;komp&quot;, this.options[this.selectedIndex].value)">
+                                                <select>
                                                     <option value="type=production">ПРОДУКТЫ</option>
                                                     
                                                     <option value="type=packed">ФАСОВАННЫЕ ТОВАРЫ</option>
@@ -286,11 +286,11 @@
                                                 <table class="table table-striped compact table_menu">
                                                     <tbody>
                                                         <tr id="cat_id_1149">
-                                                            <td onclick="recepturaPolu_komp_draw_tov_list(&quot;&quot;, 1149)">
+                                                            <td>
                                                                 <font style="font-size:14px; font-weight:bold;">Алкоголь фас.</font>
                                                             </td> 
                                                             <td class="td_btn">
-                                                                <button class="btn btn-info" onclick="recepturaPolu_komp_draw_tov_list(&quot;&quot;, 1149)"><i class="icon-folder-open icon-white"></i></button>
+                                                                <button class="btn btn-info" ><i class="icon-folder-open icon-white"></i></button>
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -299,7 +299,7 @@
                                             <td style="width:77%;" valign="top">
                                             <table><tbody><tr>
                                                 <td>
-                                                <input type="text" name="komp_poisk" placeholder="Поиск компонента по всем категориям" style="width:100%;" class="input-medium search-query" onblur="basic_stop_context_find()" onfocus="basic_start_context_find(this.name, &quot;komp_tov_list&quot;, &quot;recepturaPolu_komp&quot;, &quot;as_button&quot;, [&quot;продукты&quot;, &quot;заготовки&quot;, &quot;блюда&quot;])">
+                                                <input type="text" name="komp_poisk" placeholder="Поиск компонента по всем категориям" style="width:100%;" class="input-medium search-query">
                                                 </td></tr>
                                                 <tr><td id="komp_tov_list" valign="top"></td>
                                                 </tr>

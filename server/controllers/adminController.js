@@ -11,28 +11,19 @@ const OrderLine = require('../classes/OrderLine');
 const Model = require('../models');
 const Printer = require('../classes/Printer');
 const SBIS = require('../classes/sbis');
+const { where } = require('sequelize');
 
 const db = new Database;
 
 const createPath = (page) => path.resolve(__dirname, '../../public', `${page}.ejs`);
 
+//common
+
 exports.home = async (req, res) => {
     res.render(createPath('admin_home'), {isAuthorized: true});
 }
 
-exports.addMenu = async (req, res) => {
-    const [categories] = await db.connection.promise().query(`SELECT id, category_name FROM menu_categories`);
-    const [subcategories] = await db.connection.promise().query(`SELECT id, subcategory_name FROM menu_subcategories`);
-    const category = 'add_menu';
-    res.render(createPath(`${category}`), {categories: categories ,subcategories: subcategories});
-}
-
-exports.add_dish = async (req, res) => {
-    if(req.query.subcategory != 11) {
-       await db.connection.promise().query(`INSERT INTO menu (category, subcategory, name, description, price) VALUES (${parseInt(req.query.category)},${parseInt(req.query.subcategory)},${req.query.name},${req.query.description},${parseFloat(req.query.price)})`);
-    }
-    res.redirect('/add_menu');
-}
+//stats
 
 exports.stats = async (req, res) => {
     const adminStats = new AdminStats();
@@ -53,6 +44,8 @@ exports.get_stats = async (req, res) => {
     const dishHistory = await adminStats.getDishHistory(dateStart, dateFinish);
     return res.render(createPath('stats'), {dto: await adminStats.getDto(), dishHistory: dishHistory});
 }
+
+//tables and orders
 
 exports.tables = async (req, res) => {
     const token = new Token;
@@ -204,6 +197,8 @@ exports.complete_order_handler = async (req, res) => {
         return ApiError.UnknownError();
     }
 };
+
+//nomenclature
 
 exports.nomenclature = async (req, res) => {
     try {
@@ -368,74 +363,7 @@ exports.add_orderLine = async (req, res) => {
     }
 }
 
-exports.categories_manager = async (req, res) => {
-    try {
-        const categories = await Model.categories.findAll();
-        return res.render(createPath('categories_manager'), {categories: categories});
-    } catch(e) {
-        console.log(e);
-        throw ApiError.UnknownError();
-    }
-}
-
-exports.category_edit = async (req, res) => {
-    try {
-        const pos = await Model.pos.findAll();
-
-        if(!req.query.category_id) {
-            return res.render(createPath('category_edit'), {pos: pos});
-        }
-        const category = await Model.categories.findOne({
-            where: { id: req.query.category_id }
-        })
-        return res.render(createPath('category_edit'), {pos: pos, category: category });
-
-        
-    } catch(e) {
-        console.log(e);
-        throw ApiError.UnknownError();
-    }
-}
-
-exports.category_delete = async (req, res) => {
-    try {
-        await Model.categories.destroy({
-            where: {id: req.query.category_id }
-        });
-        return res.redirect(`/admin/categories_manager`);
-    } catch(e) {
-        console.log(e);
-        throw ApiError.UnknownError();
-    }
-}
-
-exports.category_update = async (req, res) => {
-    try {
-        console.log(req.body);
-        if(!req.body.category_id) {
-            await Model.categories.create({
-                category_name: req.body.category_name, 
-                printer: req.body.bills.group_printer == 'printer' ? req.body.bills.printer_address : '', 
-            });
-            return res.redirect('/admin/categories_manager');
-        }
-        await Model.categories.update(
-            {
-                category_name: req.body.category_name, 
-                printer: req.body.bills.group_printer == 'printer' ? req.body.bills.printer_address : '', 
-            },
-            {
-                where: {
-                    id: parseInt(req.body.category_id),
-                },
-            }
-        );
-        return res.redirect('/admin/categories_manager');
-    } catch(e) {
-        console.log(e);
-        throw ApiError.UnknownError;
-    }
-}
+//pos
 
 exports.pos_manager = async (req, res) => {
     try {
@@ -517,33 +445,78 @@ exports.pos_update = async (req, res) => {
     }
 }
 
-exports.draw_prechek = async (req, res) => {
-    try{
-        console.log(JSON.stringify(req.body));
-        const order = new Order();
-        order.Id(req.body.order_id);
-        await order.findOrderById();
-        console.log(order);       
-        order.Sale(parseInt(req.body.sale));
-        await order.calculateTotalCost();
-        await order.updateOrder();
+//categories
 
-        const printer = new Printer();
-        const pos_name = await Model.pos.findOne({
-            attributes: ['name'],
-            where: {
-                id: order.pos.split(':')[0]
-            }
-        });
-        order.pos=  pos_name.name + ':' + order.pos.split(':')[1];
-        order.agentId = 'Андрей Хоменко';
-        printer.printOrder(order);
-        return res.redirect('/admin/tables');
+exports.categories_manager = async (req, res) => {
+    try {
+        const categories = await Model.categories.findAll();
+        return res.render(createPath('categories_manager'), {categories: categories});
     } catch(e) {
         console.log(e);
-        return ApiError.UnknownError();
+        throw ApiError.UnknownError();
     }
-};
+}
+
+exports.category_edit = async (req, res) => {
+    try {
+        const pos = await Model.pos.findAll();
+
+        if(!req.query.category_id) {
+            return res.render(createPath('category_edit'), {pos: pos});
+        }
+        const category = await Model.categories.findOne({
+            where: { id: req.query.category_id }
+        })
+        return res.render(createPath('category_edit'), {pos: pos, category: category });
+
+        
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError();
+    }
+}
+
+exports.category_delete = async (req, res) => {
+    try {
+        await Model.categories.destroy({
+            where: {id: req.query.category_id }
+        });
+        return res.redirect(`/admin/categories_manager`);
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError();
+    }
+}
+
+exports.category_update = async (req, res) => {
+    try {
+        console.log(req.body);
+        if(!req.body.category_id) {
+            await Model.categories.create({
+                category_name: req.body.category_name, 
+                printer: req.body.bills.group_printer == 'printer' ? req.body.bills.printer_address : '', 
+            });
+            return res.redirect('/admin/categories_manager');
+        }
+        await Model.categories.update(
+            {
+                category_name: req.body.category_name, 
+                printer: req.body.bills.group_printer == 'printer' ? req.body.bills.printer_address : '', 
+            },
+            {
+                where: {
+                    id: parseInt(req.body.category_id),
+                },
+            }
+        );
+        return res.redirect('/admin/categories_manager');
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError;
+    }
+}
+
+//personal
 
 exports.personal_manager = async (req, res) => {
     const personal = await Model.users.findAll({
@@ -567,4 +540,63 @@ exports.personal_editor = async (req, res) => {
 
     return res.render(createPath('personal_editor'), {roles: process.env.PERSONAL_ROLES.split(', '), roles_names: process.env.PERSONAL_ROLES_NAMES.split(', '), worker: workerData});
 }
+
+exports.personal_update = async (req, res) => {
+    console.log(req.body);
+    const user = await Model.users.findOne({
+        where: {
+            email: req.body.frm.user_email
+        }
+    });
+    if(!user || (user.role === req.body.frm.user_role)) {
+        return res.redirect('/admin/personal_manager');
+    }
+    await Model.users.update(
+        {
+            role: req.body.frm.user_role
+        },
+        {
+            where: {
+                email: req.body.frm.user_email,
+            },
+        }
+    );
+    return res.redirect('/admin/personal_manager');
+}
+
+exports.personal_delete = async(req, res) => {
+    try {
+        await Model.users.update(
+            {
+                role: 'default'
+            },
+            {
+                where: {
+                    id: parseInt(req.query.worker_id),
+                },
+            }
+        );
+        return res.redirect(`/admin/personal_manager`);
+    } catch(e) {
+        console.log(e);
+        return res.redirect('/admin/personal_manager');
+    }
+}
+
+//printer
+
+exports.draw_prechek = async (req, res) => {
+    try{
+        let order = new Order();
+        order.Id(req.query.order_id);
+        await order.findOrderById();
+        console.log(order);
+        const printer = new Printer();
+        printer.printOrder(order);
+        return res.redirect('/admin/tables');
+    } catch(e) {
+        console.log(e);
+        return ApiError.UnknownError();
+    }
+};
 

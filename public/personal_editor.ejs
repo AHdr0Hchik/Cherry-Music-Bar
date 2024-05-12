@@ -94,18 +94,18 @@ body {
         <div class="page-header">
             <h2>Редактирование сотрудника</h2>
         </div>
-        <form class="form-horizontal" action="index.php" method="post" id="addTableGroupForm" novalidate="novalidate">
+        <form class="form-horizontal" action="/admin/personal_manager/personal_update" method="post" id="addTableGroupForm" novalidate="novalidate">
 
             <div class="row">
                 <div class="span6">
                     <div class="control-group" id="div_nickname">
-                        <h3 class="controls" for="nickname">Имя: <span><%= `${worker.firstname} ${worker.lastname}` %></span></h3>
+                        <h3 class="controls" for="nickname">Имя: <span><%= locals.worker ? `${worker.firstname} ${worker.lastname}` : "Новый работник" %></span></h3>
                         <hr>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="user_role">Тип сотрудника</label>
                         <div class="controls">
-                            <select name="frm[user_role]" class="required" type="text" id="user_role">
+                            <select name="frm[user_role]" class="required" type="text" id="user_role" required>
                                 <% roles.forEach((role, index) => { %> 
                                     <option value="<%= role %>" <% if (locals.worker && worker.role === role) { %>selected<% } %>><%= roles_names[index] %></option>
                                 <% }); %>
@@ -115,7 +115,7 @@ body {
                     <div class="control-group" id="div_user_email">
                         <label class="control-label" for="user_email">Почта</label>
                         <div class="controls">
-                            <input class="" value="<%= worker.email %>" name="frm[user_email]" type="text" id="user_email" placeholder="">
+                            <input class="" value="<%= locals.worker ? worker.email : '' %>" name="frm[user_email]" type="text" id="user_email" placeholder="" required>
                         </div>
                     </div>   
                     <hr>
@@ -135,7 +135,7 @@ body {
                     <hr>
                     <div class="control-group">
                         <div class="controls">
-                            <input class="btn btn-success" type="button" onclick="do_submit_form();" value="Сохранить">
+                            <button type="submit" class="btn btn-success">Сохранить</button>
                         </div>
                     </div>
                 </div>
