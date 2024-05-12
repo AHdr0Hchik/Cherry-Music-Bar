@@ -1,7 +1,6 @@
 const Model = require('../models');
 const escpos = require('escpos');
 const OrderLine = require('./OrderLine');
-const { text } = require('body-parser');
 escpos.Network = require('escpos-network');
 
 class Printer {

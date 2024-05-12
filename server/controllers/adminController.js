@@ -1,9 +1,6 @@
 const Database = require('../classes/Database');
 const path = require('path');
-const fs = require('fs');
-const request = require('request');
 const AdminStats = require('../classes/adminStats');
-const Tables = require('../classes/Tables');
 const Token = require('../classes/Token');
 const ApiError = require('../classes/exceptions/api-error');
 const Order = require('../classes/Order');
@@ -11,7 +8,6 @@ const OrderLine = require('../classes/OrderLine');
 const Model = require('../models');
 const Printer = require('../classes/Printer');
 const SBIS = require('../classes/sbis');
-const { where } = require('sequelize');
 
 const db = new Database;
 

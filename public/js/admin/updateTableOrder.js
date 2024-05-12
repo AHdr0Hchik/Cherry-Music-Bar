@@ -1,8 +1,6 @@
 const cartWrapper =  document.querySelector('.cart-wrapper');
 
 document.addEventListener('DOMContentLoaded', () => {
-    const cartProductsList = document.querySelector('.cart-wrapper');
-    const dir = document.body.id;;
 
     // Клик по области окна
     window.addEventListener('click', function (event) {
