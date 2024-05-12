@@ -54,6 +54,7 @@ module.exports = function(sequelize) {
     }, 
     {
         timestamps: false,
-        tablename: 'history'
+        tablename: 'history',
+        freezeTableName: true
     });
 }

@@ -9,9 +9,10 @@ class Tables {
 
     async getTables() {
         try{
-            const [tables] = await this.db.connection.promise().query('SELECT * FROM pos;');
-            if(!tables[0]) return false;
-            return tables;
+            const pos = await Model.pos.findAll();
+            //const [tables] = await this.db.connection.promise().query('SELECT * FROM pos;');
+            if(!pos) return false;
+            return pos;
         } catch(e) {
             console.log(e);
             return false;

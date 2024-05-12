@@ -20,17 +20,18 @@ class Printer {
             .text('Где: ' + order.pos , 'CP866')
             .text('Когда: ' + order.orderDate , 'CP866')
             .text('Обслужил: ' + order.agentId, 'CP866');
+            let orderLineArray_formatted;
             order.orderLineArray.forEach(orderLine => {
-                printer.table([`${orderLine.name} ${orderLine.size || ''}`, `${orderLine.count}`, `${orderLine.price}`, `${orderLine.count * orderLine.price}`], 'CP866');
+                printer.tableCustom([{text: `${orderLine.name} ${orderLine.size || ''}`}, {text:`${orderLine.count}`}, {text: `${orderLine.price}`}, {text:`${orderLine.count * orderLine.price}`}], { encoding: 'CP866', size: [1, 1] });
                 printer.text(`_____________________`, 'CP866');
             })
             printer.style('i').text('Сумма: ' + order.sale==0 ? `${order.sumWithSale}Р` : `${order.sum} - ${(order.sum-order.sumWithSale)} = ${order.sumWithSale}Р` , 'CP866');
             if(final) {
-            printer.style('b').text('Приходите ещё :)')
+            printer.style('b').text('Приходите ещё :)', 'CP866')
             .cut()
             .close();
             } else {
-                printer.style('b').text('Приятного аппетита :)')
+                printer.style('b').text('Приятного аппетита :)', 'CP866')
                 .cut()
                 .close();
             }

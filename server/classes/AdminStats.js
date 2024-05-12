@@ -1,3 +1,4 @@
+const Model = require('../models')
 const Database = require('./Database');
 
 class AdminStats {
@@ -5,8 +6,12 @@ class AdminStats {
     db = new Database;
 
     async getDto() {
-        const [categories] = await this.db.connection.promise().query('SELECT id, category_name FROM menu_categories;');
-        const [subcategories] = await this.db.connection.promise().query('SELECT id, category, subcategory_name FROM menu_subcategories;');
+        const categories = await Model.categories.findAll({
+            attributes: ['id', 'category_name']
+        });
+        const subcategories = await Model.subcategories.findAll({
+            attributes: ['id', 'category', 'subcategory_name']
+        })
         return subcategories.map(subcategory => {
             const category = categories.find(cat => cat.id === subcategory.category);
             return {
@@ -18,9 +23,20 @@ class AdminStats {
     }
 
     async getOrderHistory(date_start, date_finish) {
-        const [history] = await this.db.connection.promise().query('SELECT * FROM history where orderDate>=? and orderDate <=?', [date_start, date_finish]);
-        const [menu] = await this.db.connection.promise().query('SELECT id, name FROM menu');
-        if(!history[0]) {
+        const history = await Model.history.findAll({
+            where: {
+                orderDate: { [Model.Op.gte]: date_start },
+                orderDate: { [Model.Op.lte]: date_finish }
+            }
+        })
+        //const [history] = await this.db.connection.promise().query('SELECT * FROM history where orderDate>=? and orderDate <=?', [date_start, date_finish]);
+        const menu = await Model.menu.findAll({
+            where: {
+                attributes: ['id', 'name']
+            }
+        })
+        //const [menu] = await this.db.connection.promise().query('SELECT id, name FROM menu');
+        if(!history) {
             return false;
         }
         history.forEach(order => {
@@ -41,7 +57,7 @@ class AdminStats {
     async getDishHistory(date_start, date_finish) {
         const history = await this.getOrderHistory(date_start, date_finish);
         console.log(history);
-        if(!history[0]) {
+        if(!history) {
             return false;
         }
         const salesInfo = {};

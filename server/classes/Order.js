@@ -162,11 +162,17 @@ class Order {
     async findOrderByPos() {
         try {
             const db = new Database;
-            const [order] = await db.connection.promise().query('SELECT * FROM History WHERE pos=? AND isComplete=0', [this.pos]);
-            if(order.length === 0) {
+            const order = await Model.history.findOne({
+                where: {
+                    pos: this.pos,
+                    isComplete: 0
+                }
+            })
+            //const [order] = await db.connection.promise().query('SELECT * FROM History WHERE pos=? AND isComplete=0', [this.pos]);
+            if(!order) {
                 return false;
             }
-            const {id, orderLineArray, sum, sale, sumWithSale, agentId} = order[0];
+            const {id, orderLineArray, sum, sale, sumWithSale, agentId} = order;
             this.id = id;
             this.orderLineArray = JSON.parse(orderLineArray);
             this.sum = sum;
@@ -183,12 +189,17 @@ class Order {
     async findOrderById() {
         try {
             const db = new Database;
-            const [order] = await db.connection.promise().query('SELECT * FROM History WHERE id=? AND isComplete=0', [this.id]);
-            if(order.length === 0) {
-                console.log('123');
+            const order = await Model.history.findOne({
+                where: {
+                    id: this.id,
+                    isComplete: 0
+                }
+            })
+            //const [order] = await db.connection.promise().query('SELECT * FROM History WHERE id=? AND isComplete=0', [this.id]);
+            if(!order) {
                 return false;
             }
-            const {pos, orderLineArray, sum, sale, sumWithSale, agentId} = order[0];
+            const {pos, orderLineArray, sum, sale, sumWithSale, agentId} = order;
             this.orderLineArray = JSON.parse(orderLineArray);
             this.sum = sum;
             this.pos = pos;
@@ -204,7 +215,17 @@ class Order {
 
     async isComplete() {
         try {
-            await new Database().connection.promise().query('UPDATE History SET isComplete=1 WHERE id=?', [this.id]);
+            await Model.history.update(
+                {
+                    isComplete: 1
+                },
+                {
+                    where: {
+                        id: this.id
+                    }
+                }
+            )
+            //await new Database().connection.promise().query('UPDATE History SET isComplete=1 WHERE id=?', [this.id]);
             return true;
         } catch(e) {
             console.log(e);

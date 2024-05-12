@@ -94,15 +94,19 @@ class OrderLine {
     //get from db
     async getAllOrderLines() {
         const db = new Database;
-        const [results] = await db.connection.promise().query('SELECT * FROM Menu;');
-        return results;
+        const menu = await Model.menu.findAll();
+        //const menu = await db.connection.promise().query('SELECT * FROM Menu;');
+        return menu;
     }
 
     async getOrderLineByName() {
         try {
             const db = new Database;
-            const [results] = await db.connection.promise().query('SELECT * FROM Menu WHERE name = ?', [this.name]);
-            return results[0];
+            const results = await Model.menu.findOne({
+                where: { name : this.name }
+            })
+            //const [results] = await db.connection.promise().query('SELECT * FROM Menu WHERE name = ?', [this.name]);
+            return results;
         } catch(e) {
             return false;
         }
@@ -122,7 +126,10 @@ class OrderLine {
 
     async setCategoryBySubcategory() {
         const db = new Database;
-        const [subcategories] = await db.connection.promise().query('SELECT id, category FROM menu_subcategories;')
+        const subcategories = await Model.subcategories.findAll({
+            attributes: ['id', 'category']
+        })
+        //const [subcategories] = await db.connection.promise().query('SELECT id, category FROM menu_subcategories;')
 
         let subcategory = subcategories.find(item => item.id == this.subcategory);
         if (subcategory) {
