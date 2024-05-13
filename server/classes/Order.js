@@ -9,6 +9,7 @@ class Order {
         this.address = address || '',
         this.numberPhone = numberPhone || ''
     }
+    guests_count;
     id;
     description = '';
     sum = 0;
@@ -25,6 +26,11 @@ class Order {
     Pos(pos) {
         if(!pos) return this.pos;
         else this.pos = pos;
+    }
+
+    Guests_count(guests_count) {
+        if(!guests_count) return this.guests_count;
+        else this.guests_count = guests_count;
     }
 
     AgentId(agentId) {
@@ -172,13 +178,14 @@ class Order {
             if(!order) {
                 return false;
             }
-            const {id, orderLineArray, sum, sale, sumWithSale, agentId} = order;
+            const {id, orderLineArray, sum, sale, sumWithSale, agentId, guests_count} = order;
             this.id = id;
             this.orderLineArray = JSON.parse(orderLineArray);
             this.sum = sum;
             this.sale = sale;
             this.sumWithSale = sumWithSale;
             this.agentId = agentId;
+            this.guests_count = guests_count;
             return true;
         } catch(e) {
             console.log(e);
@@ -199,13 +206,14 @@ class Order {
             if(!order) {
                 return false;
             }
-            const {pos, orderLineArray, sum, sale, sumWithSale, agentId} = order;
+            const {pos, orderLineArray, sum, sale, sumWithSale, agentId, guests_count} = order;
             this.orderLineArray = JSON.parse(orderLineArray);
             this.sum = sum;
             this.pos = pos;
             this.sale = sale;
             this.sumWithSale = sumWithSale;
             this.agentId = agentId;
+            this.guests_count = guests_count;
             return true;
         } catch(e) {
             console.log(e);

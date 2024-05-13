@@ -24,7 +24,8 @@
             <div class="col-md-8">
                 <div class="row" id="products-container">
                     <% menu.forEach(dish => { %>
-                        <% if(dish.subcategory != 11) {%>
+                        <% var filteredPricelist = pricelist.filter(item => item.dish_id === dish.id); %>
+                        <% if(filteredPricelist.length===1) { %> 
                             <div class="col-md-6">
                                 <div class="card mb-4 front" data-id="<%= dish.id %>">
                                     <img class="product-img" src="<%= dish.imgUrl %>" alt="<%= dish.name %>">
@@ -56,7 +57,7 @@
                                     </div>
                                 </div>
                             </div>
-                        <% } else { %>
+                        <% }  else { %>
                             <div class="col-md-6">
                                 <div class="card mb-4 front" data-id="<%= dish.id %>">
                                     <img class="product-img" src="<%= dish.imgUrl %>" alt="<%= dish.name %>">
@@ -69,12 +70,16 @@
                                                 <div class="items__control" data-action="plus">+</div>
                                             </div>
                                             <div class="items size-wrapper">
-                                                <div class="items__control active" data-action="pizza" data-sb-curent-price="<%= dish.price30 %>" data-sb-curent-size="30" data-sb-curent-id-or-vendor-code="0030pz">30</div>
-                                                <div class="items__control" data-action="pizza" data-sb-curent-price="<%= dish.price36 %>" data-sb-curent-size="36" data-sb-curent-id-or-vendor-code="0036pz">36</div>
-                                                <div class="items__control" data-action="pizza" data-sb-curent-price="<%= dish.price50 %>" data-sb-curent-size="50" data-sb-curent-id-or-vendor-code="0050pz">50</div>
+                                                <% var default_price; %>
+                                                <% filteredPricelist.forEach((item, index) => { %>
+                                                    <% if(index===0) default_price = item.price; %>
+                                                    <div class="items__control <%= index===0 ? 'active' : '' %>" data-action="pizza" data-sb-curent-price="<%= item.price %>" data-sb-curent-size="<%= item.size %>" data-sb-curent-id-or-vendor-code="00<%= item.size %>pz"><%= item.size %> </div>
+                                                
+                                                <% }) %>
+                                                
                                             </div>
                                             <div class="price">
-                                                <div class="price__currency"><%= dish.price30 %> ₽</div>
+                                                <div class="price__currency"><%= default_price %> ₽</div>
                                             </div>
                                         </div>
                                         <button data-cart type="button" class="btn btn-block btn-outline-warning">+ в корзину</button>
@@ -89,6 +94,12 @@
                                     </div>
                                 </div>
                             </div>
+                        <% } %>
+
+
+                        <% if(dish.subcategory != 11) {%>
+                        <% } else { %>
+                            
                         <% } %>
                     <% }); %>
                 </div>

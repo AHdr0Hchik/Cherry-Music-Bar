@@ -116,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Нажатие на кнопку "Заказать"
         if(event.target.hasAttribute('data-toprocess')) {
             const items = cartWrapper.querySelectorAll('.cart-item');
+            const guests_count = document.querySelector('#guests').value;
             const orderDetails = document.querySelector('.pos').id;
             let itemsData = [];
             let old_itemsData = [];
@@ -157,7 +158,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({
                     itemsData: itemsData,
                     old_itemsData: old_itemsData,
-                    orderDetails: orderDetails
+                    orderDetails: orderDetails,
+                    guests_count: guests_count
                 }),
                 headers: {
                     "Content-type": "application/json; charset=UTF-8"

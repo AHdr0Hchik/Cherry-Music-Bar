@@ -167,7 +167,7 @@ body {
                                                             <% } else { %>
                                                                 <button onclick="" class="btn btn-primary" style="width:80px;text-align:right;"> <%= orderLine.price.toFixed(2) %></button>
                                                             <% } %>
-                                                            <button class="btn btn-danger" style="cursor:hand;">X&nbsp;</button>
+                                                            <a href="/admin/nomenclature/item_delete?orderLine=<%= orderLine.id %>" class="btn btn-danger" style="cursor:hand;">X&nbsp;</a>
                                                         </div>
                                                     </div>
                                                 <% }) %>

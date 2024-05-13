@@ -37,7 +37,10 @@ router.get('/nomenclature/delete_subcategory', adminController.subcategory_delet
 
 router.post('/nomenclature/add_orderLine', adminController.add_orderLine);
 
-router.post('/nomenclature/subcategory_handler', adminController.subcategory_handler)
+router.get('/nomenclature/item_delete', adminController.item_delete);
+
+router.post('/nomenclature/subcategory_handler', adminController.subcategory_handler);
+
 
 //pos
 

@@ -14,6 +14,7 @@ const subcategories = require('./subcategory-model')(sequelize);
 const menu = require('./menu-model')(sequelize);
 const users = require('./user-model')(sequelize);
 const history = require('./history-model')(sequelize);
+const pricelist = require('./pricelist-model')(sequelize);
 
 
 module.exports = {
@@ -24,5 +25,6 @@ module.exports = {
     subcategories: subcategories,
     menu: menu,
     users: users,
-    history: history
+    history: history,
+    pricelist: pricelist
 }

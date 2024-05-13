@@ -3,6 +3,7 @@ const path = require('path');
 const User = require('../classes/User');
 const MailService = require('../classes/MailService');
 const bcrypt = require('bcryptjs');
+const Model = require('../models');
 
 const db = new Database;
 
@@ -29,15 +30,27 @@ exports.subcategories = async (req, res) => {
 
 exports.menu = async (req, res) => {
    
-    const [menuList] = await db.connection.promise().query(`SELECT * FROM menu WHERE subcategory=${req.query.subcategory_id} AND is_forSite=1`);
-    const [packs] = await db.connection.promise().query('SELECT id, name, price FROM menu WHERE subcategory ="15";');
+    const menuList = await Model.menu.findAll(
+        {
+            where:{
+                subcategory: req.query.subcategory_id,
+                is_forSite: 1
+            }
+        },
+        {
+            order: ['name']
+        }
+    );
+    const pricelist = await Model.pricelist.findAll({
+        order: ['dish_id', 'size']
+    });
     
     if(!req.cookies.refreshToken) {
        if(req.query.subcategory_id != 11) {
-          res.render(createPath('menu'), {menu: menuList, isAuthorized: false});
+          res.render(createPath('menu'), {menu: menuList, pricelist: pricelist, isAuthorized: false});
        } 
     } else {
-          res.render(createPath('menu'), {menu: menuList, isAuthorized: true});
+          res.render(createPath('menu'), {menu: menuList, pricelist: pricelist, isAuthorized: true});
     }
 }
 

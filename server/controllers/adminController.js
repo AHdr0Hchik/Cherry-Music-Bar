@@ -133,11 +133,35 @@ exports.to_proccess_crm = async (req, res) => {
         order.Pos(agentId_pos[1]);
         if(await order.findOrderByPos()) {
             await order.updateOrderLineArray(req.body.itemsData);
+            if(order.guests_count != req.body.guests_count) {
+                await Model.history.update(
+                    {
+                        guests_count: req.body.guests_count
+                    },
+                    {   
+                        where: { 
+                                pos: order.pos, 
+                                isComplete: 0 
+                            }
+                    }
+                );
+            }
         } else {
             order.AgentId(agentId_pos[0]);
             order.OrderLineArray(req.body.itemsData);
-            order.calculateTotalCost();
-            order.createOrder();
+            await order.calculateTotalCost();
+            await order.createOrder();
+            await Model.history.update(
+                {
+                    guests_count: req.body.guests_count
+                },
+                {   
+                    where: { 
+                            pos: order.pos, 
+                            isComplete: 0 
+                        }
+                }
+            );
         }
         const printer = new Printer;
         
@@ -248,6 +272,25 @@ exports.item_edit = async (req, res) => {
     } catch(e) {
         console.log(e);
         return ApiError.UnknownError();
+    }
+}
+
+exports.item_delete = async (req, res) => {
+    try {
+        const orderLine = await Model.menu.findOne({
+            where: { id: req.query.orderLine}
+        });
+        if(!orderLine) {
+            return res.redirect('/admin/nomenclature');
+        }
+        await Model.menu.destroy({
+            where: { id: req.query.orderLine }
+        });
+
+    } catch(e) {
+        console.log(e);
+    } finally {
+        return res.redirect('/admin/nomenclature');
     }
 }
 

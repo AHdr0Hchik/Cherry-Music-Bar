@@ -50,6 +50,10 @@ module.exports = function(sequelize) {
         isComplete: {
             type: Sequelize.TINYINT,
             allowNull: true
+        },
+        guests_count: {
+            type: Sequelize.INTEGER,
+            allowNull: true
         }
     }, 
     {
