@@ -172,7 +172,7 @@
                         </tbody>
                         <tfoot>
                             <tr><td colspan="3">Сумма: <span id="sum" class="total-price">0 <span>руб.</span></span></td></tr> 
-                            <tr><td colspan="3"><input class="form-control" type="number" name="guests_count" id="guests" placeholder="Введите количество гостей" value="<%= locals.orderData ? orderData.guests_count : '' %>"></td></tr>
+                            <tr><td colspan="3"><label for="guests_count">Введите количество гостей</label><input class="form-control" type="number" name="guests_count" id="guests" placeholder="Введите количество гостей" value="<%= locals.orderData ? orderData.guests_count : '0' %>"></td></tr>
                         </tfoot>
                     </table>
                 </div>

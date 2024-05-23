@@ -125,9 +125,72 @@ exports.add_to_table = async (req, res) => {
     }
 }
 
-exports.to_proccess_crm = async (req, res) => {
+exports.remove_from_table = async (req, res) => {
+    try {
+        const token = new Token;
+        const refreshToken = req.cookies.refreshToken;
+        const userData = await token.decodeToken(refreshToken);
+        const order = new Order();
+
+        //table checker
+        order.Pos(`${req.query.id}:${req.query.count}`);
+        if(await order.findOrderByPos() && req.query.new === '1') {
+            return res.redirect('/admin/tables');
+        }
+
+        //table info
+        let tableData = await Model.pos.findOne({
+            attributes: ['id', 'name', 'can_sells'],
+            where: {
+                id: parseInt(req.query.id)
+            }
+        });
+        
+        const table_info = {id: req.query.id, name: tableData.name, count: req.query.count, can_sells: tableData.can_sells};
+
+        const [orderDataRaw]= await db.connection.promise().query('SELECT orderLineArray FROM History WHERE isComplete=0 AND pos=?', [`${table_info.id}:${table_info.count}`]);
+        if(orderDataRaw.length>0) {
+            var orderData = JSON.parse(orderDataRaw[0].orderLineArray);
+        }
+        const orderSum = await Model.history.findOne(
+            {
+                where: {pos: `${table_info.id}:${table_info.count}`, isComplete: 0}
+            }
+        );
+        console.log(orderSum)
+        
+        return res.render(createPath('table_edit'), {table_info: table_info, userData: userData, orderData: orderData, orderSum: orderSum.sum});
+    } catch(e) {
+        console.log(e);
+        return ApiError.UnknownError();
+    }
+}
+
+exports.post_remove_from_table = async (req, res) => {
     try {
         console.log(req.body);
+        let order = new Order(req.body.itemsData);
+        const sums = await order.calculateTotalCost();
+        await Model.history.update(
+            {
+                orderLineArray: JSON.stringify(req.body.itemsData),
+                sum: sums.sum,
+                sumWithSale: sums.sumWithSale
+            },
+            { 
+                where: {pos: req.body.orderDetails.split('_')[1], isComplete: 0}
+            }
+        )
+
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError();
+    }
+    
+}
+
+exports.to_proccess_crm = async (req, res) => {
+    try {
         const agentId_pos = req.body.orderDetails.split('_');
         const order = new Order();
         order.Pos(agentId_pos[1]);
@@ -165,7 +228,7 @@ exports.to_proccess_crm = async (req, res) => {
         }
         const printer = new Printer;
         
-       // await printer.draw_info(req.body.itemsData, req.body.orderDetails);
+       await printer.draw_info(req.body.itemsData, req.body.orderDetails);
 
         return res.redirect('/admin/tables');
     } catch(e) {

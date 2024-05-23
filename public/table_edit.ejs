@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <script src="/js/menu.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style_for_menu.css">
+    <link rel="icon" href="/jpgs/favicon.ico">
+
+    <title>Столы | Cherry Music Bar</title>
+</head>
+<style>
+    .container {
+    margin: 10px;
+    background-color: white;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 10px;
+    }
+</style>
+<body id="">
+    <div class="container">
+        <div id="main">
+        <div id="is_razdel" style="display:none">0</div>
+
+        <div id="eh"></div>
+        <table border="0">
+            <tbody>
+                <tr>
+                    <td>
+                        <div style="width:480px; left:15px;">
+                            <table border="0" style="width:470px;">
+                                <tbody>
+                                    <tr>
+                                        <td align="center">
+                                            <button data-toprocess_remove class="proizv btn btn-success " style="width: 70px;left:5;">В РАБОТУ</button>
+                                        </td>
+                                        <td align="center">
+                                            <button class="proizv btn btn-danger " style="width: 70px;left:5;" onclick="window.location.href='/admin/tables'">ОТМЕНА</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="pos" id="<%= userData.id %>_<%= table_info.id %>:<%= table_info.count%>"><%= userData.firstname %> <%= userData.lastname %>&gt; <%= table_info.name %>:<%= parseInt(table_info.count)+1 %></div>
+                        </div>
+                    </td>
+                </tr>
+                <div id="ranee_zakazano">
+                    <table border="1" class="table table-striped table-bordered table-condensed">
+                            <% if(locals.orderData) { %>
+                                <thead>
+                                    <th class="text-center" colspan="3">Заказано ранее</th>
+                                </thead> 
+                                <tbody class="cart-wrapper">
+                                    <tr style="font-weight:bold; font-size:10pt;">
+                                        <td align="center">Наименование</td>
+                                        <td align="center">Кол-во</td>
+                                        <td align="center">Цена</td>
+                                    </tr>
+                                    <% orderData.forEach(orderLine => { %>
+                                    <tr class="cart-item" data-size="<%= orderLine.size %>" data-id="<%= orderLine.id %>">
+                                        <td align="left"><span class="cart-item__title" id="<%= orderLine.size || '' %>"><%= orderLine.name %> <%= orderLine.size || '' %></span></td>
+                                        <td>
+                                            <div class="items items--small counter-wrapper">
+                                                <div class="items__control" data-action="minus">-</div>
+                                                <div class="items__current" data-counter=""><%= orderLine.count %></div>
+                                                <div class="items__control" data-action="plus">+</div>
+                                            </div>
+                                        </td>
+                                        <td class="price"><span class="price__currency"><%= orderLine.price %></span></td>
+                                    </tr>
+                                    <% }); %>
+                                </tbody>
+                                <tfoot>
+                                    <tr><td colspan="3">Сумма: <span id="sum" class="total-price"><%= orderSum %> <span>руб.</span></span></td></tr> 
+                                </tfoot>
+                            <% } %>
+                    </table>
+                </div>
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/admin/updateTableOrder.js"></script>
+</body>
+</html>

@@ -161,6 +161,29 @@
         </form>
         
         <% if(locals.orderHistory) {%>
+            <table class="table" id="stats_brief">
+                <thead>
+                    <tr>
+                        <td>Заказов за это время</td>
+                        <td>Выручка без учёта скидки</td>
+                        <td>Выручка с учётом скидки</td>
+                    </tr>
+                </thead>
+                
+                <tr>
+                    <td><%= orderHistory.length %></td>
+                    <td>
+                        <% var sum = 0; let sumWithSale = 0 %>
+                        <% orderHistory.forEach(order => { %> 
+                            <% sum += order.sum; sumWithSale += order.sumWithSale; %>
+                        <% }) %>
+                        <%= sum %>
+                    </td>
+                    <td>
+                        <%= sumWithSale %>
+                    </td>
+                </tr>
+            </table>
             <table class="table">
                 <thead>
                     <tr>

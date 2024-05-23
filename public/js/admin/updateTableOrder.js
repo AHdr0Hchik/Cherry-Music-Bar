@@ -168,6 +168,62 @@ document.addEventListener('DOMContentLoaded', () => {
             
         }
 
+        if(event.target.hasAttribute('data-toprocess_remove')) {
+            const items = cartWrapper.querySelectorAll('.cart-item');
+            const orderDetails = document.querySelector('.pos').id;
+            let itemsData = [];
+            let old_itemsData = [];
+            // Сбор информации о заказе
+            for(let i=0; i<items.length; i++) {
+                const itemId = items[i].dataset.id;
+                const size = parseInt(items[i].querySelector('.cart-item__title').id);
+                const item = {
+                    id: itemId,
+                    name: items[i].querySelector('.cart-item__title').innerText,
+                    price: parseInt(items[i].querySelector('.price__currency').innerText.split(' ')[0]),
+                    count: parseInt(items[i].querySelector('[data-counter]').innerText),
+                }
+                if(size) {
+                    item.size = size;
+                }
+                itemsData.push(item);
+            }
+            const old_items = cartWrapper.querySelectorAll('.old_cart_item');
+            
+            for(let i=0;i<old_items; i++) {
+                const itemId = old_items[i].dataset.id;
+                const size = parseInt(old_items[i].querySelector('.cart-item__title').id);
+                const old_item = {
+                    id: itemId,
+                    name: old_items[i].querySelector('.cart-item__title').querySelector('#name').innerText,
+                    price: parseInt(old_items[i].querySelector('.price__currency').innerText),
+                    count: parseInt(old_items[i].querySelector('[data-counter]').value),
+                }
+                if(size) {
+                    old_item.size = size;
+                }
+                old_itemsData.push(old_item);
+            }
+
+            // Отправка данных на сервер
+            fetch("/admin/post_remove_from_table", {
+                method: "POST",
+                body: JSON.stringify({
+                    itemsData: itemsData,
+                    old_itemsData: old_itemsData,
+                    orderDetails: orderDetails,
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            });
+            setTimeout(() => {
+                window.location.href='/admin/tables';
+            }, 50);
+            
+            
+        }
+
 
     });
 });

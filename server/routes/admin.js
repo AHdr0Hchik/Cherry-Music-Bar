@@ -19,9 +19,13 @@ router.get('/tables', adminController.tables);
 
 router.get('/tables/add_to_table', adminController.add_to_table);
 
+router.get('/tables/remove_from_table', adminController.remove_from_table);
+
 router.get('/tables/complete_order', adminController.complete_order);
 
 router.post('/to_proccess_crm', adminController.to_proccess_crm);
+
+router.post('/post_remove_from_table', adminController.post_remove_from_table);
 
 router.post('/tables/complete_order_handler', adminController.complete_order_handler);
 

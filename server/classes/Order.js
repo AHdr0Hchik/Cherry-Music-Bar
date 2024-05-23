@@ -81,7 +81,7 @@ class Order {
             });
             this.sum = sum
             this.sumWithSale = this.sum - this.sum * this.sale/100;
-            return true;
+            return {sum: this.sum, sumWithSale: this.sumWithSale};
         } catch(e) {
             console.log(e);
             return false;

@@ -23,19 +23,19 @@ class AdminStats {
     }
 
     async getOrderHistory(date_start, date_finish) {
-        const history = await Model.history.findAll({
+        /*const history = await Model.history.findAll({
             where: {
                 orderDate: { [Model.Op.gte]: date_start },
                 orderDate: { [Model.Op.lte]: date_finish }
             }
-        })
-        //const [history] = await this.db.connection.promise().query('SELECT * FROM history where orderDate>=? and orderDate <=?', [date_start, date_finish]);
-        const menu = await Model.menu.findAll({
+        })*/
+        const [history] = await this.db.connection.promise().query('SELECT * FROM history where orderDate>=? and orderDate <=?', [date_start, date_finish]);
+        /*const menu = await Model.menu.findAll({
             where: {
                 attributes: ['id', 'name']
             }
-        })
-        //const [menu] = await this.db.connection.promise().query('SELECT id, name FROM menu');
+        })*/
+        const [menu] = await this.db.connection.promise().query('SELECT id, name FROM menu');
         if(!history) {
             return false;
         }
