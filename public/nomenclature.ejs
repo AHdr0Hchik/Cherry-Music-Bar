@@ -81,12 +81,41 @@ body {
 <body id="">
     <script>
         function showSubcategory(id) {
+            const table=document.querySelector('#tov_list_separator');
+            table.innerHTML = '';
             const otherDishes = document.querySelectorAll('#subcat');
             otherDishes.forEach(item => {
                 item.classList.add('none');
             });
             const targetDishes = document.getElementById(`subcategory_${id}`).closest('#subcat').classList.remove('none');
         }
+        /* document.querySelector('#search').addEventListener('change', function(event) { 
+            console.log(event.target.value);
+        }); */
+        function getElementByText(text) {
+            let elements = [...document.querySelectorAll('.name')].filter(element => element.textContent.toLowerCase().startsWith(text.toLowerCase()));
+            for(let i=0; i<elements.length; i++) {
+                const parent = elements[i].closest('.width100');
+                elements[i] = parent;
+            }
+            return elements;
+        }
+
+        function search_orderLine(query) {
+
+            const table=document.querySelector('#tov_list_separator');
+            table.innerHTML = '';
+            
+
+            console.log(query);
+            const items = getElementByText(query);
+            for(let i = items.length-1; i>=0; i--) {
+                table.appendChild(items[i].cloneNode(true));
+            }
+            
+            table.appendChild(document.createElement("hr"));
+        }
+
     </script>
     <%- include('upmenu_crm') %>
     <div class="container">
@@ -140,7 +169,7 @@ body {
                             <tbody>
                                 <tr>
                                     <td>
-                                      <input type="text" name="poisk" placeholder="Поиск по всем категориям" style="width:100%;" class="input-medium search-query">
+                                      <input id="search" type="text" name="poisk" placeholder="Поиск по всем категориям" style="width:100%;" class="input-medium search-query" onchange="search_orderLine(this.value)">
                                     </td>
                                 </tr>
                                 <tr>
@@ -152,27 +181,33 @@ body {
                                             <a href="/admin/nomenclature/item_edit?type=<%= type %>" class="btn btn-success"><i class="icon-plus icon-white"></i> Добавить</a>
                                         </div>
                                         <hr>
-                                        <% menu.forEach(item => { %>
-                                            <div class="subcategory none" id="subcat">
-                                                <% item.forEach(orderLine => { %> 
-                                                    <div class="width100" id="subcategory_<%= orderLine.subcategory %>">
-                                                        <div class="btn-group width100">
-                                                            <a href="/admin/nomenclature/item_edit?orderLine=<%= orderLine.id %>" class="btn btn-success" style="width:100%;"> <%= orderLine.name %>
-                                                                <i class="icon-pencil pull-right icon-white"></i>
-                                                            </a>
-                                                            <% if(orderLine.subcategory === 11) { %>
-                                                                <button onclick="" class="btn btn-primary" style="width:80px;text-align:right;"> <%= orderLine.price30.toFixed(2) %></button>
-                                                                <button onclick="" class="btn btn-primary" style="width:80px;text-align:right;"> <%= orderLine.price36.toFixed(2) %></button>
-                                                                <button onclick="" class="btn btn-primary" style="width:80px;text-align:right;"> <%= orderLine.price50.toFixed(2) %></button>
-                                                            <% } else { %>
-                                                                <button onclick="" class="btn btn-primary" style="width:80px;text-align:right;"> <%= orderLine.price.toFixed(2) %></button>
-                                                            <% } %>
-                                                            <a href="/admin/nomenclature/item_delete?orderLine=<%= orderLine.id %>" class="btn btn-danger" style="cursor:hand;">X&nbsp;</a>
+                                        <div id="tov_list_separator">
+
+                                        </div>
+                                        <div id="orderLines">
+                                            <% menu.forEach(item => { %>
+                                                <div class="subcategory none" id="subcat">
+                                                    <% item.forEach(orderLine => { %> 
+                                                        <div class="width100" id="subcategory_<%= orderLine.subcategory %>">
+                                                            <div class="btn-group width100">
+                                                                <a href="/admin/nomenclature/item_edit?orderLine=<%= orderLine.id %>" class="btn btn-success orderLine_name" style="width:100%;"><span class="name"><%= orderLine.name %></span> 
+                                                                    <i class="icon-pencil pull-right icon-white"></i>
+                                                                </a>
+                                                                <% if(orderLine.subcategory === 11) { %>
+                                                                    <button onclick="" class="btn btn-primary" style="width:80px;text-align:right;"> <%= orderLine.price30.toFixed(2) %></button>
+                                                                    <button onclick="" class="btn btn-primary" style="width:80px;text-align:right;"> <%= orderLine.price36.toFixed(2) %></button>
+                                                                    <button onclick="" class="btn btn-primary" style="width:80px;text-align:right;"> <%= orderLine.price50.toFixed(2) %></button>
+                                                                <% } else { %>
+                                                                    <button onclick="" class="btn btn-primary" style="width:80px;text-align:right;"> <%= orderLine.price.toFixed(2) %></button>
+                                                                <% } %>
+                                                                <a href="/admin/nomenclature/item_delete?orderLine=<%= orderLine.id %>" class="btn btn-danger" style="cursor:hand;">X&nbsp;</a>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                <% }) %>
-                                            </div>
-                                        <% }); %>
+                                                    <% }) %>
+                                                </div>
+                                            <% }); %>
+                                        </div>
+                                        
                                     </td>
                                 </tr>
                             </tbody>
