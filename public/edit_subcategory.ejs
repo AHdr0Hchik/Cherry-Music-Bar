@@ -109,7 +109,7 @@ body {
                             <div id="check_block">	     
                                     Категория:<br>
                                     <% categories.forEach(category => { %>
-                                        <input type="radio" name="category_id" value="<%= category.id %>" <% if (locals.subcategory && subcategory.category === category.id) { %>checked<% } %>><%= category.category_name %><br>
+                                        <input type="radio" name="category_id" value="<%= category.id %>" <%= (locals.subcategory && subcategory.category === category.id) ? 'checked' : '' %>><%= category.category_name %><br>
                                     <% }); %>                               
                             </div>
                             <input type="text" value="<%= type %>" name="type" hidden="true">

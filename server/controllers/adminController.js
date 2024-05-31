@@ -7,7 +7,7 @@ const Order = require('../classes/Order');
 const OrderLine = require('../classes/OrderLine');
 const Model = require('../models');
 const Printer = require('../classes/Printer');
-const SBIS = require('../classes/sbis');
+const SBIS = require('../sbis/sbis');
 
 const db = new Database;
 
@@ -297,7 +297,7 @@ exports.nomenclature = async (req, res) => {
             acc[subcategory].push(item);
             return acc;
         }, {}));
-    
+        console.log(categories);
         return res.render(createPath('nomenclature'), {subcategories: subcategories, categories: categories, menu: menu, type: req.query.type});      
     } catch(e) {
         console.log(e);

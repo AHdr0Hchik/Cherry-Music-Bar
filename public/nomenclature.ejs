@@ -116,6 +116,19 @@ body {
             table.appendChild(document.createElement("hr"));
         }
 
+        function toggleDisplay(element, selector) {
+            let items = document.querySelectorAll(selector);
+            if(element.checked) { 
+                items.forEach(item => {
+                    item.classList.remove('none');
+                });
+            } else {
+                items.forEach(item => {
+                    item.classList.add('none');
+                });
+            }
+        }
+
     </script>
     <%- include('upmenu_crm') %>
     <div class="container">
@@ -127,7 +140,7 @@ body {
                         <div>
                             <a href="/admin/nomenclature/edit_subcategory?new=true&type=<%=type%>" class="btn btn-success" onclick=""><i class="icon-plus icon-white"></i> Добавить категорию</a>
                             <div class="pull-right" style="widht:200px;">
-                               <label for="hid_cat_id"><input type="checkbox" onchange="" id="hid_cat_id" name="hid_cat_id">Показать скрытые категории
+                               <label for="hid_cat_id"><input type="checkbox" onchange="toggleDisplay(this, '.subcat_hidden')" id="hid_cat_id" name="hid_cat_id">Показать скрытые категории
                                </label>
                             </div>
                         
@@ -135,7 +148,7 @@ body {
                         <table class="table table-striped table_menu">
                             <% subcategories.forEach(subcategory => { %>
                                 <% const matchedCategory = categories.find(category => category.id === subcategory.category); %>
-                                <tr style="height: 50px;" id="<%= subcategory.id %>" onclick="showSubcategory(<%= subcategory.id %>)">
+                                <tr class="subcat_preview <%= subcategory.hidden == 1 ? 'subcat_hidden none' : '' %>" style="height: 50px;" id="<%= subcategory.id %>" onclick="showSubcategory(<%= subcategory.id %>)">
                                     <td>
                                         <font color="orange">продукция &gt; </font>
                                         <font color="green"><%= matchedCategory.category_name %></font>
@@ -174,9 +187,6 @@ body {
                                 </tr>
                                 <tr>
                                     <td id="tov_list">
-                                        <div>
-                                            <label for="id_check_hid"><input type="checkbox" id="id_check_hid"> Показать скрытые товары (товары из скрытых категорий показаны не будут)</label>
-                                        </div>
                                         <div>
                                             <a href="/admin/nomenclature/item_edit?type=<%= type %>" class="btn btn-success"><i class="icon-plus icon-white"></i> Добавить</a>
                                         </div>
