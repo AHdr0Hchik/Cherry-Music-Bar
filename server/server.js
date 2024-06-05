@@ -11,6 +11,7 @@ const authMiddleware = require('./middlewares/auth-middleware');
 dotenv.config({path: './config/.env'});
 
 //classes
+const SBIS = require('./sbis/SBIS')
 
 
 const app = express();
@@ -41,3 +42,7 @@ app.use('/', require('./routes/pages'));
 app.use('/auth', require('./routes/auth'));
 app.use('/order', require('./routes/order'));
 app.use('/admin', authMiddleware, roleMiddleware, require('./routes/admin'));
+
+(async () => {
+   await new SBIS().connection();
+ })();

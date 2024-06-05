@@ -7,7 +7,8 @@ const Order = require('../classes/Order');
 const OrderLine = require('../classes/OrderLine');
 const Model = require('../models');
 const Printer = require('../classes/Printer');
-const SBIS = require('../sbis/sbis');
+const SBIS = require('../sbis/SBIS');
+const request = require('request');
 
 const db = new Database;
 
@@ -16,7 +17,9 @@ const createPath = (page) => path.resolve(__dirname, '../../public', `${page}.ej
 //common
 
 exports.home = async (req, res) => {
+
     res.render(createPath('admin_home'), {isAuthorized: true});
+
 }
 
 //stats
@@ -99,7 +102,11 @@ exports.add_to_table = async (req, res) => {
         let categories;
 
         if(tableData.can_sells==='-1') {
-            categories = await Model.categories.findAll();
+            categories = await Model.categories.findAll({
+                where: {
+                    hidden: 0
+                }
+            });
         } else {
             const categoryIds = tableData.can_sells.split(',').map(Number);
 
@@ -439,6 +446,7 @@ exports.subcategory_handler = async (req, res) => {
 
 exports.add_orderLine = async (req, res) => {
     try {
+        console.log(req.body);
         console.log(JSON.stringify(req.body));
         const orderLine = new OrderLine(req.body.itemData.name, req.body.itemData.subcategory);
         await orderLine.setCategoryBySubcategory();
@@ -453,6 +461,7 @@ exports.add_orderLine = async (req, res) => {
         orderLine.ForSite(req.body.itemData.forSite);
         orderLine.WithPack(req.body.itemData.withPack);
         orderLine.Pack_Id(req.body.itemData.pack_id);
+        orderLine.Is_official(req.body.itemData.is_official);
         
         if(req.body.new || !req.body.itemData.id) {
             return orderLine.addOrderLineToDB();
@@ -592,18 +601,20 @@ exports.category_delete = async (req, res) => {
 
 exports.category_update = async (req, res) => {
     try {
-        console.log(req.body);
+        console.log(req.body)
         if(!req.body.category_id) {
             await Model.categories.create({
                 category_name: req.body.category_name, 
                 printer: req.body.bills.group_printer == 'printer' ? req.body.bills.printer_address : '', 
+                hidden: req.body.category_hidden == 'on' ? '1' : '0'
             });
             return res.redirect('/admin/categories_manager');
         }
         await Model.categories.update(
             {
                 category_name: req.body.category_name, 
-                printer: req.body.bills.group_printer == 'printer' ? req.body.bills.printer_address : '', 
+                printer: req.body.bills.group_printer == 'printer' ? req.body.bills.printer_address : '',
+                hidden: req.body.category_hidden == 'on' ? '1' : '0'
             },
             {
                 where: {

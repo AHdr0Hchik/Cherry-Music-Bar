@@ -99,9 +99,10 @@
             const forSite = document.querySelector('#forSite').checked;
             const withPack = document.querySelector('#withPack').checked;
             const pack_id = document.querySelector('#withPack').checked ? parseInt(document.querySelector('#packs').value) : -1;
+            const isOfficial = document.querySelector('#isOfficial').checked
 
             const prices = {price: price, price30: price30, price36: price36, price50: price50};
-            const itemData = {id: id2, name: name, subcategory: subcat, prices: prices, forSite: forSite, withPack: withPack, pack_id: pack_id};
+            const itemData = {id: id2, name: name, subcategory: subcat, prices: prices, forSite: forSite, withPack: withPack, pack_id: pack_id, is_official: isOfficial};
 
             
             fetch('/admin/nomenclature/add_orderLine', {
@@ -237,7 +238,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="tab2"></div>
+                    <div class="tab-pane" id="tab2">
+                        <div class="form-control">
+                            <div class="form-check">
+                                <input class="" type="checkbox" name="isOfficial" id="isOfficial" <% if(locals.orderLine) {%> <% if(orderLine.is_official) { %> <%= 'checked' %> <% }%> <% } %>>
+                                <label class="form-check-label" for="isOfficial">Вести через СБИС</label>
+                            </div>
+                        </div>
+                    </div>
                     <div class="tab-pane" id="tab3"></div>
                     <div class="tab-pane" id="tab5">
                         <hr>

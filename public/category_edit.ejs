@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/css/helpmix.css">
     <link rel="icon" href="/jpgs/favicon.ico">
 
-    <title>Места продаж | Cherry Music Bar</title>
+    <title>Редактор категории | Cherry Music Bar</title>
 </head>
 <style>
     .container {
@@ -85,10 +85,16 @@ body {
         <div class="page-header">
             <h2>Редактировать производство</h2>
         </div>
-        <form class="form-horizontal" action="/admin/categories_manager/category_update" method="POST" id="addTableGroupForm" novalidate="novalidate">
+        <form class="form-horizontal" action="/admin/categories_manager/category_update" method="POST" id="addTableGroupForm" novalidate="novalidate" autocomplete="off">
 
             <div class="row">
                 <div class="span6"> 
+                    <div class="control-group">
+                        <label class="control-label" for="category_hidden">Скрыть категорию</label>
+                        <div class="controls">
+                            <input name="category_hidden" id="category_hidden" type="checkbox" <%= locals.category ? (category.hidden == 1 ? 'checked' : '') : '' %>>
+                        </div>   
+                    </div>
                     <div class="control-group">
                         <label class="control-label" for="category_name">Название производства</label>
                         <div class="controls">

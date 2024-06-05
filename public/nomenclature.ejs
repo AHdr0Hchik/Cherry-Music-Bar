@@ -154,7 +154,14 @@ body {
                                         <font color="green"><%= matchedCategory.category_name %></font>
                                         <br>
                                         <br>
-                                        <font style="font-size:14px; font-weight: 700; font-size:16px; margin-left: 20px;"><%= subcategory.subcategory_name %></font>
+                                        <font style="font-size:14px; font-weight: 700; font-size:16px; margin-left: 20px;">
+                                            <% if(subcategory.hidden == 0) { %>
+                                                <%= subcategory.subcategory_name %>
+                                            <% } else { %>
+                                                <span style="color: red;">Скрытая! </span>
+                                                <%= subcategory.subcategory_name %>
+                                            <% } %>
+                                        </font>
                                     </td>
                                     <td class="td_btn">
                                         <button onclick="showSubcategory(<%= subcategory.id %>)" class="btn btn-info" onclick="recepturaBlu_draw_tov_list(&quot;&quot;, 1159)">

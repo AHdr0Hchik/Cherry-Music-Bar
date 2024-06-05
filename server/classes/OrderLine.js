@@ -18,6 +18,7 @@ class OrderLine {
     forSite = false;
     withPack = false;
     pack_id = -1;
+    is_official = false;
 
     type;
 
@@ -91,6 +92,11 @@ class OrderLine {
         else this.description = description;
     }
 
+    Is_official(is_official) {
+        if(!is_official) return this.is_official;
+        else this.is_official = is_official;
+    }
+
     //get from db
     async getAllOrderLines() {
         const db = new Database;
@@ -150,13 +156,13 @@ class OrderLine {
     //add and update db
     async addOrderLineToDB() {
         const db = new Database;
-        await db.connection.promise().query('INSERT INTO Menu (name, category, subcategory, price, price30, price36, price50, is_forSite, is_withPack, pack_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
-        [this.name, this.category, this.subcategory, this.price, this.price30, this.price36, this.price50, this.forSite, this.withPack, this.pack_id]);
+        await db.connection.promise().query('INSERT INTO Menu (name, category, subcategory, price, price30, price36, price50, is_forSite, is_withPack, pack_id,, is_official) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
+        [this.name, this.category, this.subcategory, this.price, this.price30, this.price36, this.price50, this.forSite, this.withPack, this.pack_id, this.is_official]);
     }
     async updadeInDB() {
         const db = new Database;
-        await db.connection.promise().query('UPDATE Menu SET name=?, category=?, subcategory=?, price=?, price30=?, price36=?, price50=?, is_forSite=?, is_withPack=?, pack_id=? where id=?;',
-        [this.name, this.category, this.subcategory, this.price, this.price30, this.price36, this.price50, this.forSite, this.withPack, this.pack_id, this.id]);
+        await db.connection.promise().query('UPDATE Menu SET name=?, category=?, subcategory=?, price=?, price30=?, price36=?, price50=?, is_forSite=?, is_withPack=?, pack_id=?, is_official=? where id=?;',
+        [this.name, this.category, this.subcategory, this.price, this.price30, this.price36, this.price50, this.forSite, this.withPack, this.pack_id, this.is_official, this.id]);
     }
 
     async updateName() {

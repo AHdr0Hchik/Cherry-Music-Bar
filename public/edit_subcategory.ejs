@@ -96,9 +96,12 @@ body {
                 <tbody>
                     <tr>
                         <td valign="top">	  
-                            <label class="checkbox">
-                                <input type="checkbox" id="hid_this_cat" name="hidden">	Скрывать эту категорию
-                            </label>
+                            <div class="control-group">
+                                <label class="control-label" for="hidden">Скрыть подкатегорию</label>
+                                <div class="controls">
+                                    <input name="hidden" id="hidden" type="checkbox" <%= locals.subcategory ? (subcategory.hidden == 1 ? 'checked' : '') : '' %>>
+                                </div>   
+                            </div>
                             <br>
                             Наименование
                             <br>
