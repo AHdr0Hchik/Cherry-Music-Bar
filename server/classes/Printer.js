@@ -9,7 +9,7 @@ class Printer {
     }
 
     printOrder(order, final) {
-        const networkDevice = new escpos.Network(process.env.PRINTER_IP, parseInt(process.env.PRINTER_PORT));
+        const networkDevice = new escpos.Network(process.env.MAIN_PRINTER_IP, parseInt(process.env.PRINTER_PORT));
         const printer = new escpos.Printer(networkDevice);
         networkDevice.open(function(error){
             printer
@@ -65,8 +65,9 @@ class Printer {
         })
 
         let text = [];
-
+        let details = {};
         categoriesInfo.forEach(category => {
+            details.printer_ip = category.printer.split('###')[2].split(':')[0];
             text.push(`Отдел: ${category.category_name}`);
             text.push(`Время: ${new Date().getHours()+':'+new Date().getMinutes()+':'+new Date().getSeconds()}`);
             text.push(`Пробил: ${agent.firstname}`);
@@ -78,16 +79,16 @@ class Printer {
                 text.push(`${itemsData[item].count}`);
             }
             text.push(`cut`);
-
+            this.printOrderLines(text, details.printer_ip);
+            text = [];
             
         });
-        console.log(text);
-        this.printOrderLines(text);
 
     }
 
-    printOrderLines(textArr) {
-        const networkDevice = new escpos.Network(process.env.PRINTER_IP, parseInt(process.env.PRINTER_PORT));
+    printOrderLines(textArr, printer_ip) {
+        console.log(printer_ip);
+        const networkDevice = new escpos.Network('192.168.0.103', 9100);
         const printer = new escpos.Printer(networkDevice);
         networkDevice.open(function(error){
             textArr.forEach(text => {

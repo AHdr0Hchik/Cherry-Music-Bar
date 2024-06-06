@@ -235,7 +235,7 @@ exports.to_proccess_crm = async (req, res) => {
         }
         const printer = new Printer;
         
-       await printer.draw_info(req.body.itemsData, req.body.orderDetails);
+        await printer.draw_info(req.body.itemsData, req.body.orderDetails);
 
         return res.redirect('/admin/tables');
     } catch(e) {
@@ -712,4 +712,86 @@ exports.draw_prechek = async (req, res) => {
         return ApiError.UnknownError();
     }
 };
+
+exports.sales_manager = async (req, res) => {
+    try {
+        const sales = await Model.sales.findAll();
+
+        return res.render(createPath('sales_manager'), {sales: sales});
+    } catch(e) {
+        console.log(e);
+        return ApiError.UnknownError();
+    }
+}
+
+exports.sale_edit = async (req, res) => {
+    try {
+        const categories = await Model.categories.findAll({
+            where: { hidden: 0 }
+        });
+        const subcategories = await Model.subcategories.findAll({
+            where: { hidden: 0}
+        });
+        const menu = await Model.menu.findAll();
+
+        if(!req.query.sale_id) {
+            return res.render(createPath('sale_edit'), {categories: categories, subcategories: subcategories, menu: menu});
+        }
+        const sale = await Model.sales.findOne({
+            where: { id: req.query.sale_id }
+        })
+        return res.render(createPath('sale_edit'), {sale: sale, categories: categories, subcategories: subcategories, menu: menu});
+
+        
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError();
+    }
+}
+
+exports.sale_update = async (req, res) => {
+    try {
+        console.log(req.body)
+        if(!req.body.sale_id) {
+            await Model.sales.create({
+                name: req.body.sale_name,
+                target_type: req.body.target_type,
+                target_id: req.body.target_id,
+                sale: req.body.sale_percent,
+                expiredIn: req.body.sale_expiredIn
+            });
+            return res.redirect('/admin/sales_manager');
+        }
+        await Model.sales.update(
+            {
+                name: req.body.sale_name,
+                target_type: req.body.target_type,
+                target_id: req.body.target_id,
+                sale: req.body.sale_percent,
+                expiredIn: req.body.expiredIn
+            },
+            {
+                where: {
+                    id: parseInt(req.body.sale_id),
+                },
+            }
+        );
+        return res.redirect('/admin/sales_manager');
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError;
+    }
+}
+
+exports.sale_delete = async (req, res) => {
+    try {
+        await Model.sales.destroy({
+            where: {id: req.query.sale_id }
+        });
+        return res.redirect(`/admin/sales_manager`);
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError();
+    }
+}
 

@@ -16,6 +16,7 @@ const users = require('./user-model')(sequelize);
 const history = require('./history-model')(sequelize);
 const pricelist = require('./pricelist-model')(sequelize);
 const SBIS = require('./sbis-model')(sequelize);
+const sales = require('./sales-model')(sequelize);
 
 
 module.exports = {
@@ -28,5 +29,6 @@ module.exports = {
     users: users,
     history: history,
     pricelist: pricelist,
-    SBIS: SBIS
+    SBIS: SBIS,
+    sales: sales
 }

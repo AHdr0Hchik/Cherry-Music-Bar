@@ -81,3 +81,13 @@ router.get('/personal_manager/personal_delete', adminController.personal_delete)
 router.get('/printer/draw_prechek', adminController.draw_prechek);
 
 module.exports = router;
+
+//sales
+
+router.get('/sales_manager', adminController.sales_manager);
+
+router.get('/sales_manager/sale_edit', adminController.sale_edit);
+
+router.post('/sales_manager/sale_update', adminController.sale_update);
+
+router.get('/sales_manager/sale_delete', adminController.sale_delete);
