@@ -58,6 +58,9 @@ exports.tables = async (req, res) => {
           ]
         }
     });
+    const sales = await Model.sales.findAll({
+        where: { expiredIn : { [Model.Op.gte]: new Date() } }
+    });
     const [orders] = await db.connection.promise().query('SELECT * FROM History where pos<>"site" and isComplete="0"');
     const [users] = await db.connection.promise().query('SELECT id, firstName FROM Users WHERE role="admin"');
 
@@ -69,7 +72,7 @@ exports.tables = async (req, res) => {
         }
     });
 
-    return res.render(createPath('tables'), {tables: tables, orders: orders});
+    return res.render(createPath('tables'), {tables: tables, orders: orders, sales: sales});
 }
 
 exports.add_to_table = async (req, res) => {
@@ -175,7 +178,6 @@ exports.remove_from_table = async (req, res) => {
 
 exports.post_remove_from_table = async (req, res) => {
     try {
-        console.log(req.body);
         let order = new Order(req.body.itemsData);
         const sums = await order.calculateTotalCost();
         await Model.history.update(
@@ -245,11 +247,26 @@ exports.to_proccess_crm = async (req, res) => {
 }
 
 exports.complete_order = async (req, res) => {
+    
     const order = new Order();
     order.Id(req.query.order_id);
+    
     if(!await order.findOrderById()) {
         return res.redirect('/admin/tables');
     }
+
+    const sales = await Model.sales.findAll({
+        where: { expiredIn : { [Model.Op.gte]: new Date() } }
+    });
+    const orderLineIds = order.orderLineArray.map(item => item.id);
+    const menu = await Model.menu.findAll({
+        where: {
+            id: orderLineIds
+        }
+    });
+    //const updatedOrderLines = applyDiscounts(order.orderLineArray, menu, sales);
+    order.applyDiscounts(menu, sales);
+    order.calculateTotalCost();
     console.log(order);
     return res.render(createPath('complete_order'), {order: order});
 };
@@ -768,7 +785,7 @@ exports.sale_update = async (req, res) => {
                 target_type: req.body.target_type,
                 target_id: req.body.target_id,
                 sale: req.body.sale_percent,
-                expiredIn: req.body.expiredIn
+                expiredIn: req.body.sale_expiredIn
             },
             {
                 where: {

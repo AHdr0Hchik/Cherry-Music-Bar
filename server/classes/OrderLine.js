@@ -156,7 +156,7 @@ class OrderLine {
     //add and update db
     async addOrderLineToDB() {
         const db = new Database;
-        await db.connection.promise().query('INSERT INTO Menu (name, category, subcategory, price, price30, price36, price50, is_forSite, is_withPack, pack_id,, is_official) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
+        await db.connection.promise().query('INSERT INTO Menu (name, category, subcategory, price, price30, price36, price50, is_forSite, is_withPack, pack_id, is_official) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
         [this.name, this.category, this.subcategory, this.price, this.price30, this.price36, this.price50, this.forSite, this.withPack, this.pack_id, this.is_official]);
     }
     async updadeInDB() {

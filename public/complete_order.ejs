@@ -76,7 +76,7 @@
                         <td align="left"><%= index+1 %></td>
                         <td align="left"><%= orderLine.name %> <%= orderLine.size || '' %></td>
                         <td align="right"><%= orderLine.count %></td>
-                        <td align="right"><%= orderLine.price %></td>
+                        <td align="right"><%= parseFloat(orderLine.price).toFixed(2) %></td>
                     </tr>
                 <% }); %>
             </tbody>

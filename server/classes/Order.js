@@ -75,18 +75,20 @@ class Order {
     //common events
     async calculateTotalCost() {
         try {
-            let sum=0
+            let sum=0.00;
             this.orderLineArray.forEach(orderLine => {
                 sum += orderLine.count * orderLine.price;
             });
             this.sum = sum
-            this.sumWithSale = this.sum - this.sum * this.sale/100;
+            this.sumWithSale = (this.sum - this.sum * this.sale/100).toFixed(2);
             return {sum: this.sum, sumWithSale: this.sumWithSale};
         } catch(e) {
             console.log(e);
             return false;
         }
     }
+
+    
     
     async findOfficialLines() {
         try {
@@ -118,6 +120,38 @@ class Order {
     }
 
     //handler funcs
+
+    applyDiscounts(menuItems, sales) {
+        this.orderLineArray = this.orderLineArray.map(orderline => {
+          const menuItem = menuItems.find(item => item.id == orderline.id);
+          const matchingSales = sales.filter(sale => {
+            switch (sale.target_type) {
+              case 'orderline':
+                return orderline.id === sale.target_id;
+              case 'subcategory':
+                return menuItem.subcategory === sale.target_id;
+              case 'category':
+                return menuItem.category === sale.target_id;
+              default:
+                return false;
+            }
+        });
+      
+        let maxDiscount = 1;
+        matchingSales.forEach(sale => {
+            console.log(`Скидка применена к ${orderline.name}`);
+            const discount = 1 - sale.sale / 100;
+            if (discount < maxDiscount) {
+                maxDiscount = discount;
+            }
+        });
+
+        let updatedPrice = orderline.price * maxDiscount;
+          return { ...orderline, price: updatedPrice };
+        });
+        this.calculateTotalCost();
+    }
+
     async createOrder() {
         try {
             const db = new Database;

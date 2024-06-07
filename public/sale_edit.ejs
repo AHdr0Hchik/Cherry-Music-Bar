@@ -91,13 +91,13 @@ body {
             <div class="row">
                 <div class="span6"> 
                     <div class="control-group">
-                        <label class="control-label" for="sale_name">Название скидки</label>
+                        <label class="control-label" for="sale_name">Название акций</label>
                         <div class="controls">
                         <input class="required" minlength="2" value="<%= locals.sale ? sale.name : undefined %>" name="sale_name" type="text" placeholder="Пр: День морса" required>
                         </div>   
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="target_type">Тип скидки</label>
+                        <label class="control-label" for="target_type">Тип акции</label>
                         <div class="controls">
                         <select name="target_type" id="target_type">
                             <option value="orderline" <%= (locals.sale && sale.target_type == 'orderline') ? 'selected' : '' %>>Одна позиция</option>
@@ -107,7 +107,7 @@ body {
                         </div>   
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="target_id">Предмет скидки</label>
+                        <label class="control-label" for="target_id">Предмет акции</label>
                         <div class="controls">
                         <select name="target_id" id="target_id">
                             <% menu.forEach(orderLine => { %> 
