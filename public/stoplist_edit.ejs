@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <script src="/js/menu.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap_old.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style_for_menu.css">
+    <link rel="stylesheet" href="/css/helpmix.css">
+    <link rel="icon" href="/jpgs/favicon.ico">
+
+    <title>Редактор стоп-листа | Cherry Music Bar</title>
+</head>
+<style>
+    .container {
+    margin: 10px;
+    background-color: white;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 10px;
+    }
+    a, a:visited {
+        color:white;
+    }
+    a:hower {
+        color: rgb(220, 220, 220);
+    }
+    .nav a { 
+        color: black;
+    }
+    .modal-dialog {
+        width: 50%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+        .modal-content {
+        height: auto;
+        min-height: 100%;
+        border-radius: 0;
+    }
+    .navbar-static-top {
+    saleition: static;
+    margin-bottom: 0;
+}
+
+    .navbar-inner {
+    min-height: 40px;
+    padding-right: 20px;
+    padding-left: 20px;
+    background-color: #fafafa;
+    background-image: -moz-linear-gradient(top,#fff,#f2f2f2);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#f2f2f2));
+    background-image: -webkit-linear-gradient(top,#fff,#f2f2f2);
+    background-image: -o-linear-gradient(top,#fff,#f2f2f2);
+    background-image: linear-gradient(to bottom,#fff,#f2f2f2);
+    background-repeat: repeat-x;
+    border: 1px solid #d4d4d4;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',endColorstr='#fff2f2f2',GradientType=0);
+    -webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.065);
+    -moz-box-shadow: 0 1px 4px rgba(0,0,0,0.065);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.065);
+}
+.navbar {
+    width: 100wv;
+}
+body {
+    background-image: url('../jpgs/body-back.jpg');
+    background-saleition: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+</style>
+<body>
+    
+    <%- include('upmenu_crm') %>
+    <div class="container">
+        <div id="error_div"></div>
+        <div class="page-header">
+            <h2>Редактировать стоп-лист</h2>
+        </div>
+        <form class="form-horizontal" action="/admin/stoplist_manager/stoplist_update" method="POST" id="addTableGroupForm" novalidate="novalidate" autocomplete="off">
+
+            <div class="row">
+                <div class="span6"> 
+                    <div class="control-group">
+                        <label class="control-label" for="sale_name">Выберите позицию</label>
+                        <div class="controls">
+                            <select name="dish_id">
+                                <% menu.forEach(item => { %>
+                                    <option value="<%= item.id %>" <%= locals.stoplist_item && item.id == stoplist_item.dish_id ? 'selected' : '' %>><%= item.name %></option>
+                                <% }) %>
+                            </select>
+                        </div>   
+                    </div>
+                    <div hidden>
+                        <input type="number" value="<%= locals.stoplist_item ? stoplist_item.id : ''%>" name="dish_id">  
+                    </div>
+                    <hr>
+                    <div class="control-group">
+                        <div class="controls">
+                            <button class="btn btn-success" type="submit">Сохранить</button>
+                        </div>
+                    </div>
+                <hr>
+            </div>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

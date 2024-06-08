@@ -92,6 +92,11 @@
             const subcat = parseInt(document.querySelector('#sel_cat').value);
             const newItem = document.querySelector('#make_copy').checked;
             const id2 = !newItem ? id : undefined;
+            const pricesRaw = document.querySelectorAll('.cena');
+            let prices = [];
+            pricesRaw.forEach(price => {
+                prices.push({dish_id: id2, size: parseInt(price.id.split('_')[1]), price: price.value})
+            });
             const price = document.querySelector('#cena') ? parseFloat(document.querySelector('#cena').value) : undefined;
             const price30 = document.querySelector('#cena30') ? parseFloat(document.querySelector('#cena30').value) : undefined;
             const price36 = document.querySelector('#cena36') ? parseFloat(document.querySelector('#cena36').value) : undefined;
@@ -99,12 +104,9 @@
             const forSite = document.querySelector('#forSite').checked;
             const withPack = document.querySelector('#withPack').checked;
             const pack_id = document.querySelector('#withPack').checked ? parseInt(document.querySelector('#packs').value) : -1;
-            const isOfficial = document.querySelector('#isOfficial').checked
+            const isOfficial = document.querySelector('#isOfficial').checked;
 
-            const prices = {price: price, price30: price30, price36: price36, price50: price50};
             const itemData = {id: id2, name: name, subcategory: subcat, prices: prices, forSite: forSite, withPack: withPack, pack_id: pack_id, is_official: isOfficial};
-
-            
             fetch('/admin/nomenclature/add_orderLine', {
                 method: "POST",
                 body: JSON.stringify({
@@ -167,7 +169,7 @@
                     <li class="btn btn-primary"><a href="#tab1" data-toggle="tab">Основные сведения</a></li>
                     <li class="btn btn-primary"><a href="#tab4" data-toggle="tab">Компоненты</a></li>
                     <li class="btn btn-primary"><a href="#tab2" data-toggle="tab">Дополнительно</a></li>
-                    <li class="btn btn-primary"><a href="#tab3" data-toggle="tab">Ценообразование</a></li>
+                    <li class="btn btn-primary"><a href="#tab3" data-toggle="tab">Размерности</a></li>
                     <li class="btn btn-primary"><a href="#tab5" data-toggle="tab">Сайт</a></li>
                     <li class="btn btn-primary"><a href="#tab6" data-toggle="tab">Фото</a></li>
                  </ul>
@@ -199,8 +201,23 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <div class="controls">
-                                <% if(locals.orderLine) {%>
+                            <div class="controls" id="prices">
+                                <% if(locals.orderLine) { %>
+                                    <% if(locals.sizes) { %>
+                                        <% sizes.forEach((size, index) => { %> 
+                                            <label class="control-label" id="cena_label_<%= size.size %>" for="cena#<%= size.size %>">Цена продажи (<%= size.size %> см)</label>
+                                            <input type="number" class="form-control cena" id="cena_<%= size.size %>" name="cena#<%= size.size %>" value="<%= size.price || ''%>" placeholder="Введите стоимость" class="input-medium valid form-control cena">
+                                        <% }); %>
+                                    <% } %>
+                                <% } else { %>
+                                    <div id="default_price">
+                                        <label class="control-label" id="cena_label" for="cena1">Цена продажи</label>
+                                        <input type="number" class="input-medium valid form-control cena default" id="1" name="cena#1" value="" placeholder="Введите стоимость" >
+                                    </div>
+                                    
+                                <% } %>
+                                <!--
+                                 <% if(locals.orderLine) {%>
                                     <% if(orderLine.subcategory === 11) { %>
                                         <label for="cena30">Цена за 30см</label>
                                         <input style="display: block;" type="number" id="cena30" name="cena" value="<%= orderLine.price30.toFixed(2) %>" class="input-medium valid form-control">
@@ -222,7 +239,7 @@
                                     <label class="none" id="cena50_label" for="cena50">Цена за 50см</label>
                                     <input type="number" id="cena50" name="cena" value="" placeholder="Введите стоимость" class="input-medium valid form-control cena none">
                                 <% } %>
-                                
+                                -->
                             </div>
                         </div>
                         <div class="control-group">
@@ -246,7 +263,29 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="tab3"></div>
+                    <div class="tab-pane" id="tab3">
+                        <div class="form-group">
+                            <h3>Размеры</h3>
+                            <table class="table table-bordered table-striped" id="sizes_table">
+                                <% if(locals.sizes) { sizes.forEach((size, index) => { %>
+                                    <tr>
+                                        <td style="width: 50px;"><%= index+1 %></td>
+                                        <td><span><%= size.size %></span></td>
+                                        <td style="width: 50px;"><button type="button" onclick="delete_size(this)" class="btn btn-danger">X&nbsp;</button></td>
+                                    </tr>
+                                <% }); } else {%>
+                                    <tr id="default_size">
+                                        <td style="width: 50px;"> 1 </td>
+                                        <td><span> 1 </span></td>
+                                        <td style="width: 50px;"></td>
+                                    </tr>
+                                <% } %>
+                                <tr>
+                                    <td colspan="3"><button type="button" onclick="add_size()" class="btn btn-success">+&nbsp;</button></td></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
                     <div class="tab-pane" id="tab5">
                         <hr>
                         <div class="form-group">
@@ -338,6 +377,106 @@
         </form>
     </div>
 
+    <script>
+        function delete_size(button) {
+            const row = button.closest('tr');
+            row.remove();
+
+            // Проверяем, пустая ли таблица, и если да, добавляем дефолтную строку
+            const table = document.querySelector('#sizes_table');
+            const rows = table.querySelectorAll('tr');
+
+            if (rows.length === 2) { // только одна строка для добавления размера
+                const defaultRow = `
+                    <tr id="default_size">
+                        <td style="width: 50px;">1</td>
+                        <td><span>1</span></td>
+                        <td style="width: 50px;"></td>
+                    </tr>
+                `;
+                const addButtonRow = table.querySelector('tr:last-child');
+                addButtonRow.insertAdjacentHTML('beforebegin', defaultRow);
+            }
+
+            // Удаляем соответствующие элементы из div.prices
+            const sizeValue = row.querySelector('span').innerText;
+            console.log(sizeValue);
+            const priceLabel = document.getElementById(`cena_label_${sizeValue}`);
+            const priceInput = document.getElementById(`cena_${sizeValue}`);
+
+            if (priceLabel) {
+                priceLabel.remove();
+            }
+            if (priceInput) {
+                priceInput.remove();
+            }
+        }
+
+        function add_size() {
+            const table = document.querySelector('#sizes_table');
+            const rows = table.querySelectorAll('tr');
+            const nextIndex = rows.length; // Индекс новой строки
+            const newRow = `
+                <tr>
+                    <td>${nextIndex}</td>
+                    <td><input type="text" class="form-control" id="new-size-input" style="width:150px"></td>
+                    <td style="width: 50px;">
+                        <button class="btn btn-success" onclick="save_size(this)">✔️</button>
+                    </td>
+                </tr>
+            `;
+
+            const addButtonRow = table.querySelector('tr:last-child');
+            addButtonRow.insertAdjacentHTML('beforebegin', newRow);
+        }
+
+        function save_size(button) {
+            const row = button.closest('tr');
+            const input = row.querySelector('input');
+            const sizeValue = input.value;
+
+            if (sizeValue.trim() === '') {
+                alert('Размерность не может быть пустой');
+                return true;
+            }
+
+            // Удаление элементов #default_size и #default_price
+            const defaultSizeElement = document.getElementById('default_size');
+            const defaultPriceElement = document.getElementById('default_price');
+
+            if (defaultSizeElement) {
+                defaultSizeElement.remove();
+            }
+
+            if (defaultPriceElement) {
+                defaultPriceElement.remove();
+            }
+
+            const sizeCell = input.closest('td');
+            sizeCell.innerHTML = `<span>${sizeValue}</span>`;
+
+            const actionCell = button.closest('td');
+            actionCell.innerHTML = `<a href="/admin/sales_manager/size_delete?sale_id=new" class="btn btn-danger">X&nbsp;</a>`;
+
+            // Добавление элементов в div.prices
+            const pricesDiv = document.querySelector('#prices');
+            const newLabel = document.createElement('label');
+            newLabel.setAttribute('class', 'control-label');
+            newLabel.setAttribute('id', `cena_label_${sizeValue}`);
+            newLabel.setAttribute('for', `cena#${sizeValue}`);
+            newLabel.innerHTML = `Цена продажи (${sizeValue} см)`;
+
+            const newInput = document.createElement('input');
+            newInput.setAttribute('type', 'number');
+            newInput.setAttribute('id', `cena_${sizeValue}`);
+            newInput.setAttribute('name', `cena#${sizeValue}`);
+            newInput.setAttribute('placeholder', 'Введите стоимость');
+            newInput.setAttribute('class', 'input-medium valid form-control cena');
+
+            pricesDiv.appendChild(newLabel);
+            pricesDiv.appendChild(newInput);
+        }
+    </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -88,6 +88,8 @@ exports.add_to_table = async (req, res) => {
             return res.redirect('/admin/tables');
         }
 
+        const pricelist = await Model.pricelist.findAll();
+
         //table info
         let tableData = await Model.pos.findOne({
             attributes: ['id', 'name', 'can_sells'],
@@ -128,7 +130,16 @@ exports.add_to_table = async (req, res) => {
         const [subcategories] = await db.connection.promise().query(`SELECT * FROM menu_subcategories`);
         const [menu] = await db.connection.promise().query(`SELECT * FROM menu`);
         
-        return res.render(createPath('new_table'), {table_info: table_info, categories: categories, subcategories: subcategories, menu: menu, userData: userData, orderData: orderData});
+        return res.render(createPath('new_table'),
+        {
+            table_info: table_info,
+            categories: categories, 
+            subcategories: subcategories, 
+            menu: menu,
+            userData: userData, 
+            orderData: orderData,
+            pricelist: pricelist
+        });
     } catch(e) {
         console.log(e);
         return ApiError.UnknownError();
@@ -167,7 +178,6 @@ exports.remove_from_table = async (req, res) => {
                 where: {pos: `${table_info.id}:${table_info.count}`, isComplete: 0}
             }
         );
-        console.log(orderSum)
         
         return res.render(createPath('table_edit'), {table_info: table_info, userData: userData, orderData: orderData, orderSum: orderSum.sum});
     } catch(e) {
@@ -267,13 +277,11 @@ exports.complete_order = async (req, res) => {
     //const updatedOrderLines = applyDiscounts(order.orderLineArray, menu, sales);
     order.applyDiscounts(menu, sales);
     order.calculateTotalCost();
-    console.log(order);
     return res.render(createPath('complete_order'), {order: order});
 };
 
 exports.complete_order_handler = async (req, res) => {
     try{
-        console.log(JSON.stringify(req.body));
         const order = new Order();
         order.Id(req.body.order_id);
         await order.findOrderById();
@@ -289,7 +297,6 @@ exports.complete_order_handler = async (req, res) => {
         }
 
         const printer = new Printer();
-        console.log(order);
         const pos_name = await Model.pos.findOne({
             attributes: ['name'],
             where: {
@@ -321,8 +328,8 @@ exports.nomenclature = async (req, res) => {
             acc[subcategory].push(item);
             return acc;
         }, {}));
-        console.log(categories);
-        return res.render(createPath('nomenclature'), {subcategories: subcategories, categories: categories, menu: menu, type: req.query.type});      
+        const pricelist = await Model.pricelist.findAll();
+        return res.render(createPath('nomenclature'), {subcategories: subcategories, pricelist: pricelist, categories: categories, menu: menu, type: req.query.type});      
     } catch(e) {
         console.log(e);
         throw ApiError.UnknownError();
@@ -340,7 +347,6 @@ exports.item_edit = async (req, res) => {
         }
         const [components_cats] = await db.connection.promise().query('SELECT * FROM menu_subcategories WHERE type<>"production"');
         const [components] = await db.connection.promise().query('SELECT menu.*, menu_subcategories.id AS subcategory_id, menu_subcategories.subcategory_name, menu_subcategories.type FROM menu JOIN menu_subcategories ON menu.subcategory = menu_subcategories.id WHERE menu_subcategories.type<>"production"');
-        console.log(components);
         
         const [packs] = await db.connection.promise().query('SELECT id, name FROM menu WHERE subcategory=15;');
 
@@ -348,6 +354,9 @@ exports.item_edit = async (req, res) => {
             return res.render(createPath('item_edit'), {subcategories: subcategories, packs: packs, type: req.query.type});
         }
         const [orderLine] = await db.connection.promise().query('SELECT * FROM menu WHERE id=?', [parseInt(req.query.orderLine)]);
+        const sizes = await Model.pricelist.findAll({
+            where: { dish_id: req.query.orderLine }
+        })
         let subcategory = subcategories.find(item => item.id == orderLine[0].subcategory);
         if (subcategory) {
             orderLine[0].type = subcategory.type;
@@ -355,7 +364,7 @@ exports.item_edit = async (req, res) => {
         if(!orderLine[0]) {
             return ApiError.UnknownError();
         }
-        return res.render(createPath('item_edit'), {orderLine: orderLine[0], subcategories: subcategories, packs: packs});
+        return res.render(createPath('item_edit'), {orderLine: orderLine[0], sizes: sizes, subcategories: subcategories, packs: packs});
     } catch(e) {
         console.log(e);
         return ApiError.UnknownError();
@@ -368,16 +377,19 @@ exports.item_delete = async (req, res) => {
             where: { id: req.query.orderLine}
         });
         if(!orderLine) {
-            return res.redirect('/admin/nomenclature');
+            return res.redirect('/admin/nomenclature?type=production');
         }
         await Model.menu.destroy({
             where: { id: req.query.orderLine }
+        });
+        await Model.pricelist.destroy({
+            where: { dish_id: req.query.orderLine }
         });
 
     } catch(e) {
         console.log(e);
     } finally {
-        return res.redirect('/admin/nomenclature');
+        return res.redirect('/admin/nomenclature?type=production');
     }
 }
 
@@ -410,7 +422,6 @@ exports.subcategory_edit = async (req, res) => {
         });
         let subcategory;
         if(req.query.id) {
-            console.log('123');
             subcategory = await Model.subcategories.findOne({
                 where: {
                     id: req.query.id
@@ -426,14 +437,12 @@ exports.subcategory_edit = async (req, res) => {
 
 exports.subcategory_handler = async (req, res) => {
     try {
-        console.log(req.body);
         Model.subcategories.findOne({
             where: {
                 id: req.body.subcategory_id
             }
         }).then(count => {
             if(count) {
-                console.log(count);
                 return Model.subcategories.update(
                 {
                     type: req.body.type,
@@ -463,17 +472,15 @@ exports.subcategory_handler = async (req, res) => {
 
 exports.add_orderLine = async (req, res) => {
     try {
-        console.log(req.body);
-        console.log(JSON.stringify(req.body));
         const orderLine = new OrderLine(req.body.itemData.name, req.body.itemData.subcategory);
         await orderLine.setCategoryBySubcategory();
-        if(req.body.itemData.prices.price) {
+        /*if(req.body.itemData.prices.price) {
             orderLine.Price(req.body.itemData.prices.price);
         } else {
             orderLine.Price30(req.body.itemData.prices.price30);
             orderLine.Price36(req.body.itemData.prices.price36);
             orderLine.Price50(req.body.itemData.prices.price50);
-        }
+        }*/
 
         orderLine.ForSite(req.body.itemData.forSite);
         orderLine.WithPack(req.body.itemData.withPack);
@@ -481,8 +488,24 @@ exports.add_orderLine = async (req, res) => {
         orderLine.Is_official(req.body.itemData.is_official);
         
         if(req.body.new || !req.body.itemData.id) {
-            return orderLine.addOrderLineToDB();
+            const newOrderLine = await orderLine.addOrderLineToDB();
+
+            const prices = req.body.itemData.prices.map(obj => ({
+                ...obj,
+                dish_id: newOrderLine.id
+              }));
+
+            await Model.pricelist.bulkCreate(prices, {
+                fields: ['dish_id', 'size', 'price']
+            });
         }
+
+        await Model.pricelist.destroy({
+            where: {dish_id: parseInt(req.body.itemData.id)} //удаляем текущие ценники
+        })
+        await Model.pricelist.bulkCreate(req.body.itemData.prices, {
+            fields: ['dish_id', 'size', 'price']
+        });
         orderLine.Id(req.body.itemData.id);
         return orderLine.updadeInDB();
     } catch(e) {
@@ -730,6 +753,8 @@ exports.draw_prechek = async (req, res) => {
     }
 };
 
+//sales
+
 exports.sales_manager = async (req, res) => {
     try {
         const sales = await Model.sales.findAll();
@@ -812,3 +837,101 @@ exports.sale_delete = async (req, res) => {
     }
 }
 
+//stoplist
+
+exports.stoplist_manager = async (req, res) => {
+    try {
+        const stoplistRaw = await Model.stoplist.findAll();
+        const subcategories = await Model.subcategories.findAll({
+            attributes: ['id'],
+            where: {
+                hidden: 0,
+                type: 'production'
+            }
+        });
+        let ids = subcategories.map(obj => obj.id);
+        const menu = await Model.menu.findAll({
+            where: { subcategory: ids }
+        });
+
+        const stoplist = stoplistRaw.map(item => {
+            const menuItem = menu.find(menuItem => menuItem.id === item.dish_id);
+            return {
+              id: item.id,
+              dish_id: item.dish_id,
+              name: menuItem ? menuItem.name : null // Убедитесь, что name существует
+            };
+        });
+
+        return res.render(createPath('stoplist_manager'), {stoplist: stoplist, menu: menu});
+    } catch(e) {
+        console.log(e);
+        return ApiError.UnknownError();
+    }
+}
+
+exports.stoplist_edit = async (req, res) => {
+    try {
+        const subcategories = await Model.subcategories.findAll({
+            attributes: ['id'],
+            where: {
+                hidden: 0,
+                type: 'production'
+            }
+        });
+        let ids = subcategories.map(obj => obj.id);
+        const menu = await Model.menu.findAll({
+            where: { subcategory: ids }
+        });
+        if(!req.query.stoplist_id) {
+            return res.render(createPath('stoplist_edit'), {menu: menu});
+        }
+        const stoplist_item = await Model.stoplist.findOne({
+            where: { id: req.query.stoplist_id}
+        });
+        return res.render(createPath('stoplist_edit'), {menu: menu, stoplist_item: stoplist_item});
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError();
+    }
+}
+
+exports.stoplist_update = async (req, res) => {
+    try {
+        console.log(req.body)
+        if(!req.body.dish_id) {
+            await Model.stoplist.create({
+                dish_id: req.body.dish_id
+            })
+            return res.redirect('/admin/stoplist_manager');
+        }
+        await Model.stoplist.update(
+        {
+            dish_id: req.body.dish_id,
+        },
+        {
+            where: parseInt(req.body.dish_id)
+        });
+        return res.redirect('/admin/stoplist_manager');
+        console.log(req.body);
+        if(req.body.stoplist_item_id) {
+            
+        }
+        
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError;
+    }
+}
+
+exports.stoplist_delete = async (req, res) => {
+    try {
+        await Model.stoplist.destroy({
+            where: {id: req.query.stoplist_id }
+        });
+        return res.redirect(`/admin/stoplist_manager`);
+    } catch(e) {
+        console.log(e);
+        throw ApiError.UnknownError();
+    }
+}

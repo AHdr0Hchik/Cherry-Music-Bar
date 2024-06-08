@@ -61,14 +61,36 @@
                                                                                 <span aria-hidden="true">&times;</span>
                                                                             </button>
                                                                             </div>
-                                                                            <div class="modal-body d-flex align-content-center flex-wrap justify-content-around">
+                                                                            <div class="modal-body d-flex">
                                                                                 <% const this_menuList = menu.filter(item => item.subcategory == subcategory.id); %>
-                                                                                <% this_menuList.forEach((orderLine, index) => { %>
-                                                                                    <%if(orderLine.price == 0 && orderLine.price30 != 0) {%>
+                                                                                <% this_menuList.forEach(dish => { %>
+                                                                                    <% var filteredPricelist = pricelist.filter(item => item.dish_id === dish.id); %>
+                                                                                    <% if(filteredPricelist.length==1) { %> 
                                                                                         <div class="col-md-6">
-                                                                                            <div class="card mb-4" data-id="<%= orderLine.id %>">
+                                                                                            <div class="card mb-4 front" data-id="<%= dish.id %>">
                                                                                                 <div class="card-body text-center">
-                                                                                                    <h4 class="item-title" id="<%= orderLine.subcategory %>"><%= orderLine.name %></h4>
+                                                                                                    <h4 class="item-title" id="<%= dish.subcategory %>"><%= dish.name %></h4>
+                                                                                                    <div class="details-wrapper">
+                                                                                                        <div class="items counter-wrapper">
+                                                                                                            <div class="items__control" data-action="minus">-</div>
+                                                                                                            <div class="items__current" data-counter>1</div>
+                                                                                                            <div class="items__control" data-action="plus">+</div>
+                                                                                                        </div>
+                                                                                        
+                                                                                                        <div class="price">
+                                                                                                            <div class="price__currency"><%= filteredPricelist[0].price %> ₽</div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                        
+                                                                                                    <button data-cart type="button" class="btn btn-block btn-outline-warning">Добавить</button>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    <% }  else { %>
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="card mb-4 front" data-id="<%= dish.id %>">
+                                                                                                <div class="card-body text-center">
+                                                                                                    <h4 class="item-title" id="<%= dish.subcategory %>"><%= dish.name %></h4>
                                                                                                     <div class="details-wrapper">
                                                                                                         <div class="items counter-wrapper">
                                                                                                             <div class="items__control" data-action="minus">-</div>
@@ -76,41 +98,30 @@
                                                                                                             <div class="items__control" data-action="plus">+</div>
                                                                                                         </div>
                                                                                                         <div class="items size-wrapper">
-                                                                                                            <div class="items__control active" data-action="pizza" data-sb-curent-price="<%= orderLine.price30 %>" data-sb-curent-size="30" data-sb-curent-id-or-vendor-code="0030pz">30</div>
-                                                                                                            <div class="items__control" data-action="pizza" data-sb-curent-price="<%= orderLine.price36 %>" data-sb-curent-size="36" data-sb-curent-id-or-vendor-code="0036pz">36</div>
-                                                                                                            <div class="items__control" data-action="pizza" data-sb-curent-price="<%= orderLine.price50 %>" data-sb-curent-size="50" data-sb-curent-id-or-vendor-code="0050pz">50</div>
+                                                                                                            <% var default_price; %>
+                                                                                                            <% filteredPricelist.forEach((item, index) => { %>
+                                                                                                                <% if(index===0) default_price = item.price; %>
+                                                                                                                <div class="items__control <%= index===0 ? 'active' : '' %>" data-action="pizza" data-sb-curent-price="<%= item.price %>" data-sb-curent-size="<%= item.size %>" data-sb-curent-id-or-vendor-code="00<%= item.size %>pz"><%= item.size %> </div>
+                                                                                                            
+                                                                                                            <% }) %>
+                                                                                                            
                                                                                                         </div>
                                                                                                         <div class="price">
-                                                                                                            <div class="price__currency"><%= orderLine.price30 %> ₽</div>
+                                                                                                            <div class="price__currency"><%= default_price %> ₽</div>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <button data-cart type="button" class="btn btn-block btn-outline-warning">Добавить</button>
+                                                                                                    <button data-cart type="button" class="btn btn-block btn-outline-warning">+ в корзину</button>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
-                                                                                    <% } else {%>
-                                                                                        <div class="col-md-6">
-                                                                                            <div class="card mb-4" data-id="<%= orderLine.id %>">
-                                                                                                <div class="card-body text-center">
-                                                                                                    <h4 class="item-title" id="<%= orderLine.subcategory %>"><%= orderLine.name %></h4>
-                                                                                                    <div class="details-wrapper">
-                                                                                                        <div class="items counter-wrapper">
-                                                                                                            <div class="items__control" data-action="minus">-</div>
-                                                                                                            <div class="items__current" data-counter>1</div>
-                                                                                                            <div class="items__control" data-action="plus">+</div>
-                                                                                                        </div>
+                                                                                    <% } %>
+                                                            
+                                                            
+                                                                                    <% if(dish.subcategory != 11) {%>
+                                                                                    <% } else { %>
                                                                                         
-                                                                                                        <div class="price">
-                                                                                                            <div class="price__currency"><%= orderLine.price %> ₽</div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                        
-                                                                                                    <button data-cart type="button" class="btn btn-block btn-outline-warning">Добавить</button>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <% } %>
-                                                                                <% }) %>
+                                                                                    <% } %>
+                                                                                <% }); %>
                                                                             </div>
                     
                                                                             <div class="modal-footer">

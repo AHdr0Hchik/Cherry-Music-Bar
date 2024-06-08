@@ -91,3 +91,13 @@ router.get('/sales_manager/sale_edit', adminController.sale_edit);
 router.post('/sales_manager/sale_update', adminController.sale_update);
 
 router.get('/sales_manager/sale_delete', adminController.sale_delete);
+
+//stoplist
+
+router.get('/stoplist_manager', adminController.stoplist_manager);
+
+router.get('/stoplist_manager/stoplist_edit', adminController.stoplist_edit);
+
+router.post('/stoplist_manager/stoplist_update', adminController.stoplist_update);
+
+router.get('/stoplist_manager/stoplist_delete', adminController.stoplist_delete);

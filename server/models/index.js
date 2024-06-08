@@ -17,6 +17,7 @@ const history = require('./history-model')(sequelize);
 const pricelist = require('./pricelist-model')(sequelize);
 const SBIS = require('./sbis-model')(sequelize);
 const sales = require('./sales-model')(sequelize);
+const stoplist = require('./stoplist-model')(sequelize);
 
 
 module.exports = {
@@ -30,5 +31,6 @@ module.exports = {
     history: history,
     pricelist: pricelist,
     SBIS: SBIS,
-    sales: sales
+    sales: sales,
+    stoplist: stoplist
 }

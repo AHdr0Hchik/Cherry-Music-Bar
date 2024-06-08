@@ -5,7 +5,7 @@ module.exports = function(sequelize) {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
-            allowNull: true
+            autoIncrement: true,
         },
         name: {
             type: Sequelize.STRING,
@@ -21,22 +21,6 @@ module.exports = function(sequelize) {
         },
         techCard: {
             type: Sequelize.STRING,
-            allowNull: true
-        },
-        price: {
-            type: Sequelize.FLOAT,
-            allowNull: true
-        },
-        price30: {
-            type: Sequelize.FLOAT,
-            allowNull: true
-        },
-        price36: {
-            type: Sequelize.FLOAT,
-            allowNull: true
-        },
-        price50: {
-            type: Sequelize.FLOAT,
             allowNull: true
         },
         description: {
