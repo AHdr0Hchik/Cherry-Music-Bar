@@ -17,9 +17,7 @@ const createPath = (page) => path.resolve(__dirname, '../../public', `${page}.ej
 //common
 
 exports.home = async (req, res) => {
-
     res.render(createPath('admin_home'), {isAuthorized: true});
-
 }
 
 //stats
