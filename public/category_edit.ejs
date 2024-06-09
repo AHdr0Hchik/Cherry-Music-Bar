@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/css/helpmix.css">
     <link rel="icon" href="/jpgs/favicon.ico">
 
-    <title>Редактор категории | Cherry Music Bar</title>
+    <title>Редактор производства | Cherry Music Bar</title>
 </head>
 <style>
     .container {
@@ -93,8 +93,15 @@ body {
                         <label class="control-label" for="category_hidden">Скрыть категорию</label>
                         <div class="controls">
                             <input name="category_hidden" id="category_hidden" type="checkbox" <%= locals.category ? (category.hidden == 1 ? 'checked' : '') : '' %>>
-                        </div>   
+                        </div>     
                     </div>
+                    <div class="control-group">
+                        <label class="control-label" for="category_is_forSite">Продавать на сайте</label>
+                        <div class="controls">
+                            <input name="category_is_forSite" id="category_is_forSite" type="checkbox" <%= locals.category ? (category.is_forSite == 1 ? 'checked' : '') : '' %>>
+                        </div>
+                    </div>
+                    
                     <div class="control-group">
                         <label class="control-label" for="category_name">Название производства</label>
                         <div class="controls">

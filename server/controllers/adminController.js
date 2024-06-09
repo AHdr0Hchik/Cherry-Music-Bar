@@ -125,7 +125,7 @@ exports.add_to_table = async (req, res) => {
                 }
             });
         }
-        
+        const stoplist = await Model.stoplist.findAll();
 
         const [subcategories] = await db.connection.promise().query(`SELECT * FROM menu_subcategories`);
         const [menu] = await db.connection.promise().query(`SELECT * FROM menu`);
@@ -138,7 +138,8 @@ exports.add_to_table = async (req, res) => {
             menu: menu,
             userData: userData, 
             orderData: orderData,
-            pricelist: pricelist
+            pricelist: pricelist,
+            stoplist: stoplist
         });
     } catch(e) {
         console.log(e);
@@ -646,6 +647,7 @@ exports.category_update = async (req, res) => {
             await Model.categories.create({
                 category_name: req.body.category_name, 
                 printer: req.body.bills.group_printer == 'printer' ? req.body.bills.printer_address : '', 
+                is_forSite: req.body.category_is_forSite == 'on' ? '1' : '0',
                 hidden: req.body.category_hidden == 'on' ? '1' : '0'
             });
             return res.redirect('/admin/categories_manager');
@@ -654,7 +656,8 @@ exports.category_update = async (req, res) => {
             {
                 category_name: req.body.category_name, 
                 printer: req.body.bills.group_printer == 'printer' ? req.body.bills.printer_address : '',
-                hidden: req.body.category_hidden == 'on' ? '1' : '0'
+                hidden: req.body.category_hidden == 'on' ? '1' : '0',
+                is_forSite: req.body.category_is_forSite == 'on' ? '1' : '0',
             },
             {
                 where: {
@@ -899,7 +902,7 @@ exports.stoplist_edit = async (req, res) => {
 exports.stoplist_update = async (req, res) => {
     try {
         console.log(req.body)
-        if(!req.body.dish_id) {
+        if(!req.body.stoplist_id) {
             await Model.stoplist.create({
                 dish_id: req.body.dish_id
             })
@@ -910,7 +913,7 @@ exports.stoplist_update = async (req, res) => {
             dish_id: req.body.dish_id,
         },
         {
-            where: parseInt(req.body.dish_id)
+            where: { id: parseInt(req.body.stoplist_id) }
         });
         return res.redirect('/admin/stoplist_manager');
         console.log(req.body);

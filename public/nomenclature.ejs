@@ -214,13 +214,6 @@ body {
                                                                 <% prices.forEach(price => { %>
                                                                     <button onclick="" class="btn btn-primary" style="width:80px;text-align:right;"> <%= price.price %></button>
                                                                 <% }) %>
-                                                                <!-- <% if(orderLine.subcategory === 11) { %>
-                                                                    <button onclick="" class="btn btn-primary" style="width:80px;text-align:right;"> <%= orderLine.price30.toFixed(2) %></button>
-                                                                    <button onclick="" class="btn btn-primary" style="width:80px;text-align:right;"> <%= orderLine.price36.toFixed(2) %></button>
-                                                                    <button onclick="" class="btn btn-primary" style="width:80px;text-align:right;"> <%= orderLine.price50.toFixed(2) %></button>
-                                                                <% } else { %>
-                                                                    <button onclick="" class="btn btn-primary" style="width:80px;text-align:right;"> <%= orderLine.price.toFixed(2) %></button>
-                                                                <% } %> -->
                                                                 <a href="/admin/nomenclature/item_delete?orderLine=<%= orderLine.id %>" class="btn btn-danger" style="cursor:hand;">X&nbsp;</a>
                                                             </div>
                                                         </div>

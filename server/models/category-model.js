@@ -15,6 +15,10 @@ module.exports = function(sequelize) {
             type: Sequelize.TINYINT,
             allowNull: true
         },
+        is_forSite: {
+            type: Sequelize.TINYINT,
+            allowNull: true
+        },
         imgUrl: {
             type: Sequelize.STRING,
             allowNull: true

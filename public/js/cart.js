@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 price: card.querySelector('.price__currency').innerText,
                 counter: card.querySelector('[data-counter]').innerText,
             };
-            if(productInfo.subcategory == 11) {
+            if(card.querySelector('.active')) {
                 productInfo.size = card.querySelector('.active').innerText;
             }
 

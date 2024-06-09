@@ -28,6 +28,7 @@
                 <div class="row" id="products-container">
 
                     <% categories.forEach(category => { %>
+                        <% if(category.is_forSite == 0) { return } %>
                         <a href="/subcategories?category_id=<%= category.id %>" class="col-md-6">
                             <div class="card mb-4" data-id="<%= category.id %>">
                                 <img class="product-img" src="<%= category.imgUrl %>" alt="">

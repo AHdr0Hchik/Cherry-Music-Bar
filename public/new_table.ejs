@@ -65,6 +65,18 @@
                                                                                 <% const this_menuList = menu.filter(item => item.subcategory == subcategory.id); %>
                                                                                 <% this_menuList.forEach(dish => { %>
                                                                                     <% var filteredPricelist = pricelist.filter(item => item.dish_id === dish.id); %>
+                                                                                    <% if(isItemInStoplist(stoplist, dish)) { %> 
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="card mb-4 front" data-id="<%= dish.id %>">
+                                                                                                <div class="card-body text-center">
+                                                                                                    <h4 class="item-title" id="<%= dish.subcategory %>"><%= dish.name %></h4>
+                                                                                                    <h4 style="color: red; font-weight: bold;">В стоп-листе!</h4>
+                                                                                                    <button data-cart type="button" class="btn btn-block btn-outline-warning" disabled>Добавить</button>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <% return %>
+                                                                                    <%} %>
                                                                                     <% if(filteredPricelist.length==1) { %> 
                                                                                         <div class="col-md-6">
                                                                                             <div class="card mb-4 front" data-id="<%= dish.id %>">

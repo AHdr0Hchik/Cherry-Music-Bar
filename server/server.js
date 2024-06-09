@@ -43,6 +43,10 @@ app.use('/auth', require('./routes/auth'));
 app.use('/order', require('./routes/order'));
 app.use('/admin', authMiddleware, roleMiddleware, require('./routes/admin'));
 
+app.locals.isItemInStoplist = (stoplist, item) => {
+   return stoplist.some(stoplisted => stoplisted.dish_id === item.id);
+ };
+
 (async () => {
    await new SBIS().connection();
  })();

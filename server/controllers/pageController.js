@@ -20,6 +20,12 @@ exports.index = async (req, res) => {
 };
 
 exports.subcategories = async (req, res) => {
+    const this_category = await Model.categories.findOne({
+        where: { id: req.query.category_id }
+    })
+    if(this_category.is_forSite == 0 || this_category.hidden == 1) {
+        return res.redirect('/');
+    }
     const [subcategories] = await db.connection.promise().query(`SELECT * FROM menu_subcategories WHERE category=${req.query.category_id}`);
     if(!req.cookies.refreshToken) {
        res.render(createPath('subcategories'), {subcategories: subcategories, isAuthorized: false});
@@ -45,12 +51,14 @@ exports.menu = async (req, res) => {
         order: ['dish_id', 'size']
     });
     
+    const stoplist = await Model.stoplist.findAll();
+
     if(!req.cookies.refreshToken) {
        if(req.query.subcategory_id != 11) {
-          res.render(createPath('menu'), {menu: menuList, pricelist: pricelist, isAuthorized: false});
+          res.render(createPath('menu'), {menu: menuList, pricelist: pricelist, isAuthorized: false, stopllist: stoplist});
        } 
     } else {
-          res.render(createPath('menu'), {menu: menuList, pricelist: pricelist, isAuthorized: true});
+          res.render(createPath('menu'), {menu: menuList, pricelist: pricelist, isAuthorized: true, stoplist: stoplist});
     }
 }
 
