@@ -47,7 +47,8 @@ app.use('/admin', authMiddleware, roleMiddleware, require('./routes/admin'));
 
 app.locals.isItemInStoplist = (stoplist, item) => {
    return stoplist.some(stoplisted => stoplisted.dish_id === item.id);
- };
+};
+app.locals.org_name = process.env.ORG_NAME;
 
 (async () => {
    await new SBIS().connection();
