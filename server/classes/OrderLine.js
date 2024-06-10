@@ -10,10 +10,6 @@ class OrderLine {
     id;
     techCard = new Array;
     selfCost;
-    price = 0;
-    price30 = 0;
-    price36 = 0;
-    price50 = 0;
     description = '';
     forSite = false;
     withPack = false;
@@ -50,26 +46,6 @@ class OrderLine {
     Name(name) {
         if(!name) return this.name;
         else this.name = name;
-    } 
-
-    Price(price) {
-        if(!price) return this.price;
-        else this.price = price;
-    }
-
-    Price30(price30) {
-        if(!price30) return this.price30;
-        else this.price30 = price30;
-    }
-
-    Price36(price36) {
-        if(!price36) return this.price36;
-        else this.price36 = price36;
-    }
-
-    Price50(price50) {
-        if(!price50) return this.price50;
-        else this.price50 = price50;
     }
 
     Category(category) {
@@ -171,8 +147,8 @@ class OrderLine {
     }
     async updadeInDB() {
         const db = new Database;
-        await db.connection.promise().query('UPDATE Menu SET name=?, category=?, subcategory=?, price=?, price30=?, price36=?, price50=?, is_forSite=?, is_withPack=?, pack_id=?, is_official=? where id=?;',
-        [this.name, this.category, this.subcategory, this.price, this.price30, this.price36, this.price50, this.forSite, this.withPack, this.pack_id, this.is_official, this.id]);
+        await db.connection.promise().query('UPDATE Menu SET name=?, category=?, subcategory=?, is_forSite=?, is_withPack=?, pack_id=?, is_official=? where id=?;',
+        [this.name, this.category, this.subcategory, this.forSite, this.withPack, this.pack_id, this.is_official, this.id]);
     }
 
     async updateName() {
