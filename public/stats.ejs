@@ -38,6 +38,10 @@
 </style>
 <body id="">
     <%- include('upmenu_crm') %>
+    <% if(locals.has_license == false ) {%>
+        <%- include('license_popup') %>
+    <% } %>
+
     <script type="text/javascript">
         function show_history() {
             const sel=document.getElementsByName('postav')[0]

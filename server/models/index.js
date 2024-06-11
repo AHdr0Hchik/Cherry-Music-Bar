@@ -18,6 +18,7 @@ const pricelist = require('./pricelist-model')(sequelize);
 const SBIS = require('./sbis-model')(sequelize);
 const sales = require('./sales-model')(sequelize);
 const stoplist = require('./stoplist-model')(sequelize);
+const easyresto = require('./easyresto-model')(sequelize);
 
 
 module.exports = {
@@ -32,5 +33,6 @@ module.exports = {
     pricelist: pricelist,
     SBIS: SBIS,
     sales: sales,
-    stoplist: stoplist
+    stoplist: stoplist,
+    easyresto: easyresto
 }

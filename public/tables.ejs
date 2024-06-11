@@ -107,6 +107,13 @@ body {
 </style>
 <body id="">
     <%- include('upmenu_crm') %>
+    <% if(locals.has_license == false ) {%>
+        <%- include('license_popup') %>
+    <% } %>
+
+    <% if(locals.has_update == true ) {%>
+        <%- include('update_popup') %>
+    <% } %>
     <div class="container">
         <div class="row"> 
             <div class="col" style="max-width: 200px;">

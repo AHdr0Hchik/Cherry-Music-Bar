@@ -131,6 +131,10 @@ body {
 
     </script>
     <%- include('upmenu_crm') %>
+    <% if(locals.has_license == false ) {%>
+        <%- include('license_popup') %>
+    <% } %>
+
     <div class="container">
         <h1 class="fw-bold fs-2"> Продукция производств - блюда, услуги </h1>
         <table class="receptura_main_table">
