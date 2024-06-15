@@ -14,6 +14,7 @@ dotenv.config({path: './config/.env'});
 //classes
 const SBIS = require('./sbis/SBIS');
 const Updater = require('./classes/Updater');
+const EasyResto = require('./classes/EasyResto');
 
 
 const app = express();
@@ -53,14 +54,17 @@ app.locals.isItemInStoplist = (stoplist, item) => {
 };
 app.locals.org_name = process.env.ORG_NAME;
 
+const easyresto = new EasyResto();
+const dssagtrgs = easyresto.getDiskSerial();
+
 (async () => {
-   const result = await new Updater().checkForUpdates();
    
+   const result = await new Updater().checkForUpdates(dssagtrgs);
+   console.log(result);
    if(result.has_license == false) {
       app.locals.has_license = false;
       return;
    }
-   
    if(result.has_update && result.latest_version) {
       app.locals.has_update = true;
       app.locals.latest_version = result.latest_version;

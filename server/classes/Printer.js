@@ -9,31 +9,38 @@ class Printer {
     }
 
     printOrder(order, final) {
-        const networkDevice = new escpos.Network(process.env.MAIN_PRINTER_IP, parseInt(process.env.PRINTER_PORT));
+        console.log(order + ' ' + final)
+        const networkDevice = new escpos.Network('192.168.1.4', 9100);
         const printer = new escpos.Printer(networkDevice);
         networkDevice.open(function(error){
             printer
             .font('A')
-            .size(1,1)
+            .size(0.5, 0.5)
+            .align('CT')
             .text(process.env.ORG_NAME, 'CP866')
+            .align('LT')
             .text('Где: ' + order.pos , 'CP866')
             .text('Когда: ' + order.orderDate , 'CP866')
-            .text('Обслужил: ' + order.agentId, 'CP866');
+            .text('Обслужил: ' + order.agentId, 'CP866')
+            .newLine()
+            .close();
             let orderLineArray_formatted;
             order.orderLineArray.forEach(orderLine => {
-                printer.tableCustom([{text: `${orderLine.name} ${orderLine.size || ''}`}, {text:`${orderLine.count}`}, {text: `${orderLine.price}`}, {text:`${orderLine.count * orderLine.price}`}], { encoding: 'CP866', size: [1, 1] });
-                printer.text(`_____________________`, 'CP866');
+                printer.align('CT');
+                printer.tableCustom([{text: `${orderLine.name} ${orderLine.size || ''}`, width: 0.7, style: 'B'},{text: `|`, width: 0.05, style: 'B'}, {text: `${orderLine.price} Р`, width: 0.15, style: 'B'},{text: `|`, width: 0.05, style: 'B'}, {text:`${orderLine.count}`, width: 0.1, style: 'B'}, {text: `|`, width: 0.05, style: 'B'},  {text:`${orderLine.count * orderLine.price} Р`, width: 0.2, style: 'B'}], { encoding: 'CP866', size: [1, 1] });
             })
-            printer.style('i').text('Сумма: ' + order.sale==0 ? `${order.sumWithSale}Р` : `${order.sum} - ${(order.sum-order.sumWithSale)} = ${order.sumWithSale}Р` , 'CP866');
+            printer.newLine();
+            printer.align('LT').text(`Сумма: ${ (order.sale == 0 ? order.sumWithSale+' Р' : (order.sum + '-' + order.sum-order.sumWithSale + '=' + order.sumWithSale + ' Р'))}`, 'CP866');
             if(final) {
-            printer.style('b').text('Приходите ещё :)', 'CP866')
+            printer.align('LT').style('b').text('Приходите ещё :)', 'CP866')
             .cut()
             .close();
             } else {
-                printer.style('b').text('Приятного аппетита :)', 'CP866')
+                printer.align('LT').style('b').text('Приятного аппетита :)', 'CP866')
                 .cut()
                 .close();
             }
+
           });
     }
 
@@ -69,8 +76,8 @@ class Printer {
         categoriesInfo.forEach(category => {
             details.printer_ip = category.printer.split('###')[2].split(':')[0];
             text.push(`Отдел: ${category.category_name}`);
-            text.push(`Время: ${new Date().getHours()+':'+new Date().getMinutes()+':'+new Date().getSeconds()}`);
-            text.push(`Пробил: ${agent.firstname}`);
+            text.push(`ВРемя: ${new Date().getHours()+':'+new Date().getMinutes()+':'+new Date().getSeconds()}`);
+            text.push(`ПРобил: ${agent.firstname}`);
             text.push(`Для: ${pos.name}:${parseInt(orderDetails.split('_')[1].split(':')[1])+1}`);
             text.push('=====');
             for(let item in itemsData) {
@@ -88,9 +95,11 @@ class Printer {
 
     printOrderLines(textArr, printer_ip) {
         console.log(printer_ip);
-        const networkDevice = new escpos.Network('192.168.0.103', 9100);
+        const networkDevice = new escpos.Network('192.168.1.4', 9100);
         const printer = new escpos.Printer(networkDevice);
         networkDevice.open(function(error){
+            console.log(error);
+            console.log(textArr);
             textArr.forEach(text => {
                 if(text=='cut') {
                     printer.cut();

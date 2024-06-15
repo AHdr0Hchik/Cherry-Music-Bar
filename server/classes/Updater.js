@@ -27,12 +27,11 @@ class Updater {
                 writer.on('finish', resolve);
                 writer.on('error', reject);
             });
-            const updateDir = path.join(__dirname, '..', 'updates');
             const projectRoot = path.join(__dirname, '..', '..');
             await extract(zipFilePath, { dir: projectRoot });
             execSync('npm install', {
                 cwd: projectRoot,
-                stdio: 'inherit' // Показывает вывод npm install в консоль
+                stdio: 'inherit'
             });
             await Model.easyresto.update(
                 {
@@ -53,22 +52,25 @@ class Updater {
         }
     }
 
-    async checkForUpdates() {
+    async checkForUpdates(sid) {
         try {
             // Получаем информацию о последней версии
             const { data } = await axios.get(`http://${process.env.MAIN_SERVER_HOST}:${process.env.MAIN_SERVER_PORT}/api/check_updates`,
                 {
                     headers: {
-                        'serialid' : process.env.SID
+                        'serialid' : sid
                     }
                 }
             );
             const latestVersion = data.version;
+            if(latestVersion === undefined) {
+                throw new Error('Не удалось получить информацию об актуальной версии EasyResto');
+            }
             const currentVersion = await Model.easyresto.findAll();
             if (latestVersion != currentVersion[0].version) {
                 return {has_license: true, has_update: true, latest_version: latestVersion};
             } else {
-                console.log('No updates available.');
+                console.log('Вы используете последнюю версию EasyResto');
             }
             return true;
         } catch (error) {

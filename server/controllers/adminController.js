@@ -304,7 +304,10 @@ exports.complete_order_handler = async (req, res) => {
         });
         order.pos=  pos_name.name + ':' + order.pos.split(':')[1];
         order.agentId = 'Андрей Хоменко';
-        printer.printOrder(order);
+        console.log(356);
+        console.log(order);
+        console.log(123);
+        printer.printOrder(order, true);
     } catch(e) {
         console.log(e);
         return ApiError.UnknownError();
