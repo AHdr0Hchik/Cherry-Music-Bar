@@ -19,6 +19,7 @@ class Printer {
             .align('CT')
             .text(process.env.ORG_NAME, 'CP866')
             .align('LT')
+            .text(process.env.ORG_PHONE_NUMBER, 'CP866')
             .text('Где: ' + order.pos , 'CP866')
             .text('Когда: ' + order.orderDate , 'CP866')
             .text('Обслужил: ' + order.agentId, 'CP866')
