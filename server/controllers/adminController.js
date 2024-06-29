@@ -283,6 +283,7 @@ exports.complete_order = async (req, res) => {
 
 exports.complete_order_handler = async (req, res) => {
     try{
+        console.log(req.body);
         const order = new Order();
         order.Id(req.body.order_id);
         await order.findOrderById();
@@ -294,17 +295,10 @@ exports.complete_order_handler = async (req, res) => {
         const official = await order.findOfficialLines();
         if(official.length>0) {
             const sbis = new SBIS;
-            //sbis.billRegistrationForCash(official);
+            //sbis.billRegistration(official, req.body.terminal_pay);
         }
 
         const printer = new Printer();
-        const pos_name = await Model.pos.findOne({
-            attributes: ['name'],
-            where: {
-                id: order.pos.split(':')[0]
-            }
-        });
-        order.pos=  pos_name.name + ':' + order.pos.split(':')[1];
         const agent_raw = await Model.users.findOne({
             attributes: ['firstname', 'lastname'],
             where: {
@@ -312,7 +306,6 @@ exports.complete_order_handler = async (req, res) => {
             }
         });
         const agent = agent_raw.firstname + ' ' + agent_raw.lastname;
-        console.log(order);
         await printer.printOrder(order, true, agent);
 
         await Model.cash.create({

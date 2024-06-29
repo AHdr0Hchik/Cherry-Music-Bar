@@ -38,6 +38,7 @@
                 method: "POST",
                 body: JSON.stringify({
                     order_id: <%= order.id %>,
+                    terminal_pay: document.querySelector('#terminal_pay').checked,
                     sale: sale
                 }),
                 headers: {
@@ -83,7 +84,11 @@
             <tfoot>
                 <tr>
                     <td colspan="2"><p>Всего к оплате: <span id="sumWithSale"><%= order.sumWithSale %></span></p></td>
-                    <td colspan="2" align="center"><button type="button" class="btn btn-success btn-lg" onclick="completeOrder()">Завершить заказ</button></td>
+                    <td align="center">
+                        <label for="terminal_pay" class="checkbox">По карте</label>
+                        <input type="checkbox" name="terminal_pay" id="terminal_pay">
+                    </td>
+                    <td align="center"><button type="button" class="btn btn-success btn-lg" onclick="completeOrder()">Завершить заказ</button></td>
                 </tr>
             </tfoot>
         </table>
