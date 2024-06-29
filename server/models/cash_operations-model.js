@@ -1,36 +1,33 @@
 const Sequelize = require('sequelize')
 
 module.exports = function(sequelize) { 
-    return sequelize.define('menu_subcategories', {
+    return sequelize.define('cash_operations', {
         id: {
             type: Sequelize.INTEGER,
             autoIncrement: true,
             primaryKey: true,
             allowNull: true
         },
+        datetime: {
+            type: Sequelize.DATE,
+            allowNull: false
+        },
         type: {
-            type: Sequelize.STRING,
+            type: Sequelize.CHAR,
             allowNull: false
         },
-        subcategory_name: {
-            type: Sequelize.STRING,
+        cash: {
+            type: Sequelize.FLOAT,
             allowNull: false
         },
-        category: {
-            type: Sequelize.INTEGER,
-            allowNull: false
-        },
-        hidden: {
-            type: Sequelize.TINYINT,
+        description: {
+            type: Sequelize.CHAR,
             allowNull: true
-        },
-        imgUrl: {
-            type: Sequelize.STRING,
-            allowNull: true
-        },
+        }
     }, 
     {
         timestamps: false,
-        tablename: 'menu_subcategories'
+        tablename: 'cash_operations',
+        freezeTableName: true
     });
 }

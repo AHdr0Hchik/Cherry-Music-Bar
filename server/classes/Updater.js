@@ -4,17 +4,19 @@ const path = require('path');
 const extract = require('extract-zip');
 const { execSync } = require('child_process');
 const Model = require('../models');
+const EasyResto = require('./EasyResto');
 
 class Updater {
 
     async downloadAndApplyUpdate(version) {
         try {
+            const easyresto = new EasyResto();
             const { data } = await axios.get(
                 `http://${process.env.MAIN_SERVER_HOST}:${process.env.MAIN_SERVER_PORT}/api/download/${version}`,
                 {
                     responseType: 'stream',
                     headers: {
-                        'serialid': process.env.SID
+                        'serialid': easyresto.getDiskSerial()
                     }
                 }
             );

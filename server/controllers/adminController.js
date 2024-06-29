@@ -99,8 +99,9 @@ exports.add_to_table = async (req, res) => {
         const table_info = {id: req.query.id, name: tableData.name, count: req.query.count, can_sells: tableData.can_sells};
 
         const [orderDataRaw]= await db.connection.promise().query('SELECT orderLineArray FROM History WHERE isComplete=0 AND pos=?', [`${table_info.id}:${table_info.count}`]);
+        let orderData;
         if(orderDataRaw.length>0) {
-            var orderData = JSON.parse(orderDataRaw[0].orderLineArray);
+            orderData = JSON.parse(orderDataRaw[0].orderLineArray);
         }
         let categories;
 
@@ -137,7 +138,8 @@ exports.add_to_table = async (req, res) => {
             userData: userData, 
             orderData: orderData,
             pricelist: pricelist,
-            stoplist: stoplist
+            stoplist: stoplist,
+            order: order
         });
     } catch(e) {
         console.log(e);
@@ -303,11 +305,22 @@ exports.complete_order_handler = async (req, res) => {
             }
         });
         order.pos=  pos_name.name + ':' + order.pos.split(':')[1];
-        order.agentId = 'Андрей Хоменко';
-        console.log(356);
+        const agent_raw = await Model.users.findOne({
+            attributes: ['firstname', 'lastname'],
+            where: {
+                id: order.agentId
+            }
+        });
+        const agent = agent_raw.firstname + ' ' + agent_raw.lastname;
         console.log(order);
-        console.log(123);
-        printer.printOrder(order, true);
+        await printer.printOrder(order, true, agent);
+
+        await Model.cash.create({
+            datetime: new Date(),
+            type: 'Дебет',
+            cash: order.sumWithSale,
+            description: `Приход с заказа №${order.id}`
+        })
     } catch(e) {
         console.log(e);
         return ApiError.UnknownError();
@@ -634,6 +647,16 @@ exports.category_delete = async (req, res) => {
         await Model.categories.destroy({
             where: {id: req.query.category_id }
         });
+        await Model.subcategories.destroy({
+            where: {
+                id: parseInt(req.query.category_id)
+            }
+        });
+        await Model.menu.destroy({
+            where: {
+                subcategory: parseInt(req.query.category_id)
+            }
+        })
         return res.redirect(`/admin/categories_manager`);
     } catch(e) {
         console.log(e);
@@ -747,9 +770,17 @@ exports.draw_prechek = async (req, res) => {
         let order = new Order();
         order.Id(req.query.order_id);
         await order.findOrderById();
+        const agent_raw = await Model.users.findOne({
+            attributes: ['firstname', 'lastname'],
+            where: {
+                id: order.agentId
+            }
+        });
+        const agent = agent_raw.firstname + ' ' + agent_raw.lastname;
+        console.log(agent);
         console.log(order);
         const printer = new Printer();
-        printer.printOrder(order);
+        await printer.printOrder(order, false, agent);
         return res.redirect('/admin/tables');
     } catch(e) {
         console.log(e);
@@ -938,4 +969,55 @@ exports.stoplist_delete = async (req, res) => {
         console.log(e);
         throw ApiError.UnknownError();
     }
+}
+
+exports.import = async (req, res) => {
+    const mysql = require('mysql2');
+    const connection = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        database: "cherryhelpmix",
+    });
+    const [other_menu] = await connection.promise().query('SELECT bludo_name, cena_bluda FROM menu WHERE hidden=0 AND category_id<>1116 AND category_id<>1120 AND category_id<>1124');
+    const new_subcat = await Model.subcategories.create({
+        type: 'production',
+        subcategory_name: 'import',
+        category: 1,
+        hidden: 0
+    });
+    for(let i = 0; i<other_menu.length; i++) {
+        const new_item = await Model.menu.create({
+            name: other_menu[i].bludo_name,
+            category: 1,
+            subcategory: new_subcat.id
+        })
+        await Model.pricelist.create({
+            size: 1,
+            dish_id: new_item.id,
+            price: other_menu[i].cena_bluda
+        });
+    }
+        
+
+    console.log(new_subcat);
+    return res.json(JSON.stringify(other_menu));
+}
+
+
+exports.cash_manager = async (req, res) => {
+    const cash_operations = await Model.cash.findAll();
+    console.log(cash_operations);
+    return res.render(createPath('cash_manager'), { cash_operations: cash_operations });
+}
+
+exports.cash_update = async (req, res) => {
+    req.body.data.forEach(item => {
+        Model.cash.create({
+            type: item.type,
+            datetime: new Date(),
+            cash: item.cash,
+            description: item.description || 'Неизвестная причина'
+        });
+    })
+    return res.send('Success!!!');
 }

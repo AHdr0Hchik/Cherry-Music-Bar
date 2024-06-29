@@ -61,7 +61,7 @@ const dssagtrgs = easyresto.getDiskSerial();
    
    const result = await new Updater().checkForUpdates(dssagtrgs);
    console.log(result);
-   if(result.has_license == false) {
+   if(result.has_license == false || result==false) {
       app.locals.has_license = false;
       return;
    }

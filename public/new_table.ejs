@@ -193,8 +193,8 @@
                             </tr>
                         </tbody>
                         <tfoot>
-                            <tr><td colspan="3">Сумма: <span id="sum" class="total-price">0 <span>руб.</span></span></td></tr> 
-                            <tr><td colspan="3"><label for="guests_count">Введите количество гостей</label><input class="form-control" type="number" name="guests_count" id="guests" placeholder="Введите количество гостей" value="<%= locals.orderData ? orderData.guests_count : '0' %>"></td></tr>
+                            <tr><td colspan="3">Сумма: <span id="sum" class="total-price"><%= locals.order ? order.sum : 0 %><span> руб.</span></span></td></tr> 
+                            <tr><td colspan="3"><label for="guests_count">Введите количество гостей</label><input class="form-control" type="number" name="guests_count" id="guests" placeholder="Введите количество гостей" value="<%= locals.order ? order.guests_count : '0' %>"></td></tr>
                         </tfoot>
                     </table>
                 </div>
@@ -214,7 +214,7 @@
                                 <% orderData.forEach(orderLine => { %>
                                     <tr id="<%= orderLine.id %>" class="old_cart_item" data-id="<%= orderLine.id %>">
                                         <td align="left"><span class="cart-item__title" id="<%= orderLine.size || '' %>"><%= orderLine.name %> <%= orderLine.size || '' %></span></td>
-                                        <td align="right"><input data-counter class="form-control" type="number" value="<%= orderLine.count %>"></td>
+                                        <td align="right"><span data-counter><%= orderLine.count %></span></td>
                                         <td align="right"><span class="price__currency"><%= orderLine.price %></span></td>
                                     </tr>
                                 <% }); %>

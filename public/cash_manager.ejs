@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <script src="/js/menu.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap_old.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style_for_menu.css">
+    <link rel="stylesheet" href="/css/helpmix.css">
+    <link rel="icon" href="/jpgs/favicon.ico">
+
+    <title>Места продаж | <%= locals.org_name %></title>
+</head>
+<style>
+    .container {
+    margin: 10px;
+    background-color: white;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 10px;
+    }
+    a, a:visited {
+        color:white;
+    }
+    a:hower {
+        color: rgb(220, 220, 220);
+    }
+    .nav a { 
+        color: black;
+    }
+    .modal-dialog {
+        width: 50%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+        .modal-content {
+        height: auto;
+        min-height: 100%;
+        border-radius: 0;
+    }
+    .navbar-static-top {
+    position: static;
+    margin-bottom: 0;
+}
+
+    .navbar-inner {
+    min-height: 40px;
+    padding-right: 20px;
+    padding-left: 20px;
+    background-color: #fafafa;
+    background-image: -moz-linear-gradient(top,#fff,#f2f2f2);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#f2f2f2));
+    background-image: -webkit-linear-gradient(top,#fff,#f2f2f2);
+    background-image: -o-linear-gradient(top,#fff,#f2f2f2);
+    background-image: linear-gradient(to bottom,#fff,#f2f2f2);
+    background-repeat: repeat-x;
+    border: 1px solid #d4d4d4;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',endColorstr='#fff2f2f2',GradientType=0);
+    -webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.065);
+    -moz-box-shadow: 0 1px 4px rgba(0,0,0,0.065);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.065);
+}
+.navbar {
+    width: 100wv;
+}
+body {
+    background-image: url('../jpgs/body-back.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+</style>
+<body id="">
+    <script>
+        function showSubcategory(id) {
+            const otherDishes = document.querySelectorAll('#subcat');
+            otherDishes.forEach(item => {
+                item.classList.add('none');
+            });
+            const targetDishes = document.getElementById(`subcategory_${id}`).closest('#subcat').classList.remove('none');
+        }
+    </script>
+    <%- include('upmenu_crm') %>
+    <% if(locals.has_license == false ) {%>
+        <%- include('license_popup') %>
+    <% } %>
+
+    <div class="container">
+        <div id="error_div"></div>
+        <div class="page-header">
+            <h1 class="fw-bold fs-2"> Денежные операции </h1>
+            
+                <% var lastCurrentCashIndex = cash_operations.findLastIndex(item => item.type === 'Изменение баланса') %>
+                <% var currentСash = cash_operations[lastCurrentCashIndex] ? cash_operations[lastCurrentCashIndex].cash : 0 %>
+                <% if(locals.cash_operations && cash_operations[0]) {%>
+                    <% for(var i = 0; i < cash_operations.length; i++ ) { %> 
+                        <% if(cash_operations[i].type == 'Дебет') currentСash += cash_operations[i].cash %>
+                        <% if(cash_operations[i].type == 'Кредит') currentСash -= cash_operations[i].cash %>
+                        <% if(cash_operations[i].type == 'Изменение баланса') currentСash = cash_operations[i].cash %>
+                    <% } %>
+                <% } %>
+                <% const typeToLabel = {'debet': 'Дебет', 'credit': 'Кредит','edit': 'Изменение баланса' }; %>
+        </div>
+        <div class="page-body">
+            <div class="current-cash">
+                <span>Сейчас денег в кассе:</span>
+                <span id="current-cashsum"> <%= currentСash %> </span>
+                <a onclick="add_operation()" style="cursor: pointer; text-decoration: underline; color:rgb(115, 139, 170); margin-left: 10px;">Добавить операцию</a>
+            </div>
+            <hr>
+            <h3>Текущие операции: </h3>
+            <table class="table table-bordered" id="current_operations">
+                <thead>
+                    <th>Время</th>
+                    <th>Тип операции</th>
+                    <th>Сумма</th>
+                    <th></th>
+                    <th></th>
+                </thead>
+                <tbody id="current_operations_body">
+                    
+                </tbody>
+            </table>
+            <a onclick="cash_update()" class="btn btn-success">Сохранить</a>
+            <a href="/admin/cash_manager" class="btn btn-danger" style="margin-left: 20px;">Сбросить</a>
+            <h3>Прошлые операции : </h3>
+            <table class="table table-bordered" id="current_operations">
+                <thead>
+                    <th>Время</th>
+                    <th>Тип операции</th>
+                    <th>Сумма</th>
+                    <th>Описание</th>
+                </thead>
+                <tbody id="current_operations">
+                    <% if(locals.cash_operations && cash_operations[0]) {%>
+                        <% for(var i = cash_operations.length-1; i > 0; i-- ) { %> 
+                            <tr>
+                                <td><span><%= cash_operations[i].datetime %></span></td>
+                                <td>
+                                    <% const label = typeToLabel[cash_operations[i].type] || cash_operations[i].type %>
+                                    <span><%= label %></span>
+                                </td>
+                                <td>
+                                    <span><%= cash_operations[i].cash %></span>
+                                </td>
+                                <td>
+                                    <span><%= cash_operations[i].description %></span>
+                                </td>
+                            </tr>
+                        <% } %>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>		
+    </div>
+
+    <script>
+        function cash_update() {
+            const tbody = document.getElementById('current_operations_body');
+            // Get all the rows (excluding the header row)
+            const rows = Array.from(tbody.getElementsByTagName('tr'));
+
+            // Map each row to an array of its cell values
+            const data = rows.map(row => {
+                const cells = Array.from(row.getElementsByTagName('td'));
+                return {
+                time: cells[0].textContent.trim(),
+                type: cells[1].textContent.trim(),
+                cash: cells[2].textContent.trim()
+                };
+            });
+            if(data.length == 0) {
+                return alert('Ни одна операция не добавлена!');
+            }
+            $.ajax({ 
+                url: '/admin/cash_manager/cash_update',
+                type: 'POST',
+                data: {data : data}, 
+                success: function(data){
+                    while (tbody.firstChild) {
+                        tbody.removeChild(tbody.firstChild);
+                    }
+                    alert('Операции успешно добавлены!');
+                }
+                , error: function(jqXHR, textStatus, err){
+                    alert('text status '+textStatus+', err '+err)
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function add_operation() {
+            const tbody = document.getElementById('current_operations_body');
+            const newRow = tbody.insertRow();
+
+            // Время
+            const timeCell = newRow.insertCell(0);
+            const currentTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+            timeCell.innerText = currentTime;
+
+            // Тип операции
+            const typeCell = newRow.insertCell(1);
+            const select = document.createElement('select');
+            const options = [
+                { value: 'debet', text: 'Дебет' },
+                { value: 'credit', text: 'Кредит' },
+                { value: 'edit', text: 'Изменение баланса' }
+            ];
+            options.forEach(option => {
+                const opt = document.createElement('option');
+                opt.value = option.value;
+                opt.innerText = option.text;
+                select.appendChild(opt);
+            });
+            typeCell.appendChild(select);
+
+            // Сумма
+            const amountCell = newRow.insertCell(2);
+            const input = document.createElement('input');
+            input.type = 'number';
+            amountCell.appendChild(input);
+
+            // Кнопка применения
+            const applyCell = newRow.insertCell(3);
+            const applyButton = document.createElement('button');
+            applyButton.innerText = 'Применить';
+            applyButton.onclick = function() {
+                const selectedType = select.value;
+                const amount = parseFloat(input.value);
+
+                if (selectedType && !isNaN(amount)) {
+                    // Превращаем input и select в span
+                    typeCell.innerHTML = `<span>${select.options[select.selectedIndex].text}</span>`;
+                    amountCell.innerHTML = `<span>${amount}</span>`;
+                    // Обновляем текущую сумму
+                    const currentCashSumSpan = document.getElementById('current-cashsum');
+                    let currentCashSum = parseFloat(currentCashSumSpan.innerText);
+
+                    if (selectedType === 'debet') {
+                        currentCashSum += amount;
+                    } else if (selectedType === 'credit') {
+                        currentCashSum -= amount;
+                    } else if (selectedType === 'edit') {
+                        currentCashSum = amount;
+                    }
+
+                    currentCashSumSpan.innerText = currentCashSum.toFixed(2);
+                    // Удаляем кнопку применения
+                    applyButton.remove();
+                } else {
+                    alert('Заполните все поля');
+                }
+            };
+            applyCell.appendChild(applyButton);
+
+            // Кнопка отмены
+            const cancelCell = newRow.insertCell(4);
+            const cancelButton = document.createElement('button');
+            cancelButton.innerText = 'Отменить';
+            cancelButton.onclick = function() {
+                tbody.removeChild(newRow);
+            };
+            cancelCell.appendChild(cancelButton);
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

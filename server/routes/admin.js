@@ -101,3 +101,13 @@ router.get('/stoplist_manager/stoplist_edit', adminController.stoplist_edit);
 router.post('/stoplist_manager/stoplist_update', adminController.stoplist_update);
 
 router.get('/stoplist_manager/stoplist_delete', adminController.stoplist_delete);
+
+//settings
+
+router.get('/settings/import', adminController.import);
+
+//cash
+
+router.get('/cash_manager', adminController.cash_manager);
+
+router.post('/cash_manager/cash_update', adminController.cash_update);

@@ -4,6 +4,7 @@ const Token = require('./Token');
 const uuid = require('uuid');
 const bcrypt = require('bcryptjs');
 const ApiError = require('./exceptions/api-error');
+const Model = require('../models');
 
 class User {
     constructor(firstname, lastname, email, password) {
@@ -138,14 +139,16 @@ class User {
     //получение юзера
     async getUserByEmail(email2) {
         try {
-            const [user] = await this.db.connection.promise().query('SELECT * FROM users WHERE email=?', [email2]);
+            const user = await Model.users.findOne({
+                where: { email: email2 }
+            });
             
-            const id = user[0].id;
-            const role = user[0].role
-            const email = user[0].email;
-            const isActive = user[0].isActive;
-            const firstname = user[0].firstname;
-            const lastname = user[0].lastname;
+            const id = user.id;
+            const role = user.role
+            const email = user.email;
+            const isActive = user.isActive;
+            const firstname = user.firstname;
+            const lastname = user.lastname;
             
             return {id, role, firstname, lastname, email, isActive};
         } catch(e) {
