@@ -87,6 +87,9 @@ body {
             otherDishes.forEach(item => {
                 item.classList.add('none');
             });
+            if(!document.getElementById(`subcategory_${id}`)) {
+                return
+            }
             const targetDishes = document.getElementById(`subcategory_${id}`).closest('#subcat').classList.remove('none');
         }
         /* document.querySelector('#search').addEventListener('change', function(event) { 
@@ -127,6 +130,19 @@ body {
                     item.classList.add('none');
                 });
             }
+        }
+
+        function delete_orderline(button, orderline_id) {
+            $.ajax({ 
+                url: `/admin/nomenclature/item_delete?orderLine=${orderline_id}`,
+                type: 'get',
+                success: function(data){
+                        button.closest('.width100').remove();
+                }
+                , error: function(jqXHR, textStatus, err){
+                    alert('text status '+textStatus+', err '+err)
+                }
+            });
         }
 
     </script>
@@ -218,6 +234,7 @@ body {
                                                                 <% prices.forEach(price => { %>
                                                                     <button onclick="" class="btn btn-primary" style="width:80px;text-align:right;"> <%= price.price %></button>
                                                                 <% }) %>
+                                                                <button onclick="delete_orderline(this, <%= orderLine.id %>)" class="btn btn-danger" style="cursor:hand;">X&nbsp;</button>
                                                                 <a href="/admin/nomenclature/item_delete?orderLine=<%= orderLine.id %>" class="btn btn-danger" style="cursor:hand;">X&nbsp;</a>
                                                             </div>
                                                         </div>
@@ -237,7 +254,7 @@ body {
         </table>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>

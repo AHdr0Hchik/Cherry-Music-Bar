@@ -219,7 +219,7 @@ exports.to_proccess_crm = async (req, res) => {
             if(order.guests_count != req.body.guests_count) {
                 await Model.history.update(
                     {
-                        guests_count: req.body.guests_count
+                        guests_count: req.body.guests_count || null
                     },
                     {   
                         where: { 
@@ -999,7 +999,6 @@ exports.import = async (req, res) => {
 
 exports.cash_manager = async (req, res) => {
     const cash_operations = await Model.cash.findAll();
-    console.log(cash_operations);
     return res.render(createPath('cash_manager'), { cash_operations: cash_operations });
 }
 
@@ -1011,6 +1010,5 @@ exports.cash_update = async (req, res) => {
             cash: item.cash,
             description: item.description || 'Неизвестная причина'
         });
-    })
-    return res.send('Success!!!');
+    });
 }

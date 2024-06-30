@@ -204,7 +204,7 @@ body {
 
             // Время
             const timeCell = newRow.insertCell(0);
-            const currentTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+            const currentTime = new Date().toLocaleString('ru-RU');
             timeCell.innerText = currentTime;
 
             // Тип операции

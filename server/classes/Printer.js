@@ -245,7 +245,7 @@ class Printer {
         categoriesInfo.forEach(category => {
             details.printer_ip = category.printer.split('###')[2].split(':')[0];
             text.push(`Отдел: ${category.category_name}`);
-            text.push(`Время: ${new Date().getHours()+':'+new Date().getMinutes()+':'+new Date().getSeconds()}`);
+            text.push(`Время: ${new Date().toLocaleString('ru-RU')}`);
             text.push(`Пробил: ${agent.firstname}`);
             text.push(`Для: ${pos.name}:${parseInt(orderDetails.split('_')[1].split(':')[1])+1}`);
             text.push('=====');

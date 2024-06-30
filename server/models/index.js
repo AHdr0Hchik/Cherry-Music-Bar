@@ -5,7 +5,11 @@ const sequelize = new Sequelize(process.env.DATABASE, process.env.DATABASE_USER,
     dialect: "mysql",
     host: process.env.DATABASE_HOST,
     port: process.env.DATABASE_PORT,
-    logging: false
+    logging: false,
+    dialectOptions: {
+        timezone: 'Z', // Использовать UTC
+      },
+    timezone: '+03:00' // Установить временную зону MSK
 });
 
 const pos = require('./pos-model')(sequelize);

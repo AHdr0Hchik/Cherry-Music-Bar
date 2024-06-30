@@ -40,7 +40,7 @@ class AdminStats {
             return false;
         }
         history.forEach(order => {
-            order.orderDate = order.orderDate.toISOString().slice(0, 19).replace('T', ' ');
+            order.orderDate = order.orderDate.toLocaleString('ru-RU');
             order.orderLineArray = JSON.parse(order.orderLineArray);
             order.orderLineArray.forEach(orderLine => {
               const orderLineId = orderLine.id;

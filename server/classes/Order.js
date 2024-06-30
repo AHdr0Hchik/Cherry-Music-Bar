@@ -4,7 +4,7 @@ const Model = require('../models');
 class Order {
     constructor(orderLineArray, address, numberPhone, sale) {
         this.orderLineArray = orderLineArray,
-        this.orderDate = new Date().toISOString().slice(0, 19).replace('T', ' '),
+        this.orderDate = new Date().toLocaleString('ru-RU'),
         this.sale = sale || 0,
         this.address = address || '',
         this.numberPhone = numberPhone || ''
@@ -155,7 +155,19 @@ class Order {
     async createOrder() {
         try {
             const db = new Database;
-            await db.connection.promise().query('INSERT INTO history (orderLineArray, sum, sale, sumWithSale, orderDate, description, pos, agentId, deliveryAddress, clientPhone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);', [JSON.stringify(this.orderLineArray), this.sum, this.sale, this.sumWithSale, this.orderDate, this.description, this.pos, this.agentId, this.address, this.numberPhone]);
+            const new_order = await Model.history.create({
+                orderLineArray: JSON.stringify(this.orderLineArray),
+                sum: this.sum,
+                sale: this.sale, 
+                sumWithSale: this.sumWithSale,
+                orderDate: new Date(),
+                description: this.description,
+                pos: this.pos,
+                agentId: this.agentId,
+                deliveryAddress: this.address,
+                clientPhone: this.numberPhone
+            });
+            //await db.connection.promise().query(`INSERT INTO history (orderLineArray, sum, sale, sumWithSale, orderDate, description, pos, agentId, deliveryAddress, clientPhone) VALUES (?, ?, ?, ?, (CONVERT_TZ(NOW(), 'UTC', 'Europe/Moscow')), ?, ?, ?, ?, ?);`, [JSON.stringify(this.orderLineArray), this.sum, this.sale, this.sumWithSale, this.description, this.pos, this.agentId, this.address, this.numberPhone]);
             return true;
         } catch(e) {
             console.log(e);
