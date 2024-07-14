@@ -710,18 +710,23 @@ exports.personal_editor = async (req, res) => {
     if(!workerData) {
         return res.redirect('/admin/personal_manager');
     }
-
+    const access_code = await Model.workers.findOne({
+        where: { user_id : parseInt(req.query.worker_id) }
+    });
+    if(access_code) {
+        workerData.access_code = access_code.access_code;
+    };
     return res.render(createPath('personal_editor'), {roles: process.env.PERSONAL_ROLES.split(', '), roles_names: process.env.PERSONAL_ROLES_NAMES.split(', '), worker: workerData});
 }
 
 exports.personal_update = async (req, res) => {
-    console.log(req.body);
     const user = await Model.users.findOne({
         where: {
             email: req.body.frm.user_email
         }
     });
-    if(!user || (user.role === req.body.frm.user_role)) {
+    
+    if(!user) {
         return res.redirect('/admin/personal_manager');
     }
     await Model.users.update(
@@ -734,6 +739,27 @@ exports.personal_update = async (req, res) => {
             },
         }
     );
+    const worker = await Model.workers.findOne({
+        where: { user_id: req.body.frm.user_id }
+    });
+    if(worker) {
+        await Model.workers.update(
+            {
+                access_code: req.body.frm.user_access_code
+            },
+            {
+                where: { user_id: req.body.frm.user_id }
+            }
+        );
+    } else {
+        await Model.workers.create(
+            {
+                user_id: req.body.frm.user_id,
+                role: req.body.frm.user_role,
+                access_code: req.body.frm.user_access_code
+            }
+        );
+    }
     return res.redirect('/admin/personal_manager');
 }
 
@@ -749,6 +775,9 @@ exports.personal_delete = async(req, res) => {
                 },
             }
         );
+        await Model.workers.destroy({
+            where: { user_id: parseInt(req.query.worker_id) }
+        });
         return res.redirect(`/admin/personal_manager`);
     } catch(e) {
         console.log(e);
@@ -971,7 +1000,7 @@ exports.import = async (req, res) => {
         user: "root",
         database: "cherryhelpmix",
     });
-    const [other_menu] = await connection.promise().query('SELECT bludo_name, cena_bluda FROM menu WHERE hidden=0 AND category_id<>1116 AND category_id<>1120 AND category_id<>1124');
+    const [other_menu] = await connection.promise().query('SELECT bludo_name, cena_bluda FROM menu WHERE hidden=0');
     const new_subcat = await Model.subcategories.create({
         type: 'production',
         subcategory_name: 'import',
@@ -994,6 +1023,41 @@ exports.import = async (req, res) => {
 
     console.log(new_subcat);
     return res.json(JSON.stringify(other_menu));
+}
+
+exports.delete_duplicates = async (req, res) => {
+    try {
+        // Найти все записи с повторяющимися названиями
+        const duplicates = await Menu.findAll({
+          attributes: ['name', [sequelize.fn('COUNT', sequelize.col('name')), 'count']],
+          group: 'name',
+          having: sequelize.literal('count > 1')
+        });
+    
+        for (const duplicate of duplicates) {
+          const { name } = duplicate;
+    
+          // Найти id записи с минимальным id для данного имени
+          const minIdRecord = await Menu.findOne({
+            where: { name },
+            order: [['id', 'ASC']]
+          });
+    
+          // Удалить все записи с этим именем, кроме записи с минимальным id
+          await Menu.destroy({
+            where: {
+              name,
+              id: { [Sequelize.Op.ne]: minIdRecord.id }
+            }
+          });
+        }
+    
+        console.log('Дубликаты удалены.');
+      } catch (error) {
+        console.error('Ошибка при удалении дубликатов:', error);
+      } finally {
+        await sequelize.close();
+      }
 }
 
 

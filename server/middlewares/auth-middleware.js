@@ -6,11 +6,11 @@ module.exports = function(req, res, next) {
         const token = new Token;
         const refreshToken = req.cookies.refreshToken;
         if(!refreshToken) {
-            return res.redirect('../login');
+            return res.redirect('/auth/admin_login');
         }
         const userData = token.validateRefreshToken(refreshToken);
         if(!userData) {
-            return res.redirect('../login');
+            return res.redirect('/auth/admin_login');
         }
         req.user = userData;
         next();

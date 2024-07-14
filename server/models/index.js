@@ -24,6 +24,7 @@ const sales = require('./sales-model')(sequelize);
 const stoplist = require('./stoplist-model')(sequelize);
 const easyresto = require('./easyresto-model')(sequelize);
 const cash = require('./cash_operations-model')(sequelize);
+const workers = require('./workers-model')(sequelize);
 
 
 module.exports = {
@@ -40,5 +41,6 @@ module.exports = {
     sales: sales,
     stoplist: stoplist,
     easyresto: easyresto,
-    cash: cash
+    cash: cash,
+    workers: workers
 }

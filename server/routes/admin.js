@@ -5,7 +5,9 @@ const router = express.Router();
 
 // common
 
-router.get('/', adminController.home)
+router.get('/', adminController.home);
+
+
 
 //stats
 
@@ -106,8 +108,11 @@ router.get('/stoplist_manager/stoplist_delete', adminController.stoplist_delete)
 
 router.get('/settings/import', adminController.import);
 
+router.get('/settings/delete_duplicates', adminController.delete_duplicates);
+
 //cash
 
 router.get('/cash_manager', adminController.cash_manager);
 
 router.post('/cash_manager/cash_update', adminController.cash_update);
+

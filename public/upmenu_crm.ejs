@@ -41,18 +41,20 @@
                                     <li><a class="dropdown-item" tabindex="-1" href="index.php?class_name=uchet&amp;act=export_to_site" title="Экспорт на сайт">Экспорт на сайт</a></li>        -->
                                 </ul>
                             </li>
-                                        
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle btn btn-secondary" style="margin-left: 5px; margin-right: 5px;" data-toggle="dropdown">
-                                    Работа с клиентом
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" tabindex="-1" href="/admin/tables" title="Обслуживание столиков">Обслуживание столиков</a></li>
-                            
-                                    <!-- <li><a class="dropdown-item" tabindex="-1" href="index.php?class_name=clients&amp;act=view_clients" title="Все клиенты">Все клиенты</a></li> -->
+                            <% if(locals.user_role != 'buhgalter') { %> 
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle btn btn-secondary" style="margin-left: 5px; margin-right: 5px;" data-toggle="dropdown">
+                                        Работа с клиентом
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" tabindex="-1" href="/admin/tables" title="Обслуживание столиков">Обслуживание столиков</a></li>
                                 
-                                </ul>
-                            </li>
+                                        <!-- <li><a class="dropdown-item" tabindex="-1" href="index.php?class_name=clients&amp;act=view_clients" title="Все клиенты">Все клиенты</a></li> -->
+                                    
+                                    </ul>
+                                </li>
+                            <% } %>
+                            
                                     
                             <!-- <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -88,47 +90,64 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <!-- <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=agent_history" title="Движение денег, товаров">Движение денег, товаров</a></li> -->
-                            
-                                    <li><a tabindex="-1" class="dropdown-item" href="/admin/stats" title="Аналитика продаж">Аналитика продаж</a></li>
-                            
+                                    <% if(locals.user_role == 'admin' || locals.user_role == 'buhgalter') { %> 
+                                        <li><a tabindex="-1" class="dropdown-item" href="/admin/stats" title="Аналитика продаж">Аналитика продаж</a></li>
+                                    <% } %>
                                     <li><a tabindex="-1" class="dropdown-item" href="/admin/cash_manager" title="Движение денег">Движение денег</a></li>
                                     <!-- <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=ostatki" title="Текущий  баланс">Текущий  баланс</a></li> -->
                                 </ul>
                             </li>
-                                    
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle btn btn-secondary" style="margin-left: 5px; margin-right: 5px;" data-toggle="dropdown">
-                                    Справочники
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <!-- <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=admin_postav&amp;act=view_postav" title="Поставщики">Поставщики</a></li>
-                                    <li><hr class="dropdown-divider"></li> -->
-                                    <li><a tabindex="-1" class="dropdown-item" href="/admin/personal_manager" title="Персонал">Персонал</a></li>
-                                    <li><hr class="dropdown-divider"></li>	
-                                    <li><a tabindex="-1" class="dropdown-item" href="/admin/categories_manager" title="Производства">Производства</a></li>
-                            
-                                    <!-- <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=catalog&amp;act=draw1" title="Мастер рецептов">Мастер рецептов</a></li> -->
-                            
-                                    <!-- <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=admin_sklads&amp;act=view_sklads" title="Склады">Склады</a></li> -->
-                            
-                                    <li><a tabindex="-1" class="dropdown-item" href="/admin/pos_manager" title="Места продаж">Места продаж</a></li>
-                                    <li><hr class="dropdown-divider"></li>	
-                                    <li><a tabindex="-1" class="dropdown-item" href="/admin/nomenclature?type=raw" title="Исходные товары">Исходные товары</a></li>
-                            
-                                    <!-- <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=receptura&amp;act=Fas" title="Фасовка">Фасовка</a></li> -->
-                            
-                                    <li><a tabindex="-1" class="dropdown-item" href="/admin/nomenclature?type=semis" title="Полуфабрикаты">Полуфабрикаты</a></li>
-                            
-                                    <li><a tabindex="-1" class="dropdown-item" href="/admin/nomenclature?type=production" title="Продукция">Продукция</a></li>
-                                    <li><hr class="dropdown-divider"></li>	
-                                    <li><a tabindex="-1" class="dropdown-item" href="/admin/sales_manager" title="Акции">Акции</a></li>
-                                    <!-- <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=print_menu" title="Просмотр технологических карт">Просмотр технологических карт</a></li> -->
-                                    <li><a tabindex="-1" class="dropdown-item" href="/admin/stoplist_manager" title="Стоп-лист">Стоп-лист</a></li>
-                                </ul>
-                            </li>
+                            <% if(locals.user_role == 'admin' || locals.user_role == 'buhgalter') { %> 
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle btn btn-secondary" style="margin-left: 5px; margin-right: 5px;" data-toggle="dropdown">
+                                        Справочники
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <!-- <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=admin_postav&amp;act=view_postav" title="Поставщики">Поставщики</a></li>
+                                        <li><hr class="dropdown-divider"></li> -->
+                                        <li><a tabindex="-1" class="dropdown-item" href="/admin/personal_manager" title="Персонал">Персонал</a></li>
+                                        <li><hr class="dropdown-divider"></li>	
+                                        <li><a tabindex="-1" class="dropdown-item" href="/admin/categories_manager" title="Производства">Производства</a></li>
+                                
+                                        <!-- <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=catalog&amp;act=draw1" title="Мастер рецептов">Мастер рецептов</a></li> -->
+                                
+                                        <!-- <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=admin_sklads&amp;act=view_sklads" title="Склады">Склады</a></li> -->
+                                
+                                        <li><a tabindex="-1" class="dropdown-item" href="/admin/pos_manager" title="Места продаж">Места продаж</a></li>
+                                        <li><hr class="dropdown-divider"></li>	
+                                        <li><a tabindex="-1" class="dropdown-item" href="/admin/nomenclature?type=raw" title="Исходные товары">Исходные товары</a></li>
+                                
+                                        <!-- <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=receptura&amp;act=Fas" title="Фасовка">Фасовка</a></li> -->
+                                
+                                        <li><a tabindex="-1" class="dropdown-item" href="/admin/nomenclature?type=semis" title="Полуфабрикаты">Полуфабрикаты</a></li>
+                                
+                                        <li><a tabindex="-1" class="dropdown-item" href="/admin/nomenclature?type=production" title="Продукция">Продукция</a></li>
+                                        <li><hr class="dropdown-divider"></li>	
+                                        <li><a tabindex="-1" class="dropdown-item" href="/admin/sales_manager" title="Акции">Акции</a></li>
+                                        <!-- <li><a tabindex="-1" class="dropdown-item" href="index.php?class_name=uchet&amp;act=print_menu" title="Просмотр технологических карт">Просмотр технологических карт</a></li> -->
+                                        <li><a tabindex="-1" class="dropdown-item" href="/admin/stoplist_manager" title="Стоп-лист">Стоп-лист</a></li>
+                                    </ul>
+                                </li>
+                            <% } %>
                              
                         </ul>
                       </nav>
+                </div>
+                <div class="er-logo" style="margin-left: auto;">
+                    <style>
+                        .er-a:hover .er-img {
+                            filter: brightness(80%);
+                            transition: filter 0.3s ease;
+                        }
+                        .er-img {
+                            transition: filter 0.2s ease-in;
+                        }
+
+                    </style>
+                    <a class="er-a" href="https://easyresto.ru">
+                        <img class="er-img" src="/jpgs/easyresto/favicon.png" alt="EasyResto" style="max-width: 48px; max-height: 48px;">
+                    </a>
+                    
                 </div>
                   
     </div>

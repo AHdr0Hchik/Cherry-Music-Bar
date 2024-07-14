@@ -262,7 +262,53 @@ class Printer {
 
     }
 
-    printOrderLines(textArr, printer_ip) {
+    async printOrderLines(textArr, printer_ip) {
+        console.log(printer_ip);
+    
+        const printer = new ThermalPrinter({
+            type: PrinterTypes.EPSON,
+            interface: `tcp://${printer_ip}:9100`
+        });
+
+        try {
+            // Открываем подключение к принтеру
+            const isConnected = await printer.isPrinterConnected();
+            if (!isConnected) {
+                console.log('Printer is not connected');
+                return;
+            }
+
+            // Печатаем строки из массива textArr
+            for (const text of textArr) {
+                if (text === 'cut') {
+                    printer.cut();
+                    continue;
+                }
+                printer
+                    .setTypeFontB()
+                    .setTextSize(1, 1)
+                    .println(text);
+            }
+
+            // Отрезаем бумагу и подаем звуковой сигнал
+            printer.cut();
+            printer.beep();
+
+            // Выполняем печать
+            await printer.execute();
+            console.log('Printing completed successfully.');
+            
+            // Завершаем работу с принтером
+            printer.clear(); // Очищаем буфер принтера
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    /*printOrderLines(textArr, printer_ip) {
+        
+        
+
         console.log(printer_ip);
         const networkDevice = new escpos.Network(printer_ip, 9100);
         const printer = new escpos.Printer(networkDevice);
@@ -283,6 +329,8 @@ class Printer {
 
             printer.cut().beep(3, 100).close();
           });
-    }
+          
+    }*/
+
 }
 module.exports = Printer;

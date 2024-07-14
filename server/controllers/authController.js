@@ -3,7 +3,10 @@ const User = require('../classes/User');
 const bcrypt = require('bcryptjs');
 const ApiError = require('../classes/exceptions/api-error');
 const Token = require('../classes/Token');
+const Model = require('../models');
+const path = require('path');
 
+const createPath = (page) => path.resolve(__dirname, '../../public', `${page}.ejs`);
 
 const db = new Database;
 const validateEmailRegex = /^[a-zA-Z0-9._%+-]+@(?:gmail|yahoo|hotmail|outlook|aol|icloud|mail|yandex|live|gmx|protonmail|zoho|fastmail|tutanota|icloud|bk)\.[a-zA-Z]{2,}$/
@@ -43,6 +46,11 @@ exports.register = async (req, res, next) => {
     
 }
 
+exports.admin_login = async (req, res) => {
+    console.log(123)
+    res.render(createPath('admin_login'));
+}
+
 exports.activate = async (req, res, next) => {
     try {
         const [results] = await db.connection.promise().query('SELECT uuid, isActive FROM users WHERE uuid=?', [req.params.link] );
@@ -65,8 +73,29 @@ exports.login = async (req, res, next) => {
         const user = new User;
         const token = new Token;
 
+        const {access_code} = req.body;
+        let userDto;
+        if(access_code) {
+            console.log(123);
+            const userId = await Model.workers.findOne(
+                {
+                    attributes: ['user_id']
+                },
+                {
+                    where: { access_code: access_code}
+                }
+            )
+            userDto = await user.getUserById(userId.user_id);
+            const tokens = await token.generateTokens(userDto);
+            const loginProcess = await user.loginByCode(access_code);
+            if(!loginProcess) {
+                return res.render('../../public/admin_login', {message : 'Введен неверный код доступа'});
+            }
+            return res.cookie('accessToken', tokens.accessToken, {maxAge: 1000*60*5}), res.cookie('refreshToken', tokens.refreshToken, {maxAge : 1000 * 60* 60 * 24 * 30, httpOnly: true}), res.redirect('/admin/tables');
+        }
+        console.log(456);
         const {email, password} = req.body;
-        const userDto = await user.getUserByEmail(email);
+        userDto = await user.getUserByEmail(email);
         const tokens = await token.generateTokens(userDto);
         const loginProcess = await user.login(email, password);
         if(!loginProcess) {

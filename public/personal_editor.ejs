@@ -121,7 +121,13 @@ body {
                         <div class="controls">
                             <input class="" value="<%= locals.worker ? worker.email : '' %>" name="frm[user_email]" type="text" id="user_email" placeholder="" required>
                         </div>
-                    </div>   
+                    </div>  
+                    <div class="control-group" id="div_user_email">
+                        <label class="control-label" for="user_email">Код доступа</label>
+                        <div class="controls">
+                            <input class="" value="<%= locals.worker ? worker.access_code : '' %>" name="frm[user_access_code]" type="text" id="user_access_code" required>
+                        </div>
+                    </div> 
                     <hr>
                     <div class="control-group" id="div_otmena_is_posible">
                         <label class="control-label" for="otmena_is_posible">Может делать<br> возвраты и отмены</label>
@@ -136,6 +142,11 @@ body {
                             <span class="help-block">Работа с архивом счетов. Может принимать деньги, как кассир.</span>
                         </div>
                     </div> 
+                    <div class="control-group" id="div_can_work_in_archiv" hidden>
+                        <div class="controls">
+                            <input type="text" value="<%= locals.worker ? worker.id : '' %>" id="user_id" name="frm[user_id]">
+                        </div>
+                    </div>
                     <hr>
                     <div class="control-group">
                         <div class="controls">

@@ -15,6 +15,8 @@ router.get('/refresh', authController.refresh);
 
 router.post('/login', authController.login);
 
+router.get('/admin_login', authController.admin_login);
+
 router.post('/forgot_password', authController.forgotPassword);
 
 router.get('/getUsers', authMiddleware, authController.getUsers);

@@ -49,6 +49,8 @@ app.use('/updater', require('./routes/updater'));
 
 //app.use('/api', authMiddleware, require('./routes/api'));
 
+app.locals.org_name = process.env.ORG_NAME;
+
 app.locals.isItemInStoplist = (stoplist, item) => {
    return stoplist.some(stoplisted => stoplisted.dish_id === item.id);
 };

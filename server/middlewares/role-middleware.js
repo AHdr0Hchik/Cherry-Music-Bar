@@ -10,6 +10,7 @@ module.exports = async function(req, res, next) {
         if(!personal_roles.includes(role)) {
             return next(ApiError.NoPermissions());
         }
+        res.locals.user_role = role;
         next();
     } catch(e) {
         console.log(e);

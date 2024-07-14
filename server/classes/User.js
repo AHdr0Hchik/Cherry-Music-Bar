@@ -89,6 +89,32 @@ class User {
         return {...tokens, user: userDto};
     }
 
+    async loginByCode(access_code) {
+        const worker = await Model.workers.findOne({
+            attributes: ['user_id'],
+            where: { access_code: access_code }
+        });
+      
+        if (!worker) {
+            return false;
+        }
+      
+          // Then, find the user with the retrieved user_id
+        const user = await Model.users.findOne({
+            where: { id: worker.user_id }
+        });
+        if(user.length===0) {
+            return false;
+        }
+        const token = new Token;
+
+        const userDto = await this.getUserByEmail(user.email);
+        const tokens = await token.generateTokens({...userDto});
+        await token.saveToken(userDto.id, tokens.refreshToken);
+
+        return {...tokens, user: userDto};
+    }
+
     async logout(refreshToken) {
         try{
             const token = await new Token().deleteToken(refreshToken);
@@ -159,16 +185,18 @@ class User {
 
     async getUserById(id2) {
         try {
-            const [user] = await this.db.connection.promise().query('SELECT * FROM users WHERE id=?', [id2]);
+            const user = await Model.users.findOne({
+                where: { id: id2 }
+            });
             
-            const id = user[0].id;
-            const role = user[0].role
-            const email = user[0].email;
-            const isActive = user[0].isActive;
-            const firstname = user[0].firstname;
-            const lastname = user[0].lastname;
-            const address = user[0].address;
-            const phoneNumber = user[0].phone_number;
+            const id = user.id;
+            const role = user.role
+            const email = user.email;
+            const isActive = user.isActive;
+            const firstname = user.firstname;
+            const lastname = user.lastname;
+            const address = user.address;
+            const phoneNumber = user.phone_number;
             
             return {id, role, firstname, lastname, email, phoneNumber, address, isActive};
         } catch(e) {
